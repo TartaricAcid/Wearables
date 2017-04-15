@@ -1,6 +1,9 @@
 package net.gegy1000.wearables.client.render;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.client.render.component.ComponentRenderer;
+import net.gegy1000.wearables.client.render.component.chest.PlainShirtRenderer;
+import net.gegy1000.wearables.client.render.component.head.HatRenderer;
 import net.gegy1000.wearables.client.render.item.WearableComponentRenderer;
 import net.gegy1000.wearables.client.render.item.WearableItemRenderer;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
@@ -11,6 +14,8 @@ import net.gegy1000.wearables.server.block.entity.WearableFeetItemEntity;
 import net.gegy1000.wearables.server.block.entity.WearableHeadItemEntity;
 import net.gegy1000.wearables.server.block.entity.WearableLegsItemEntity;
 import net.gegy1000.wearables.server.item.ItemRegistry;
+import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
+import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -18,7 +23,12 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RenderRegistry {
+    private static final Map<String, ComponentRenderer> COMPONENT_RENDERERS = new HashMap<>();
+
     public static void register() {
         for (Block block : BlockRegistry.BLOCKS) {
             String name = block.getUnlocalizedName().substring("tile.".length());
@@ -45,6 +55,9 @@ public class RenderRegistry {
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_CHEST, 0, WearableChestItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_LEGS, 0, WearableLegsItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_FEET, 0, WearableFeetItemEntity.class);
+
+        RenderRegistry.register(ComponentRegistry.PLAIN_SHIRT, new PlainShirtRenderer());
+        RenderRegistry.register(ComponentRegistry.HAT, new HatRenderer());
     }
 
     public static void register(Item item, String path, String type) {
@@ -62,5 +75,13 @@ public class RenderRegistry {
 
     public static void register(Block block, final String path, final String type) {
         RenderRegistry.register(block, 0, path, type);
+    }
+
+    public static void register(WearableComponentType type, ComponentRenderer renderer) {
+        COMPONENT_RENDERERS.put(type.getIdentifier(), renderer);
+    }
+
+    public static ComponentRenderer getRenderer(String identifier) {
+        return COMPONENT_RENDERERS.get(identifier);
     }
 }

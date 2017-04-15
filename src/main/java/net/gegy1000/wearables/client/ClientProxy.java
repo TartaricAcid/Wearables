@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.client;
 
+import net.gegy1000.wearables.client.model.BlankModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.layer.WearableRenderLayer;
 import net.gegy1000.wearables.server.ServerProxy;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 public class ClientProxy extends ServerProxy {
     public static final Minecraft MC = Minecraft.getMinecraft();
+    public static final BlankModel BLANK_MODEL = new BlankModel();
 
     @Override
     public void onPreInit() {

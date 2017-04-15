@@ -1,6 +1,8 @@
 package net.gegy1000.wearables.client.render.layer;
 
 import net.gegy1000.wearables.client.WearableColourUtils;
+import net.gegy1000.wearables.client.render.RenderRegistry;
+import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
@@ -41,20 +43,21 @@ public class WearableRenderLayer implements LayerRenderer<EntityPlayer> {
                 Wearable wearable = WearableItem.getWearable(stack);
                 for (WearableComponent component : wearable.getComponents()) {
                     WearableComponentType componentType = component.getType();
+                    ComponentRenderer renderer = RenderRegistry.getRenderer(componentType.getIdentifier());
                     boolean smallArms = WearableUtils.hasSlimArms(player);
-                    ModelBiped model = componentType.getModel(smallArms);
+                    ModelBiped model = renderer.getModel(smallArms);
                     model.setModelAttributes(this.renderer.getMainModel());
                     model.setLivingAnimations(player, limbSwing, limbSwingAmount, partialTicks);
                     ModelBiped.copyModelAngles(this.renderer.getMainModel().bipedRightArm, model.bipedRightArm);
                     for (int layer = 0; layer < componentType.getLayerCount(); layer++) {
-                        ResourceLocation texture = componentType.getTexture(smallArms, layer);
+                        ResourceLocation texture = renderer.getTexture(smallArms, layer);
                         if (texture == null) {
                             GlStateManager.disableTexture2D();
                         } else {
                             GlStateManager.enableTexture2D();
                             MC.getTextureManager().bindTexture(texture);
                         }
-                        float[] colour = componentType.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
+                        float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
                         GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
                         model.render(player, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
                     }

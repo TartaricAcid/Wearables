@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.server.item;
 
+import net.gegy1000.wearables.client.ClientProxy;
 import net.gegy1000.wearables.client.WearableColourUtils;
-import net.gegy1000.wearables.client.model.BlankModel;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.tab.TabRegistry;
@@ -33,8 +33,6 @@ import java.util.List;
 
 public class WearableItem extends ItemArmor implements RegisterItemModel, RegisterBlockEntity {
     public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("wearable", "leather", -1, new int[4], 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
-    @SideOnly(Side.CLIENT)
-    private static final BlankModel BLANK_MODEL = new BlankModel();
 
     private Class<? extends TileEntity> entity;
 
@@ -73,7 +71,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getArmorModel(EntityLivingBase entity, ItemStack itemStack, EntityEquipmentSlot armorSlot, ModelBiped _default) {
-        return BLANK_MODEL;
+        return ClientProxy.BLANK_MODEL;
     }
 
     @Override
