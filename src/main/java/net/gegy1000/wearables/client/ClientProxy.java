@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.client;
 
+import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.server.ServerProxy;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -8,6 +9,7 @@ public class ClientProxy extends ServerProxy {
     public void onPreInit() {
         super.onPreInit();
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+        RenderRegistry.register();
     }
 
     @Override

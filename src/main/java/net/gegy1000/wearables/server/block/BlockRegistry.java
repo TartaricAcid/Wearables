@@ -1,0 +1,48 @@
+package net.gegy1000.wearables.server.block;
+
+import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BlockRegistry {
+    public static final List<Block> BLOCKS = new ArrayList<>();
+
+    public static void register() {
+        try {
+            for (Field field : BlockRegistry.class.getDeclaredFields()) {
+                Object value = field.get(null);
+                if (value instanceof Block) {
+                    BlockRegistry.register((Block) value);
+                } else if (value instanceof Block[]) {
+                    for (Block block : (Block[]) value) {
+                        BlockRegistry.register(block);
+                    }
+                }
+            }
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void register(Block block) {
+        BLOCKS.add(block);
+        String name = block.getUnlocalizedName().substring("tile.".length());
+        ResourceLocation identifier = new ResourceLocation(Wearables.MODID, name);
+        GameRegistry.register(block, identifier);
+        GameRegistry.register(BlockRegistry.createItemBlock(block), identifier);
+        if (block instanceof RegisterBlockEntity) {
+            GameRegistry.registerTileEntity(((RegisterBlockEntity) block).getEntity(), Wearables.MODID + ":" + name);
+        }
+    }
+
+    private static ItemBlock createItemBlock(Block block) {
+        return new ItemBlock(block);
+    }
+}
