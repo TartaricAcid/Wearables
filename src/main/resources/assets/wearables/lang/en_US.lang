@@ -1,7 +1,24 @@
 # Tabs
-itemGroup.wearables.blocks=Wearable Blocks
-itemGroup.wearables.items=Wearable Items
+
+itemGroup.wearables.general=Wearables
+itemGroup.wearables.templates=Wearable Templates
+itemGroup.wearables.components=Wearable Components
 
 # Items
 
+item.wearable_component.name=Wearable Component
+item.wearable_head.name=Wearable Head Piece
+item.wearable_chest.name=Wearable Chest Piece
+item.wearable_legs.name=Wearable Leg Piece
+item.wearable_feet.name=Wearable Foot Piece
+
 # Blocks
+
+# Labels
+
+label.wearable_components.name=Components:
+
+# Components
+
+component.hat.name=Hat
+component.plain_shirt.name=Plain Shirt

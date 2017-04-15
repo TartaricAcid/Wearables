@@ -13,6 +13,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 
@@ -20,7 +21,7 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     public WearableComponentItem() {
         super();
         this.setUnlocalizedName("wearable_component");
-        this.setCreativeTab(TabRegistry.ITEMS);
+        this.setCreativeTab(TabRegistry.COMPONENTS);
     }
 
     @Override
@@ -45,6 +46,10 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     }
 
     public static WearableComponent getComponent(ItemStack stack) {
-        return WearableComponent.deserialize(stack.getTagCompound());
+        NBTTagCompound compound = stack.getTagCompound();
+        if (compound == null) {
+            compound = new NBTTagCompound();
+        }
+        return WearableComponent.deserialize(compound);
     }
 }

@@ -27,8 +27,12 @@ public class WearableRenderer {
             ModelBiped model = type.getModel(smallArms);
             float[] colour = WearableUtils.toRGBFloatArray(component.getColour(layer));
             GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(type.getInventoryOffsetX(), type.getInventoryOffsetY(), type.getInventoryOffsetZ());
             model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+            GlStateManager.popMatrix();
         }
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.enableTexture2D();
     }
 }

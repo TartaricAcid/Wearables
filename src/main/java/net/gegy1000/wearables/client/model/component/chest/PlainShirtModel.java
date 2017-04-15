@@ -1,14 +1,13 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
-import net.minecraft.client.model.ModelBiped;
+import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class PlainShirtModel extends ModelBiped {
+public class PlainShirtModel extends WearableComponentModel {
     public ModelRenderer rightArm;
     public ModelRenderer chest;
     public ModelRenderer leftArm;
@@ -29,22 +28,9 @@ public class PlainShirtModel extends ModelBiped {
     }
 
     @Override
-    public void render(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
-        this.setRotationAngles(limbSwing, limbSwingAmount, age, yaw, pitch, scale, entity);
-
-        GlStateManager.pushMatrix();
-        this.bipedBody.postRender(scale);
-        this.chest.render(scale);
-        GlStateManager.popMatrix();
-
-        GlStateManager.pushMatrix();
-        this.bipedLeftArm.postRender(scale);
-        this.leftArm.render(scale);
-        GlStateManager.popMatrix();
-
-        GlStateManager.pushMatrix();
-        this.bipedRightArm.postRender(scale);
-        this.rightArm.render(scale);
-        GlStateManager.popMatrix();
+    public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
+        this.renderParented(this.bipedBody, this.chest, scale);
+        this.renderParented(this.bipedLeftArm, this.leftArm, scale);
+        this.renderParented(this.bipedRightArm, this.rightArm, scale);
     }
 }

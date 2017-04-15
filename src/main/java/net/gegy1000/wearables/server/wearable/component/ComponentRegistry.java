@@ -2,6 +2,7 @@ package net.gegy1000.wearables.server.wearable.component;
 
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.chest.PlainShirtComponent;
+import net.gegy1000.wearables.server.wearable.component.head.HatComponent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ComponentRegistry {
     public static final Map<String, WearableComponentType> IDENTIFIERS = new HashMap<>();
 
     public static final PlainShirtComponent PLAIN_SHIRT = new PlainShirtComponent();
+    public static final HatComponent HAT = new HatComponent();
 
     public static void register() {
         try {
@@ -48,5 +50,12 @@ public class ComponentRegistry {
 
     public static WearableComponentType get(String identifier) {
         return IDENTIFIERS.get(identifier);
+    }
+
+    public static WearableComponentType getDefault() {
+        if (!COMPONENTS.isEmpty()) {
+            return COMPONENTS.get(0);
+        }
+        return null;
     }
 }

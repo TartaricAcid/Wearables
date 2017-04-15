@@ -88,3 +88,11 @@ String getVersion(String type, String mod_file) {
     }
     return "$major.$revision.$patch"
 }
+
+
+jar {
+    manifest {
+        attributes "FMLCorePlugin": "net.gegy1000.wearables.server.core.WearablesPlugin"
+        attributes "FMLCorePluginContainsFMLMod": "true"
+    }
+}

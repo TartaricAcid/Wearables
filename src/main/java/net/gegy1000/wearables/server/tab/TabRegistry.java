@@ -7,16 +7,22 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public class TabRegistry {
-    public static final CreativeTabs BLOCKS = new CreativeTabs(Wearables.MODID + ".blocks") {
+    public static final CreativeTabs GENERAL = new CreativeTabs(Wearables.MODID + ".general") {
         @Override
         public ItemStack getTabIconItem() {
             return new ItemStack(Blocks.CRAFTING_TABLE);
         }
     };
-    public static final CreativeTabs ITEMS = new CreativeTabs(Wearables.MODID + ".items") {
+    public static final CreativeTabs COMPONENTS = new CreativeTabs(Wearables.MODID + ".components") {
         @Override
         public ItemStack getTabIconItem() {
             return new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
+        }
+    };
+    public static final CreativeTabs TEMPLATES = new CreativeTabs(Wearables.MODID + ".templates") {
+        @Override
+        public ItemStack getTabIconItem() {
+            return new ItemStack(ItemRegistry.WEARABLE_CHEST);
         }
     };
 }

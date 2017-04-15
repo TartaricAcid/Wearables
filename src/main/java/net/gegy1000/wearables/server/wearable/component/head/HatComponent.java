@@ -1,6 +1,6 @@
-package net.gegy1000.wearables.server.wearable.component.chest;
+package net.gegy1000.wearables.server.wearable.component.head;
 
-import net.gegy1000.wearables.client.model.component.chest.PlainShirtModel;
+import net.gegy1000.wearables.client.model.component.hat.HatModel;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.model.ModelBiped;
@@ -8,21 +8,18 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class PlainShirtComponent extends WearableComponentType {
+public class HatComponent extends WearableComponentType {
     @SideOnly(Side.CLIENT)
-    private static final PlainShirtModel LARGE_ARMS = new PlainShirtModel(false);
-
-    @SideOnly(Side.CLIENT)
-    private static final PlainShirtModel SMALL_ARMS = new PlainShirtModel(true);
+    private static final HatModel MODEL = new HatModel();
 
     @Override
     public String getIdentifier() {
-        return "plain_shirt";
+        return "hat";
     }
 
     @Override
     public WearableCategory getCategory() {
-        return WearableCategory.CHEST_GENERIC;
+        return WearableCategory.HEAD_TOP;
     }
 
     @Override
@@ -33,12 +30,17 @@ public class PlainShirtComponent extends WearableComponentType {
     @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getModel(boolean smallArms) {
-        return smallArms ? SMALL_ARMS : LARGE_ARMS;
+        return MODEL;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public ResourceLocation getTexture(boolean smallArms, int layer) {
         return null;
+    }
+
+    @Override
+    public float getInventoryOffsetY() {
+        return 0.8F;
     }
 }

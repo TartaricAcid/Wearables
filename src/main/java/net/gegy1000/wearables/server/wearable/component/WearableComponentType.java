@@ -19,6 +19,18 @@ public abstract class WearableComponentType {
     @SideOnly(Side.CLIENT)
     public abstract ResourceLocation getTexture(boolean smallArms, int layer);
 
+    public float getInventoryOffsetX() {
+        return 0.0F;
+    }
+
+    public float getInventoryOffsetY() {
+        return 0.0F;
+    }
+
+    public float getInventoryOffsetZ() {
+        return 0.0F;
+    }
+
     public boolean compatibleWith(WearableComponentType component) {
         return component.getCategory() != this.getCategory();
     }

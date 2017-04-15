@@ -1,6 +1,8 @@
 package net.gegy1000.wearables;
 
 import net.gegy1000.wearables.server.ServerProxy;
+import net.gegy1000.wearables.server.core.WearablesPlugin;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -20,6 +22,11 @@ public class Wearables {
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
+        if (!WearablesPlugin.loaded) {
+            System.err.println("Failed to load Wearables plugin! Missing coremod parameters! (-Dfml.coreMods.load=net.gegy1000.wearables.server.core.WearablesPlugin)");
+            FMLCommonHandler.instance().exitJava(1, false);
+        }
+
         Wearables.PROXY.onPreInit();
     }
 

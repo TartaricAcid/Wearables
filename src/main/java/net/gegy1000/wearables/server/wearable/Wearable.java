@@ -16,6 +16,10 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
         this.components.add(component);
     }
 
+    public List<WearableComponent> getComponents() {
+        return this.components;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound compound = new NBTTagCompound();
@@ -29,9 +33,11 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
 
     @Override
     public void deserializeNBT(NBTTagCompound compound) {
-        NBTTagList componentList = compound.getTagList("components", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < componentList.tagCount(); i++) {
-            this.components.add(WearableComponent.deserialize(componentList.getCompoundTagAt(i)));
+        if (compound.hasKey("components")) {
+            NBTTagList componentList = compound.getTagList("components", Constants.NBT.TAG_COMPOUND);
+            for (int i = 0; i < componentList.tagCount(); i++) {
+                this.components.add(WearableComponent.deserialize(componentList.getCompoundTagAt(i)));
+            }
         }
     }
 
