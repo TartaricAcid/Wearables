@@ -1,16 +1,16 @@
 package net.gegy1000.wearables.server.tab;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public class TabRegistry {
     public static final CreativeTabs GENERAL = new CreativeTabs(Wearables.MODID + ".general") {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(Blocks.CRAFTING_TABLE);
+            return new ItemStack(BlockRegistry.DISPLAY_MANNEQUIN);
         }
     };
     public static final CreativeTabs COMPONENTS = new CreativeTabs(Wearables.MODID + ".components") {

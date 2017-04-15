@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client.render;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.client.render.block.DisplayMannequinRenderer;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.client.render.component.chest.PlainShirtRenderer;
 import net.gegy1000.wearables.client.render.component.head.HatRenderer;
@@ -8,6 +9,8 @@ import net.gegy1000.wearables.client.render.item.WearableComponentRenderer;
 import net.gegy1000.wearables.client.render.item.WearableItemRenderer;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.BlockRegistry;
+import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
+import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.block.entity.WearableChestItemEntity;
 import net.gegy1000.wearables.server.block.entity.WearableComponentEntity;
 import net.gegy1000.wearables.server.block.entity.WearableFeetItemEntity;
@@ -19,7 +22,7 @@ import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
@@ -47,6 +50,8 @@ public class RenderRegistry {
             }
         }
 
+        ClientRegistry.bindTileEntitySpecialRenderer(DisplayMannequinEntity.class, new DisplayMannequinRenderer());
+
         ClientRegistry.bindTileEntitySpecialRenderer(WearableComponentEntity.class, new WearableComponentRenderer());
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_COMPONENT, 0, WearableComponentEntity.class);
 
@@ -61,11 +66,8 @@ public class RenderRegistry {
 
         RenderRegistry.register(ComponentRegistry.PLAIN_SHIRT, new PlainShirtRenderer());
         RenderRegistry.register(ComponentRegistry.HAT, new HatRenderer());
-    }
 
-    public static void onInit() {
-        BlockStateMapper stateMapper = MC.getBlockRendererDispatcher().getBlockModelShapes().getBlockStateMapper();
-        stateMapper.registerBuiltInBlocks(BlockRegistry.DISPLAY_MANNEQUIN);
+        ModelLoader.setCustomStateMapper(BlockRegistry.DISPLAY_MANNEQUIN, new StateMap.Builder().ignore(DisplayMannequinBlock.FACING, DisplayMannequinBlock.HALF).build());
     }
 
     public static void register(Item item, String path, String type) {

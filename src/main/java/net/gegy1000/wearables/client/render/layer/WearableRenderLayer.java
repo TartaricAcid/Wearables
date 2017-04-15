@@ -11,32 +11,32 @@ import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.entity.RenderPlayer;
+import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
-public class WearableRenderLayer implements LayerRenderer<EntityPlayer> {
+public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
     private static final Minecraft MC = Minecraft.getMinecraft();
 
-    private RenderPlayer renderer;
+    private RenderLivingBase renderer;
 
-    public WearableRenderLayer(RenderPlayer renderer) {
+    public WearableRenderLayer(RenderLivingBase renderer) {
         this.renderer = renderer;
     }
 
     @Override
-    public void doRenderLayer(EntityPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {
-        this.renderPiece(EntityEquipmentSlot.HEAD, player, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
-        this.renderPiece(EntityEquipmentSlot.CHEST, player, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
-        this.renderPiece(EntityEquipmentSlot.LEGS, player, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
-        this.renderPiece(EntityEquipmentSlot.FEET, player, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
+    public void doRenderLayer(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {
+        this.renderPiece(EntityEquipmentSlot.HEAD, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
+        this.renderPiece(EntityEquipmentSlot.CHEST, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
+        this.renderPiece(EntityEquipmentSlot.LEGS, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
+        this.renderPiece(EntityEquipmentSlot.FEET, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
     }
 
-    private void renderPiece(EntityEquipmentSlot slot, EntityPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {
-        ItemStack stack = player.getItemStackFromSlot(slot);
+    private void renderPiece(EntityEquipmentSlot slot, EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {
+        ItemStack stack = entity.getItemStackFromSlot(slot);
         if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
             WearableItem item = (WearableItem) stack.getItem();
             if (item.getEquipmentSlot() == slot) {
@@ -44,11 +44,10 @@ public class WearableRenderLayer implements LayerRenderer<EntityPlayer> {
                 for (WearableComponent component : wearable.getComponents()) {
                     WearableComponentType componentType = component.getType();
                     ComponentRenderer renderer = RenderRegistry.getRenderer(componentType.getIdentifier());
-                    boolean smallArms = WearableUtils.hasSlimArms(player);
+                    boolean smallArms = WearableUtils.hasSlimArms(entity);
                     ModelBiped model = renderer.getModel(smallArms);
                     model.setModelAttributes(this.renderer.getMainModel());
-                    model.setLivingAnimations(player, limbSwing, limbSwingAmount, partialTicks);
-                    ModelBiped.copyModelAngles(this.renderer.getMainModel().bipedRightArm, model.bipedRightArm);
+                    model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
                     for (int layer = 0; layer < componentType.getLayerCount(); layer++) {
                         ResourceLocation texture = renderer.getTexture(smallArms, layer);
                         if (texture == null) {
@@ -59,7 +58,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityPlayer> {
                         }
                         float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
                         GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
-                        model.render(player, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
+                        model.render(entity, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
                     }
                 }
                 GlStateManager.enableTexture2D();

@@ -36,6 +36,7 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
         this.setHardness(0.5F);
         this.setUnlocalizedName("display_mannequin");
         this.setDefaultState(this.blockState.getBaseState().withProperty(HALF, Half.LOWER).withProperty(FACING, EnumFacing.NORTH));
+        this.setLightLevel(0.3F);
     }
 
     @Override
@@ -151,6 +152,16 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
     @Override
     public Class<? extends TileEntity> getEntity() {
         return DisplayMannequinEntity.class;
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return state.getValue(HALF) == Half.LOWER;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new DisplayMannequinEntity();
     }
 
     public enum Half implements IStringSerializable {
