@@ -54,7 +54,8 @@ public class WearableRenderLayer implements LayerRenderer<EntityPlayer> {
                             GlStateManager.enableTexture2D();
                             MC.getTextureManager().bindTexture(texture);
                         }
-                        WearableColourUtils.color(component.getColour(layer));
+                        float[] colour = componentType.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
+                        GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
                         model.render(player, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
                     }
                 }

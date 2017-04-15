@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.wearable.component.head;
 
+import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.client.model.component.hat.HatModel;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -23,11 +24,6 @@ public class HatComponent extends WearableComponentType {
     }
 
     @Override
-    public int getLayerCount() {
-        return 1;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getModel(boolean smallArms) {
         return MODEL;
@@ -42,5 +38,15 @@ public class HatComponent extends WearableComponentType {
     @Override
     public float getInventoryOffsetY() {
         return 0.8F;
+    }
+
+    @Override
+    public float getInventoryScale() {
+        return 1.5F;
+    }
+
+    @Override
+    public float[] adjustColour(float[] colour, int layer) {
+        return WearableColourUtils.blend(colour, new float[] { 0.6F, 0.35F, 0.0F }, 0.5F);
     }
 }

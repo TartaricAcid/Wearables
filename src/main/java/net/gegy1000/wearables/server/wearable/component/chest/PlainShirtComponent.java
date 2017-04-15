@@ -26,11 +26,6 @@ public class PlainShirtComponent extends WearableComponentType {
     }
 
     @Override
-    public int getLayerCount() {
-        return 1;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public ModelBiped getModel(boolean smallArms) {
         return smallArms ? SMALL_ARMS : LARGE_ARMS;

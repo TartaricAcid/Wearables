@@ -11,8 +11,6 @@ public abstract class WearableComponentType {
 
     public abstract WearableCategory getCategory();
 
-    public abstract int getLayerCount();
-
     @SideOnly(Side.CLIENT)
     public abstract ModelBiped getModel(boolean smallArms);
 
@@ -29,6 +27,30 @@ public abstract class WearableComponentType {
 
     public float getInventoryOffsetZ() {
         return 0.0F;
+    }
+
+    public float getInventoryScale() {
+        return 1.0F;
+    }
+
+    public int getLayerCount() {
+        return 1;
+    }
+
+    public boolean canColour(int layer) {
+        return true;
+    }
+
+    public float getColourX(int layer) {
+        return 0.0F;
+    }
+
+    public float getColourY(int layer) {
+        return 0.0F;
+    }
+
+    public float[] adjustColour(float[] colour, int layer) {
+        return colour;
     }
 
     public boolean compatibleWith(WearableComponentType component) {

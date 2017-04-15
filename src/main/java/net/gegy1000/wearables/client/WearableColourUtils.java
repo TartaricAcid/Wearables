@@ -1,6 +1,5 @@
 package net.gegy1000.wearables.client;
 
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.text.TextFormatting;
@@ -78,8 +77,18 @@ public class WearableColourUtils {
         return closest;
     }
 
-    public static void color(int colour) {
-        float[] rgb = WearableColourUtils.toRGBFloatArray(colour);
-        GlStateManager.color(rgb[0], rgb[1], rgb[2], 1.0F);
+    public static int blend(int first, int second, float ratio) {
+        float[] firstArray = WearableColourUtils.toRGBFloatArray(first);
+        float[] secondArray = WearableColourUtils.toRGBFloatArray(second);
+        float[] blend = WearableColourUtils.blend(firstArray, secondArray, ratio);
+        return WearableColourUtils.fromRGBFloatArray(blend);
+    }
+
+    public static float[] blend(float[] first, float[] second, float ratio) {
+        float invertedRatio = 1.0F - ratio;
+        float blendedRed = first[0] * invertedRatio + second[0] * ratio;
+        float blendedGreen = first[1] * invertedRatio + second[1] * ratio;
+        float blendedBlue = first[2] * invertedRatio + second[2] * ratio;
+        return new float[] { blendedRed, blendedGreen, blendedBlue };
     }
 }

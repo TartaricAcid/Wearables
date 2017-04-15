@@ -11,7 +11,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class WearableRenderer {
+public class ComponentInventoryRenderer {
     public static final Minecraft MC = Minecraft.getMinecraft();
 
     public static void renderComponent(WearableComponent component, boolean smallArms) {
@@ -25,8 +25,11 @@ public class WearableRenderer {
                 MC.getTextureManager().bindTexture(texture);
             }
             ModelBiped model = type.getModel(smallArms);
-            WearableColourUtils.color(component.getColour(layer));
+            float[] colour = type.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
             GlStateManager.pushMatrix();
+            GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+            float scale = type.getInventoryScale();
+            GlStateManager.scale(scale, scale, scale);
             GlStateManager.translate(type.getInventoryOffsetX(), type.getInventoryOffsetY(), type.getInventoryOffsetZ());
             model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
             GlStateManager.popMatrix();
