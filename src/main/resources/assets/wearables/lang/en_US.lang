@@ -6,6 +6,8 @@ itemGroup.wearables.components=Wearable Components
 
 # Items
 
+item.display_mannequin_item.name=Display Mannequin
+
 item.wearable_component.name=Wearable Component
 item.wearable_head.name=Wearable Head Piece
 item.wearable_chest.name=Wearable Chest Piece
@@ -13,6 +15,8 @@ item.wearable_legs.name=Wearable Leg Piece
 item.wearable_feet.name=Wearable Foot Piece
 
 # Blocks
+
+tile.display_mannequin.name=Display Mannequin
 
 # Labels
 

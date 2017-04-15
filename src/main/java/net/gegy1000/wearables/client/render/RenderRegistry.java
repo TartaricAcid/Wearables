@@ -17,7 +17,9 @@ import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.BlockStateMapper;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.client.model.ModelLoader;
@@ -27,9 +29,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RenderRegistry {
+    private static final Minecraft MC = Minecraft.getMinecraft();
     private static final Map<String, ComponentRenderer> COMPONENT_RENDERERS = new HashMap<>();
 
-    public static void register() {
+    public static void onPreInit() {
         for (Block block : BlockRegistry.BLOCKS) {
             String name = block.getUnlocalizedName().substring("tile.".length());
             if (block instanceof RegisterItemModel) {
@@ -58,6 +61,11 @@ public class RenderRegistry {
 
         RenderRegistry.register(ComponentRegistry.PLAIN_SHIRT, new PlainShirtRenderer());
         RenderRegistry.register(ComponentRegistry.HAT, new HatRenderer());
+    }
+
+    public static void onInit() {
+        BlockStateMapper stateMapper = MC.getBlockRendererDispatcher().getBlockModelShapes().getBlockStateMapper();
+        stateMapper.registerBuiltInBlocks(BlockRegistry.DISPLAY_MANNEQUIN);
     }
 
     public static void register(Item item, String path, String type) {

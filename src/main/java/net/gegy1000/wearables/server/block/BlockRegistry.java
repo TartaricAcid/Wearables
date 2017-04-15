@@ -13,6 +13,7 @@ import java.util.List;
 
 public class BlockRegistry {
     public static final List<Block> BLOCKS = new ArrayList<>();
+    public static final DisplayMannequinBlock DISPLAY_MANNEQUIN = new DisplayMannequinBlock();
 
     public static void register() {
         try {

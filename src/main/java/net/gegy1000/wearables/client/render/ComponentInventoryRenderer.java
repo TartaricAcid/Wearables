@@ -6,6 +6,7 @@ import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelBiped.ArmPose;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -27,6 +28,9 @@ public class ComponentInventoryRenderer {
                 MC.getTextureManager().bindTexture(texture);
             }
             ModelBiped model = renderer.getModel(smallArms);
+            model.swingProgress = 0.0F;
+            model.leftArmPose = ArmPose.EMPTY;
+            model.rightArmPose = ArmPose.EMPTY;
             float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
             GlStateManager.pushMatrix();
             GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
