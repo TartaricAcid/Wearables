@@ -17,6 +17,7 @@ public class Wearables {
 
     @Mod.Instance(Wearables.MODID)
     public static Wearables INSTANCE;
+
     @SidedProxy(serverSide = "net.gegy1000.wearables.server.ServerProxy", clientSide = "net.gegy1000.wearables.client.ClientProxy")
     public static ServerProxy PROXY;
 

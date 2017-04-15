@@ -1,10 +1,10 @@
 package net.gegy1000.wearables.server.item;
 
+import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.entity.WearableComponentEntity;
 import net.gegy1000.wearables.server.tab.TabRegistry;
-import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -33,7 +33,7 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
             for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
-                int colour = WearableUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
+                int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
                 WearableComponent component = new WearableComponent(componentType);
                 for (int i = 0; i < componentType.getLayerCount(); i++) {
                     component.setColour(i, colour);

@@ -1,6 +1,6 @@
 package net.gegy1000.wearables.client.render;
 
-import net.gegy1000.wearables.server.util.WearableUtils;
+import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.Minecraft;
@@ -25,8 +25,7 @@ public class WearableRenderer {
                 MC.getTextureManager().bindTexture(texture);
             }
             ModelBiped model = type.getModel(smallArms);
-            float[] colour = WearableUtils.toRGBFloatArray(component.getColour(layer));
-            GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+            WearableColourUtils.color(component.getColour(layer));
             GlStateManager.pushMatrix();
             GlStateManager.translate(type.getInventoryOffsetX(), type.getInventoryOffsetY(), type.getInventoryOffsetZ());
             model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);

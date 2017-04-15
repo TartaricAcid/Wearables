@@ -1,10 +1,10 @@
 package net.gegy1000.wearables.server.item;
 
+import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.client.model.BlankModel;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.tab.TabRegistry;
-import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
@@ -23,6 +23,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -54,7 +55,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
             if (componentType.getCategory().getSlot() == this.getEquipmentSlot()) {
                 for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
-                    int colour = WearableUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
+                    int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
                     Wearable wearable = new Wearable();
                     WearableComponent component = new WearableComponent(componentType);
                     wearable.addComponent(component);
@@ -82,7 +83,8 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
             tooltip.add(I18n.translateToLocal("label.wearable_components.name"));
             for (WearableComponent component : wearable.getComponents()) {
                 WearableComponentType type = component.getType();
-                tooltip.add(" - " + WearableUtils.getClosest(component.getColour(0)) + I18n.translateToLocal("component." + type.getIdentifier() + ".name"));
+                TextFormatting textColour = WearableColourUtils.getClosest(component.getColour(0));
+                tooltip.add(" - " + textColour + I18n.translateToLocal("component." + type.getIdentifier() + ".name"));
             }
         }
     }

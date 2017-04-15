@@ -1,6 +1,6 @@
 package net.gegy1000.wearables.server.wearable.component;
 
-import net.gegy1000.wearables.server.util.WearableUtils;
+import net.gegy1000.wearables.client.WearableColourUtils;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,7 +13,7 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
     public WearableComponent(WearableComponentType type) {
         this.type = type;
         this.colours = new int[type.getLayerCount()];
-        int colour = WearableUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.WHITE));
+        int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.WHITE));
         for (int layer = 0; layer < this.colours.length; layer++) {
             this.colours[layer] = colour;
         }
@@ -57,7 +57,7 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
             this.colours = compound.getIntArray("colour_layers");
         } else {
             this.colours = new int[this.type.getLayerCount()];
-            int colour = WearableUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.WHITE));
+            int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.WHITE));
             for (int layer = 0; layer < this.colours.length; layer++) {
                 this.colours[layer] = colour;
             }

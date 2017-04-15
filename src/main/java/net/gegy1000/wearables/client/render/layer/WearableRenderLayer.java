@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.client.render.layer;
 
+import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
@@ -53,8 +54,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityPlayer> {
                             GlStateManager.enableTexture2D();
                             MC.getTextureManager().bindTexture(texture);
                         }
-                        float[] colour = WearableUtils.toRGBFloatArray(component.getColour(layer));
-                        GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+                        WearableColourUtils.color(component.getColour(layer));
                         model.render(player, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
                     }
                 }
