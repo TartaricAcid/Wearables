@@ -1,6 +1,6 @@
 # Tabs
 
-itemGroup.wearables.general=Wearables
+itemGroup.wearables.general=Wearables Mod
 itemGroup.wearables.templates=Wearable Templates
 itemGroup.wearables.components=Wearable Components
 
@@ -17,6 +17,9 @@ item.wearable_feet.name=Wearable Foot Piece
 # Blocks
 
 tile.display_mannequin.name=Display Mannequin
+tile.wearable_assembler.name=Wearable Assembler
+tile.wearable_fabricator.name=Wearable Fabricator
+tile.wearable_colouriser.name=Wearable Colorizer
 
 # Labels
 

@@ -14,6 +14,9 @@ import java.util.List;
 public class BlockRegistry {
     public static final List<Block> BLOCKS = new ArrayList<>();
     public static final DisplayMannequinBlock DISPLAY_MANNEQUIN = new DisplayMannequinBlock();
+    public static final WearableFabricatorBlock WEARABLE_FABRICATOR = new WearableFabricatorBlock();
+    public static final WearableAssemblerBlock WEARABLE_ASSEMBLER = new WearableAssemblerBlock();
+    public static final WearableColouriserBlock WEARABLE_COLOURISER = new WearableColouriserBlock();
 
     public static void register() {
         try {

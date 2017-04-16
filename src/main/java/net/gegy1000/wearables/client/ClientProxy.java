@@ -1,11 +1,13 @@
 package net.gegy1000.wearables.client;
 
 import net.gegy1000.wearables.client.gui.DisplayMannequinGui;
+import net.gegy1000.wearables.client.gui.WearableFabricatorGui;
 import net.gegy1000.wearables.client.model.BlankModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.layer.WearableRenderLayer;
 import net.gegy1000.wearables.server.ServerProxy;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
+import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
@@ -60,6 +62,8 @@ public class ClientProxy extends ServerProxy {
         TileEntity entity = world.getTileEntity(pos);
         if (id == DISPLAY_MANNEQUIN_GUI && entity instanceof DisplayMannequinEntity) {
             return new DisplayMannequinGui(player.inventory, (DisplayMannequinEntity) entity);
+        } else if (id == WEARABLE_FABRICATOR_GUI && entity instanceof WearableFabricatorEntity) {
+            return new WearableFabricatorGui(player.inventory, (WearableFabricatorEntity) entity);
         }
         return null;
     }

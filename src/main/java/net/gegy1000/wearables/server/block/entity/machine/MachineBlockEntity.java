@@ -1,23 +1,17 @@
-package net.gegy1000.wearables.server.block.entity;
+package net.gegy1000.wearables.server.block.entity.machine;
 
-import net.gegy1000.wearables.server.block.entity.machine.BroadcastItemStackHandler;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class DisplayMannequinEntity extends TileEntity {
-    private ItemStackHandler inventory = new BroadcastItemStackHandler(this, 4);
+public abstract class MachineBlockEntity extends TileEntity {
+    private final ItemStackHandler inventory = new BroadcastItemStackHandler(this, this.getSlotCount());
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -65,31 +59,9 @@ public class DisplayMannequinEntity extends TileEntity {
         this.readFromNBT(tag);
     }
 
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentTranslation("tile.display_mannequin.name");
-    }
-
-    @Override
-    public AxisAlignedBB getRenderBoundingBox() {
-        int x = this.pos.getX();
-        int y = this.pos.getY();
-        int z = this.pos.getZ();
-        return new AxisAlignedBB(x, y, z, x + 1, y + 2.3, z + 1);
-    }
-
     public boolean isUsableByPlayer(EntityPlayer player) {
         return player.getDistanceSqToCenter(this.pos) <= 64.0;
     }
 
-    public ItemStack swapItem(EntityEquipmentSlot slot, ItemStack heldItem) {
-        int index = 3 - slot.getIndex();
-        ItemStack previous = this.inventory.getStackInSlot(index);
-        this.inventory.setStackInSlot(index, heldItem.copy());
-        return previous;
-    }
-
-    public ItemStack getStack(EntityEquipmentSlot slot) {
-        return this.inventory.getStackInSlot(3 - slot.getIndex());
-    }
+    public abstract int getSlotCount();
 }

@@ -1,6 +1,5 @@
 package net.gegy1000.wearables.server.item;
 
-import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.entity.WearableComponentEntity;
@@ -9,8 +8,6 @@ import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,16 +29,10 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     @Override
     public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
-            for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
-                int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
-                WearableComponent component = new WearableComponent(componentType);
-                for (int i = 0; i < componentType.getLayerCount(); i++) {
-                    component.setColour(i, colour);
-                }
-                ItemStack stack = new ItemStack(this);
-                stack.setTagCompound(component.serializeNBT());
-                subItems.add(stack);
-            }
+            WearableComponent component = new WearableComponent(componentType);
+            ItemStack stack = new ItemStack(this);
+            stack.setTagCompound(component.serializeNBT());
+            subItems.add(stack);
         }
     }
 

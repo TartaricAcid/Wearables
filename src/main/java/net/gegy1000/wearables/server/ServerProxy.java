@@ -3,7 +3,9 @@ package net.gegy1000.wearables.server;
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
+import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.DisplayMannequinContainer;
+import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -17,6 +19,7 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 public class ServerProxy implements IGuiHandler {
     public static final int DISPLAY_MANNEQUIN_GUI = 0;
+    public static final int WEARABLE_FABRICATOR_GUI = 1;
 
     public void onPreInit() {
         NetworkRegistry.INSTANCE.registerGuiHandler(Wearables.INSTANCE, this);
@@ -41,6 +44,8 @@ public class ServerProxy implements IGuiHandler {
         TileEntity entity = world.getTileEntity(pos);
         if (id == DISPLAY_MANNEQUIN_GUI && entity instanceof DisplayMannequinEntity) {
             return new DisplayMannequinContainer(player.inventory, (DisplayMannequinEntity) entity);
+        } else if (id == WEARABLE_FABRICATOR_GUI && entity instanceof WearableFabricatorEntity) {
+            return new WearableFabricatorContainer(player.inventory, (WearableFabricatorEntity) entity);
         }
         return null;
     }

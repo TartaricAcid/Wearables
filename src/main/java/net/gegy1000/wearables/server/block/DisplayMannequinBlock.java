@@ -112,7 +112,9 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
                     player.inventory.addItemStackToInventory(result);
                     return true;
                 }
-                player.openGui(Wearables.INSTANCE, ServerProxy.DISPLAY_MANNEQUIN_GUI, world, pos.getX(), pos.getY(), pos.getZ());
+                if (!world.isRemote) {
+                    player.openGui(Wearables.INSTANCE, ServerProxy.DISPLAY_MANNEQUIN_GUI, world, pos.getX(), pos.getY(), pos.getZ());
+                }
                 return true;
             }
         }

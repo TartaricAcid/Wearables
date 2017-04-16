@@ -1,4 +1,4 @@
-package net.gegy1000.wearables.server.block.entity;
+package net.gegy1000.wearables.server.block.entity.machine;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
