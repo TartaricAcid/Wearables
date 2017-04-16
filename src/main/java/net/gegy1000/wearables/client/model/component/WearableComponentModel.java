@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.client.model.component;
 
+import net.gegy1000.wearables.client.model.block.DisplayMannequinModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -32,6 +33,10 @@ public abstract class WearableComponentModel extends ModelBiped {
         GlStateManager.popMatrix();
     }
 
+    public void renderMannequin(float scale) {
+        this.renderComponent(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, scale);
+    }
+
     @Override
     public void setModelAttributes(ModelBase model) {
         super.setModelAttributes(model);
@@ -43,6 +48,14 @@ public abstract class WearableComponentModel extends ModelBiped {
             copyModelAngles(biped.bipedHead, this.bipedHead);
             copyModelAngles(biped.bipedRightLeg, this.bipedRightLeg);
             copyModelAngles(biped.bipedLeftLeg, this.bipedLeftLeg);
+        } else if (model instanceof DisplayMannequinModel) {
+            DisplayMannequinModel mannequin = (DisplayMannequinModel) model;
+            copyModelAngles(mannequin.rightArm, this.bipedRightArm);
+            copyModelAngles(mannequin.leftArm, this.bipedLeftArm);
+            copyModelAngles(mannequin.body, this.bipedBody);
+            copyModelAngles(mannequin.head, this.bipedHead);
+            copyModelAngles(mannequin.rightLeg, this.bipedRightLeg);
+            copyModelAngles(mannequin.leftLeg, this.bipedLeftLeg);
         }
     }
 

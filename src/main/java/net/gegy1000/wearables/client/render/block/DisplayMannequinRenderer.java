@@ -1,14 +1,24 @@
 package net.gegy1000.wearables.client.render.block;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.client.model.block.DisplayMannequinModel;
+import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.gegy1000.wearables.client.render.RenderRegistry;
+import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
+import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.wearable.Wearable;
+import net.gegy1000.wearables.server.wearable.component.WearableComponent;
+import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -42,7 +52,42 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
             MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
 
+            this.renderPiece(EntityEquipmentSlot.HEAD, entity, partialTicks, 0.0625F);
+            this.renderPiece(EntityEquipmentSlot.CHEST, entity, partialTicks, 0.0625F);
+            this.renderPiece(EntityEquipmentSlot.LEGS, entity, partialTicks, 0.0625F);
+            this.renderPiece(EntityEquipmentSlot.FEET, entity, partialTicks, 0.0625F);
+
             GlStateManager.popMatrix();
+        }
+    }
+
+    private void renderPiece(EntityEquipmentSlot slot, DisplayMannequinEntity entity, float partialTicks, float scale) {
+        ItemStack stack = entity.getStack(slot);
+        if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+            WearableItem item = (WearableItem) stack.getItem();
+            if (item.getEquipmentSlot() == slot) {
+                Wearable wearable = WearableItem.getWearable(stack);
+                for (WearableComponent component : wearable.getComponents()) {
+                    WearableComponentType componentType = component.getType();
+                    ComponentRenderer renderer = RenderRegistry.getRenderer(componentType.getIdentifier());
+                    WearableComponentModel model = renderer.getModel(false);
+                    model.setLivingAnimations(null, 0.0F, 0.0F, partialTicks);
+                    model.setModelAttributes(MODEL);
+                    for (int layer = 0; layer < componentType.getLayerCount(); layer++) {
+                        ResourceLocation texture = renderer.getTexture(false, layer);
+                        if (texture == null) {
+                            GlStateManager.disableTexture2D();
+                        } else {
+                            GlStateManager.enableTexture2D();
+                            MC.getTextureManager().bindTexture(texture);
+                        }
+                        float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
+                        GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+                        model.renderMannequin(scale);
+                    }
+                }
+                GlStateManager.enableTexture2D();
+            }
         }
     }
 }

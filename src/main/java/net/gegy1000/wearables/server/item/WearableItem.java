@@ -4,6 +4,7 @@ import net.gegy1000.wearables.client.ClientProxy;
 import net.gegy1000.wearables.client.WearableColourUtils;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
+import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.tab.TabRegistry;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
@@ -22,9 +23,15 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -51,7 +58,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
-            if (componentType.getCategory().getSlot() == this.getEquipmentSlot()) {
+            if (componentType.getCategory().getSlot() == this.armorType) {
                 for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
                     int colour = WearableColourUtils.fromRGBFloatArray(EntitySheep.getDyeRgb(EnumDyeColor.byMetadata(colourIndex)));
                     Wearable wearable = new Wearable();
@@ -85,6 +92,19 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
                 tooltip.add(" - " + textColour + I18n.translateToLocal("component." + type.getIdentifier() + ".name"));
             }
         }
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        if (!player.isSneaking()) {
+            return super.onItemRightClick(world, player, hand);
+        }
+        return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
+    }
+
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
+        return world.getBlockState(pos).getBlock() instanceof DisplayMannequinBlock;
     }
 
     public static Wearable getWearable(ItemStack stack) {

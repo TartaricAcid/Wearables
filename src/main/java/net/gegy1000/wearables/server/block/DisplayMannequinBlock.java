@@ -1,9 +1,13 @@
 package net.gegy1000.wearables.server.block;
 
+import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.ServerProxy;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.item.ItemRegistry;
+import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.EnumPushReaction;
@@ -14,16 +18,20 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumFacing.Axis;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.Random;
 
@@ -83,6 +91,44 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (state.getValue(HALF) == Half.UPPER) {
+            pos = pos.down();
+        }
+        state = world.getBlockState(pos);
+        if (state.getBlock() instanceof DisplayMannequinBlock && state.getValue(HALF) == Half.LOWER) {
+            TileEntity tile = world.getTileEntity(pos);
+            if (tile instanceof DisplayMannequinEntity) {
+                DisplayMannequinEntity entity = (DisplayMannequinEntity) tile;
+                ItemStack heldItem = player.getHeldItem(hand);
+                if (player.isSneaking() && heldItem.getItem() instanceof WearableItem && player.inventory.getFirstEmptyStack() >= 0) {
+                    WearableItem wearableItem = (WearableItem) heldItem.getItem();
+                    EntityEquipmentSlot slot = wearableItem.armorType;
+                    ItemStack result = entity.swapItem(slot, heldItem);
+                    heldItem.shrink(1);
+                    player.inventory.addItemStackToInventory(result);
+                    return true;
+                }
+                player.openGui(Wearables.INSTANCE, ServerProxy.DISPLAY_MANNEQUIN_GUI, world, pos.getX(), pos.getY(), pos.getZ());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof DisplayMannequinEntity) {
+            DisplayMannequinEntity entity = (DisplayMannequinEntity) tile;
+            IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            WearableUtils.dropInventory(world, pos, inventory);
+            world.updateComparatorOutputLevel(pos, this);
+        }
+        super.breakBlock(world, pos, state);
     }
 
     @Override

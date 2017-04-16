@@ -1,14 +1,21 @@
 package net.gegy1000.wearables.client;
 
+import net.gegy1000.wearables.client.gui.DisplayMannequinGui;
 import net.gegy1000.wearables.client.model.BlankModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.layer.WearableRenderLayer;
 import net.gegy1000.wearables.server.ServerProxy;
+import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.Map;
@@ -44,5 +51,16 @@ public class ClientProxy extends ServerProxy {
                 renderLiving.addLayer(new WearableRenderLayer(renderLiving));
             }
         }
+    }
+
+    @Override
+    public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
+        BlockPos pos = new BlockPos(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+        TileEntity entity = world.getTileEntity(pos);
+        if (id == DISPLAY_MANNEQUIN_GUI && entity instanceof DisplayMannequinEntity) {
+            return new DisplayMannequinGui(player.inventory, (DisplayMannequinEntity) entity);
+        }
+        return null;
     }
 }

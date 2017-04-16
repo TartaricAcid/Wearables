@@ -1,16 +1,16 @@
 package net.gegy1000.wearables.client.render.component.head;
 
 import net.gegy1000.wearables.client.WearableColourUtils;
+import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.model.component.hat.HatModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.util.ResourceLocation;
 
 public class HatRenderer extends ComponentRenderer {
     private static final HatModel MODEL = new HatModel();
 
     @Override
-    public ModelBiped getModel(boolean smallArms) {
+    public WearableComponentModel getModel(boolean smallArms) {
         return MODEL;
     }
 
