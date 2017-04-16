@@ -13,12 +13,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.translation.I18n;
 
 public class WearableComponentItem extends Item implements RegisterItemModel, RegisterBlockEntity {
     public WearableComponentItem() {
         super();
         this.setUnlocalizedName("wearable_component");
         this.setCreativeTab(TabRegistry.COMPONENTS);
+    }
+
+    @Override
+    public String getItemStackDisplayName(ItemStack stack) {
+        WearableComponent component = WearableComponentItem.getComponent(stack);
+        return I18n.translateToLocalFormatted(this.getUnlocalizedNameInefficiently(stack) + ".name", I18n.translateToLocal("component." + component.getType().getIdentifier() + ".name"));
     }
 
     @Override

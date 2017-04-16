@@ -44,6 +44,8 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
             float lastBrightnessX = OpenGlHelper.lastBrightnessX;
             float lastBrightnessY = OpenGlHelper.lastBrightnessY;
 
+            GlStateManager.enableRescaleNormal();
+
             MC.getTextureManager().bindTexture(TEXTURE);
             MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 
@@ -52,10 +54,12 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
             MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
 
+            GlStateManager.enableBlend();
             this.renderPiece(EntityEquipmentSlot.HEAD, entity, partialTicks, 0.0625F);
             this.renderPiece(EntityEquipmentSlot.CHEST, entity, partialTicks, 0.0625F);
             this.renderPiece(EntityEquipmentSlot.LEGS, entity, partialTicks, 0.0625F);
             this.renderPiece(EntityEquipmentSlot.FEET, entity, partialTicks, 0.0625F);
+            GlStateManager.disableBlend();
 
             GlStateManager.popMatrix();
         }

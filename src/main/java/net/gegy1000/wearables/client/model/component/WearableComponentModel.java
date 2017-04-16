@@ -18,6 +18,15 @@ public abstract class WearableComponentModel extends ModelBiped {
         GlStateManager.popMatrix();
     }
 
+    public void renderParented(ModelRenderer parent, ModelRenderer cuboid, float renderScale, float offsetX, float offsetY, float offsetZ, float scale) {
+        GlStateManager.pushMatrix();
+        parent.postRender(scale);
+        GlStateManager.translate(offsetX, offsetY, offsetZ);
+        GlStateManager.scale(renderScale, renderScale, renderScale);
+        cuboid.render(scale);
+        GlStateManager.popMatrix();
+    }
+
     @Override
     public void render(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.setRotationAngles(limbSwing, limbSwingAmount, age, yaw, pitch, scale, entity);
@@ -36,6 +45,8 @@ public abstract class WearableComponentModel extends ModelBiped {
     public void renderMannequin(float scale) {
         this.renderComponent(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, scale);
     }
+
+    public abstract void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale);
 
     @Override
     public void setModelAttributes(ModelBase model) {
@@ -59,5 +70,9 @@ public abstract class WearableComponentModel extends ModelBiped {
         }
     }
 
-    public abstract void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale);
+    protected void setRotateAngle(ModelRenderer modelRenderer, float x, float y, float z) {
+        modelRenderer.rotateAngleX = x;
+        modelRenderer.rotateAngleY = y;
+        modelRenderer.rotateAngleZ = z;
+    }
 }

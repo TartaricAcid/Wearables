@@ -1,7 +1,9 @@
 package net.gegy1000.wearables.server.block;
 
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
+import net.gegy1000.wearables.server.block.entity.machine.MachineBlockEntity;
 import net.gegy1000.wearables.server.tab.TabRegistry;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
@@ -9,12 +11,15 @@ import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 
 public abstract class MachineBlock extends BlockContainer implements RegisterBlockEntity {
     public static final PropertyDirection FACING = BlockHorizontal.FACING;
@@ -72,5 +77,17 @@ public abstract class MachineBlock extends BlockContainer implements RegisterBlo
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof MachineBlockEntity) {
+            MachineBlockEntity entity = (MachineBlockEntity) tile;
+            IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            WearableUtils.dropInventory(world, pos, inventory);
+            world.updateComparatorOutputLevel(pos, this);
+        }
+        super.breakBlock(world, pos, state);
     }
 }

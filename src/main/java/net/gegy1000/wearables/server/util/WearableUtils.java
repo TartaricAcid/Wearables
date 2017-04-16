@@ -20,9 +20,13 @@ public class WearableUtils {
     }
 
     public static void dropInventory(World world, BlockPos pos, IItemHandler inventory) {
+        WearableUtils.dropInventory(world, pos, inventory, inventory.getSlots());
+    }
+
+    public static void dropInventory(World world, BlockPos pos, IItemHandler inventory, int slotCount) {
         float motionScale = 0.05F;
         Random random = world.rand;
-        for (int i = 0; i < inventory.getSlots(); i++) {
+        for (int i = 0; i < slotCount; i++) {
             ItemStack stack = inventory.getStackInSlot(i);
             if (!stack.isEmpty()) {
                 float offsetX = random.nextFloat() * 0.8F + 0.1F;

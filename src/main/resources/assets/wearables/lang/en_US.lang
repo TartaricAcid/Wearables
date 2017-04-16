@@ -8,7 +8,7 @@ itemGroup.wearables.components=Wearable Components
 
 item.display_mannequin_item.name=Display Mannequin
 
-item.wearable_component.name=Wearable Component
+item.wearable_component.name=%s Component
 item.wearable_head.name=Wearable Head Piece
 item.wearable_chest.name=Wearable Chest Piece
 item.wearable_legs.name=Wearable Leg Piece
@@ -29,3 +29,7 @@ label.wearable_components.name=Components:
 
 component.hat.name=Hat
 component.plain_shirt.name=Plain Shirt
+component.glasses_1.name=Generic Glasses #1
+component.top_hat.name=Top Hat
+component.retro_3d_glasses.name=Retro 3D Glasses
+component.harry_potter_glasses.name=Round Glasses

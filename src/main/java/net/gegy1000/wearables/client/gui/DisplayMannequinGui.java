@@ -38,6 +38,7 @@ public class DisplayMannequinGui extends GuiContainer {
 
     private void drawMannequin(int posX, int posY, int scale) {
         GlStateManager.pushMatrix();
+        GlStateManager.enableBlend();
         GlStateManager.translate(posX, posY, 50.0F);
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(scale, -scale, scale);
@@ -49,6 +50,7 @@ public class DisplayMannequinGui extends GuiContainer {
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();
+        GlStateManager.disableBlend();
         GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);

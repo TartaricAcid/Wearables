@@ -2,6 +2,8 @@ package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.ComponentInventoryRenderer;
+import net.gegy1000.wearables.client.render.RenderRegistry;
+import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
@@ -73,31 +75,6 @@ public class WearableFabricatorGui extends GuiContainer {
                 componentY++;
             }
         }
-
-        componentX = 0;
-        componentY = -this.scroll;
-        for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
-            int renderX = x + componentX * 18 + 22;
-            int renderY = y + componentY * 18 + 8;
-            if (mouseX >= renderX && mouseY >= renderY && mouseX <= renderX + 17 && mouseY <= renderY + 17) {
-                GlStateManager.disableLighting();
-                GlStateManager.disableDepth();
-                GlStateManager.colorMask(true, true, true, false);
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5F);
-                this.drawGradientRect(renderX, renderY, renderX + 16, renderY + 16, -2130706433, -2130706433);
-                GlStateManager.colorMask(true, true, true, true);
-                GlStateManager.enableLighting();
-                GlStateManager.enableDepth();
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                this.drawHoveringText(I18n.translateToLocal("component." + componentType.getIdentifier() + ".name"), mouseX, mouseY);
-                break;
-            }
-            componentX++;
-            if (componentX > 1) {
-                componentX = 0;
-                componentY++;
-            }
-        }
     }
 
     @Override
@@ -117,17 +94,24 @@ public class WearableFabricatorGui extends GuiContainer {
         int screenY = (this.height - this.ySize) / 2;
 
         if (this.entity.getSelectedComponent() != null) {
+            ComponentRenderer renderer = RenderRegistry.getRenderer(this.entity.getSelectedComponent().getIdentifier());
+
             float ticks = this.mc.player.ticksExisted + LLibrary.PROXY.getPartialTicks();
             GlStateManager.enableRescaleNormal();
             RenderHelper.enableStandardItemLighting();
 
             GlStateManager.pushMatrix();
+            GlStateManager.enableBlend();
+            GlStateManager.enableAlpha();
             GlStateManager.translate(88.0F, 20.0F, 50.0F);
             GlStateManager.scale(-30.0F, 30.0F, 30.0F);
             GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(ticks % 360, 0.0F, 1.0F, 0.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            ComponentInventoryRenderer.renderComponent(new WearableComponent(this.entity.getSelectedComponent()), false);
+            GlStateManager.translate(renderer.getFabricatorOffsetX(), renderer.getFabricatorOffsetY(), renderer.getFabricatorOffsetZ());
+            GlStateManager.translate(0.0F, 0.8F, 0.0F);
+            GlStateManager.scale(renderer.getFabricatorScale(), renderer.getFabricatorScale(), renderer.getFabricatorScale());
+            ComponentInventoryRenderer.renderSingleComponent(new WearableComponent(this.entity.getSelectedComponent()));
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();
@@ -157,6 +141,31 @@ public class WearableFabricatorGui extends GuiContainer {
             GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
             GlStateManager.disableTexture2D();
             GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        }
+
+        int componentX = 0;
+        int componentY = -this.scroll;
+        for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
+            int renderX = componentX * 18 + 22;
+            int renderY = componentY * 18 + 8;
+            if (mouseX - screenX >= renderX && mouseY - screenY >= renderY && mouseX - screenX <= renderX + 17 && mouseY - screenY <= renderY + 17) {
+                GlStateManager.disableLighting();
+                GlStateManager.disableDepth();
+                GlStateManager.colorMask(true, true, true, false);
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5F);
+                this.drawGradientRect(renderX, renderY, renderX + 16, renderY + 16, -2130706433, -2130706433);
+                GlStateManager.colorMask(true, true, true, true);
+                GlStateManager.enableLighting();
+                GlStateManager.enableDepth();
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                this.drawHoveringText(I18n.translateToLocal("component." + componentType.getIdentifier() + ".name"), mouseX - screenX, mouseY - screenY);
+                break;
+            }
+            componentX++;
+            if (componentX > 1) {
+                componentX = 0;
+                componentY++;
+            }
         }
     }
 

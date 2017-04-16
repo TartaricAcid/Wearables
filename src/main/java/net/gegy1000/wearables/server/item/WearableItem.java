@@ -65,7 +65,9 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
                     WearableComponent component = new WearableComponent(componentType);
                     wearable.addComponent(component);
                     for (int i = 0; i < componentType.getLayerCount(); i++) {
-                        component.setColour(i, colour);
+                        if (componentType.canColour(i)) {
+                            component.setColour(i, colour);
+                        }
                     }
                     ItemStack stack = new ItemStack(this);
                     stack.setTagCompound(wearable.serializeNBT());

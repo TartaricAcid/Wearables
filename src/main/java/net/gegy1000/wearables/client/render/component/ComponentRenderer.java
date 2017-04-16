@@ -27,6 +27,22 @@ public abstract class ComponentRenderer {
         return 1.0F;
     }
 
+    public float getFabricatorOffsetX() {
+        return 0.0F;
+    }
+
+    public float getFabricatorOffsetY() {
+        return 0.0F;
+    }
+
+    public float getFabricatorOffsetZ() {
+        return 0.0F;
+    }
+
+    public float getFabricatorScale() {
+        return 1.0F;
+    }
+
     public float[] adjustColour(float[] colour, int layer) {
         return colour;
     }

@@ -46,7 +46,7 @@ public class DisplayMannequinContainer extends Container {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack transferred = null;
+        ItemStack transferred = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(slotIndex);
         int otherSlots = this.inventorySlots.size() - 36;
         if (slot != null && slot.getHasStack()) {

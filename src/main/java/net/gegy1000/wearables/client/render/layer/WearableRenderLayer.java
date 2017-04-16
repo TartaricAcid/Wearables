@@ -29,6 +29,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
 
     @Override
     public void doRenderLayer(EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {
+        GlStateManager.enableRescaleNormal();
         this.renderPiece(EntityEquipmentSlot.HEAD, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
         this.renderPiece(EntityEquipmentSlot.CHEST, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
         this.renderPiece(EntityEquipmentSlot.LEGS, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);

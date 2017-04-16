@@ -1,21 +1,22 @@
-package net.gegy1000.wearables.server.wearable.component.chest;
+package net.gegy1000.wearables.server.wearable.component.head;
 
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class PlainShirtComponent extends WearableComponentType {
-    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.LEATHER, 2), new ItemStack(Items.STRING, 3) };
+public class Glasses1Component extends WearableComponentType {
+    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.IRON_INGOT, 4), new ItemStack(Blocks.GLASS_PANE, 2) };
 
     @Override
     public String getIdentifier() {
-        return "plain_shirt";
+        return "glasses_1";
     }
 
     @Override
     public WearableCategory getCategory() {
-        return WearableCategory.CHEST_GENERIC;
+        return WearableCategory.HEAD_FACE;
     }
 
     @Override
