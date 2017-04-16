@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.block.entity.machine;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -11,7 +12,7 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 public abstract class MachineBlockEntity extends TileEntity {
-    private final ItemStackHandler inventory = new BroadcastItemStackHandler(this, this.getSlotCount());
+    protected final ItemStackHandler inventory = new BroadcastItemStackHandler(this, this.getSlotCount());
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -57,6 +58,12 @@ public abstract class MachineBlockEntity extends TileEntity {
     @Override
     public void handleUpdateTag(NBTTagCompound tag) {
         this.readFromNBT(tag);
+    }
+
+    public void broadcastUpdate() {
+        this.markDirty();
+        IBlockState state = this.getWorld().getBlockState(this.getPos());
+        this.getWorld().notifyBlockUpdate(this.getPos(), state, state, 3);
     }
 
     public boolean isUsableByPlayer(EntityPlayer player) {

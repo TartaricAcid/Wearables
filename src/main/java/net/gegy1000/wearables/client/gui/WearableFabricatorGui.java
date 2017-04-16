@@ -1,14 +1,18 @@
 package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.client.render.ComponentInventoryRenderer;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
+import net.gegy1000.wearables.server.network.SetSelectedComponentMessage;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
+import net.ilexiconn.llibrary.LLibrary;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -58,6 +62,10 @@ public class WearableFabricatorGui extends GuiContainer {
             int renderY = y + componentY * 18 + 8;
             ItemStack stack = new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
             stack.setTagCompound(new WearableComponent(componentType).serializeNBT());
+            if (componentType == this.entity.getSelectedComponent()) {
+                this.mc.getTextureManager().bindTexture(TEXTURE);
+                this.drawTexturedModalRect(renderX - 1, renderY - 1, 192, 0, 18, 18);
+            }
             this.itemRender.renderItemAndEffectIntoGUI(stack, renderX, renderY);
             componentX++;
             if (componentX > 1) {
@@ -82,6 +90,7 @@ public class WearableFabricatorGui extends GuiContainer {
                 GlStateManager.enableDepth();
                 GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
                 this.drawHoveringText(I18n.translateToLocal("component." + componentType.getIdentifier() + ".name"), mouseX, mouseY);
+                break;
             }
             componentX++;
             if (componentX > 1) {
@@ -103,6 +112,52 @@ public class WearableFabricatorGui extends GuiContainer {
         } else {
             this.drawTexturedModalRect(scrollbarX, scrollbarY, 176, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         }
+
+        int screenX = (this.width - this.xSize) / 2;
+        int screenY = (this.height - this.ySize) / 2;
+
+        if (this.entity.getSelectedComponent() != null) {
+            float ticks = this.mc.player.ticksExisted + LLibrary.PROXY.getPartialTicks();
+            GlStateManager.enableRescaleNormal();
+            RenderHelper.enableStandardItemLighting();
+
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(88.0F, 20.0F, 50.0F);
+            GlStateManager.scale(-30.0F, 30.0F, 30.0F);
+            GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(ticks % 360, 0.0F, 1.0F, 0.0F);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            ComponentInventoryRenderer.renderComponent(new WearableComponent(this.entity.getSelectedComponent()), false);
+            GlStateManager.popMatrix();
+
+            GlStateManager.pushMatrix();
+            GlStateManager.scale(0.5, 0.5, 0.5);
+            ItemStack[] ingredients = this.entity.getSelectedComponent().getIngredients();
+            for (int i = 0; i < ingredients.length; i++) {
+                ItemStack ingredient = ingredients[i];
+                int x = 235;
+                int y = 20 + i * 22;
+                this.itemRender.renderItemAndEffectIntoGUI(ingredient, x, y);
+                this.fontRenderer.drawString("x" + ingredient.getCount(), x + 15, y + 10, 0xFFFFFF);
+            }
+            GlStateManager.popMatrix();
+
+            for (int i = 0; i < ingredients.length; i++) {
+                ItemStack ingredient = ingredients[i];
+                int x = 117 + screenX;
+                int y = 10 + i * 11 + screenY;
+                if (mouseX >= x && mouseY >= y && mouseX <= x + 11 && mouseY <= y + 11) {
+                    this.renderToolTip(ingredient, mouseX - screenX, mouseY - screenY);
+                    break;
+                }
+            }
+
+            RenderHelper.disableStandardItemLighting();
+            GlStateManager.disableRescaleNormal();
+            GlStateManager.setActiveTexture(OpenGlHelper.lightmapTexUnit);
+            GlStateManager.disableTexture2D();
+            GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
+        }
     }
 
     @Override
@@ -114,6 +169,21 @@ public class WearableFabricatorGui extends GuiContainer {
         int scrollbarY = y + SCROLLBAR_OFFSET_Y + this.getScrollY();
         if (mouseX >= scrollbarX && mouseY >= scrollbarY && mouseX <= scrollbarX + SCROLLBAR_WIDTH && mouseY <= scrollbarY + SCROLLBAR_HEIGHT) {
             this.scrolling = true;
+        }
+        int componentX = 0;
+        int componentY = -this.scroll;
+        for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
+            int renderX = x + componentX * 18 + 22;
+            int renderY = y + componentY * 18 + 8;
+            if (mouseX >= renderX && mouseY >= renderY && mouseX <= renderX + 17 && mouseY <= renderY + 17) {
+                Wearables.NETWORK_WRAPPER.sendToServer(new SetSelectedComponentMessage(this.entity.getPos(), componentType.getIdentifier()));
+                break;
+            }
+            componentX++;
+            if (componentX > 1) {
+                componentX = 0;
+                componentY++;
+            }
         }
     }
 

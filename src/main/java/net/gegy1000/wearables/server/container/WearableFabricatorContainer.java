@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.server.container;
 
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
-import net.gegy1000.wearables.server.container.slot.OutputSlot;
+import net.gegy1000.wearables.server.container.slot.FabricatorOutputSlot;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -23,7 +23,7 @@ public class WearableFabricatorContainer extends SyncedContainer {
             this.addSlotToContainer(new SlotItemHandler(inventory, column, 62 + column * 18, 62));
         }
 
-        this.addSlotToContainer(new OutputSlot(inventory, 4, 145, 23));
+        this.addSlotToContainer(new FabricatorOutputSlot(entity, inventory, 4, 145, 23));
 
         for (int column = 0; column < 9; column++) {
             this.addSlotToContainer(new Slot(playerInventory, column, 8 + column * 18, 142));

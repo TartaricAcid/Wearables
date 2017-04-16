@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.Map;
 
@@ -66,5 +67,14 @@ public class ClientProxy extends ServerProxy {
             return new WearableFabricatorGui(player.inventory, (WearableFabricatorEntity) entity);
         }
         return null;
+    }
+
+    @Override
+    public void schedule(Runnable runnable, MessageContext ctx) {
+        if (ctx.side.isClient()) {
+            MC.addScheduledTask(runnable);
+        } else {
+            super.schedule(runnable, ctx);
+        }
     }
 }

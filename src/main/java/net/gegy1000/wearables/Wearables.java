@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid = Wearables.MODID, name = "Wearables", version = Wearables.VERSION, dependencies = "required-after:llibrary@[" + Wearables.LLIBRARY_VERSION + ",)")
 public class Wearables {
@@ -20,6 +21,8 @@ public class Wearables {
 
     @SidedProxy(serverSide = "net.gegy1000.wearables.server.ServerProxy", clientSide = "net.gegy1000.wearables.client.ClientProxy")
     public static ServerProxy PROXY;
+
+    public static SimpleNetworkWrapper NETWORK_WRAPPER = new SimpleNetworkWrapper("wearables");
 
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {

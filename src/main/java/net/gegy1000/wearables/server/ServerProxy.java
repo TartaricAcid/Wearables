@@ -7,15 +7,19 @@ import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEnti
 import net.gegy1000.wearables.server.container.DisplayMannequinContainer;
 import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
+import net.gegy1000.wearables.server.network.SetSelectedComponentMessage;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.IGuiHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class ServerProxy implements IGuiHandler {
     public static final int DISPLAY_MANNEQUIN_GUI = 0;
@@ -29,6 +33,8 @@ public class ServerProxy implements IGuiHandler {
         ComponentRegistry.register();
         ItemRegistry.register();
         BlockRegistry.register();
+
+        Wearables.NETWORK_WRAPPER.registerMessage(SetSelectedComponentMessage.Handler.class, SetSelectedComponentMessage.class, 0, Side.SERVER);
     }
 
     public void onInit() {
@@ -53,5 +59,10 @@ public class ServerProxy implements IGuiHandler {
     @Override
     public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
         return null;
+    }
+
+    public void schedule(Runnable runnable, MessageContext ctx) {
+        WorldServer server = ctx.getServerHandler().player.getServerWorld();
+        server.addScheduledTask(runnable);
     }
 }
