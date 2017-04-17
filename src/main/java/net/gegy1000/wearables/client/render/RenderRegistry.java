@@ -4,7 +4,7 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.block.DisplayMannequinRenderer;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.client.render.component.head.Glasses1Renderer;
-import net.gegy1000.wearables.client.render.component.head.HarryPotterGlassesRenderer;
+import net.gegy1000.wearables.client.render.component.head.RoundGlassesRenderer;
 import net.gegy1000.wearables.client.render.component.head.Retro3DGlassesRenderer;
 import net.gegy1000.wearables.client.render.component.head.TopHatRenderer;
 import net.gegy1000.wearables.client.render.item.WearableComponentRenderer;
@@ -69,7 +69,7 @@ public class RenderRegistry {
         RenderRegistry.register(ComponentRegistry.GLASSES_1, new Glasses1Renderer());
         RenderRegistry.register(ComponentRegistry.TOP_HAT, new TopHatRenderer());
         RenderRegistry.register(ComponentRegistry.RETRO_3D_GLASSES, new Retro3DGlassesRenderer());
-        RenderRegistry.register(ComponentRegistry.HARRY_POTTER_GLASSES, new HarryPotterGlassesRenderer());
+        RenderRegistry.register(ComponentRegistry.HARRY_POTTER_GLASSES, new RoundGlassesRenderer());
 
         ModelLoader.setCustomStateMapper(BlockRegistry.DISPLAY_MANNEQUIN, new StateMap.Builder().ignore(DisplayMannequinBlock.FACING, DisplayMannequinBlock.HALF).build());
     }

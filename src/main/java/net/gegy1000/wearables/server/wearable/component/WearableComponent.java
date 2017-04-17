@@ -1,6 +1,6 @@
 package net.gegy1000.wearables.server.wearable.component;
 
-import net.gegy1000.wearables.client.WearableColourUtils;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.nbt.NBTTagCompound;
@@ -50,7 +50,8 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
     public void deserializeNBT(NBTTagCompound compound) {
         if (compound.hasKey("identifier")) {
             this.type = ComponentRegistry.get(compound.getString("identifier"));
-        } else {
+        }
+        if (this.type == null) {
             this.type = ComponentRegistry.getDefault();
         }
         if (compound.hasKey("colour_layers")) {

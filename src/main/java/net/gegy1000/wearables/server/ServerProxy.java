@@ -4,11 +4,14 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntity;
+import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.DisplayMannequinContainer;
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
+import net.gegy1000.wearables.server.container.WearableColouriserContainer;
 import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
+import net.gegy1000.wearables.server.network.SetColourMessage;
 import net.gegy1000.wearables.server.network.SetSelectedComponentMessage;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -27,6 +30,7 @@ public class ServerProxy implements IGuiHandler {
     public static final int DISPLAY_MANNEQUIN_GUI = 0;
     public static final int WEARABLE_FABRICATOR_GUI = 1;
     public static final int WEARABLE_ASSEMBLER_GUI = 2;
+    public static final int WEARABLE_COLOURISER_GUI = 3;
 
     public void onPreInit() {
         NetworkRegistry.INSTANCE.registerGuiHandler(Wearables.INSTANCE, this);
@@ -38,6 +42,7 @@ public class ServerProxy implements IGuiHandler {
         BlockRegistry.register();
 
         Wearables.NETWORK_WRAPPER.registerMessage(SetSelectedComponentMessage.Handler.class, SetSelectedComponentMessage.class, 0, Side.SERVER);
+        Wearables.NETWORK_WRAPPER.registerMessage(SetColourMessage.Handler.class, SetColourMessage.class, 0, Side.SERVER);
     }
 
     public void onInit() {
@@ -57,6 +62,8 @@ public class ServerProxy implements IGuiHandler {
             return new WearableFabricatorContainer(player.inventory, (WearableFabricatorEntity) entity);
         } else if (id == WEARABLE_ASSEMBLER_GUI && entity instanceof WearableAssemblerEntity) {
             return new WearableAssemblerContainer(player.inventory, (WearableAssemblerEntity) entity);
+        } else if (id == WEARABLE_COLOURISER_GUI && entity instanceof WearableColouriserEntity) {
+            return new WearableColouriserContainer(player.inventory, (WearableColouriserEntity) entity);
         }
         return null;
     }

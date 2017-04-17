@@ -6,12 +6,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
-public class HarryPotterGlassesComponent extends WearableComponentType {
-    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.IRON_INGOT, 4), new ItemStack(Blocks.GLASS_PANE) };
+public class RoundGlassesComponent extends WearableComponentType {
+    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.IRON_INGOT, 4), new ItemStack(Blocks.GLASS_PANE, 2) };
 
     @Override
     public String getIdentifier() {
-        return "harry_potter_glasses";
+        return "round_glasses";
     }
 
     @Override

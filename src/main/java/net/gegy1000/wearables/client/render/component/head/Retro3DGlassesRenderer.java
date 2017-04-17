@@ -6,12 +6,18 @@ import net.gegy1000.wearables.client.model.component.head.Retro3DGlassesModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
 public class Retro3DGlassesRenderer extends ComponentRenderer {
     private static final Retro3DGlassesModel MODEL = new Retro3DGlassesModel();
     private static final ResourceLocation TEXTURE = new ResourceLocation(Wearables.MODID, "textures/component/retro_3d_glasses.png");
     private static final ResourceLocation TEXTURE_COLOUR = new ResourceLocation(Wearables.MODID, "textures/component/retro_3d_glasses_colour.png");
+
+    @Override
+    public AxisAlignedBB getBounds() {
+        return new AxisAlignedBB(-0.65F, -0.35F, -0.1F, 0.65F, -0.8F, 0.7F);
+    }
 
     @Override
     public WearableComponentModel getModel(boolean smallArms) {

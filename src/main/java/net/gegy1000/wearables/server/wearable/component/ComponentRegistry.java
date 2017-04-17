@@ -2,7 +2,7 @@ package net.gegy1000.wearables.server.wearable.component;
 
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.head.Glasses1Component;
-import net.gegy1000.wearables.server.wearable.component.head.HarryPotterGlassesComponent;
+import net.gegy1000.wearables.server.wearable.component.head.RoundGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Retro3DGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.TopHatComponent;
 
@@ -22,7 +22,7 @@ public class ComponentRegistry {
     public static final Glasses1Component GLASSES_1 = new Glasses1Component();
     public static final TopHatComponent TOP_HAT = new TopHatComponent();
     public static final Retro3DGlassesComponent RETRO_3D_GLASSES = new Retro3DGlassesComponent();
-    public static final HarryPotterGlassesComponent HARRY_POTTER_GLASSES = new HarryPotterGlassesComponent();
+    public static final RoundGlassesComponent HARRY_POTTER_GLASSES = new RoundGlassesComponent();
 
     public static void register() {
         try {

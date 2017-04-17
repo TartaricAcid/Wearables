@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.client.render.block;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.client.WearableColourUtils;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.client.model.block.DisplayMannequinModel;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;

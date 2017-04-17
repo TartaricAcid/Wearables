@@ -38,7 +38,7 @@ public class WearableFabricatorContainer extends SyncedContainer {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return this.entity.isUsableByPlayer(player);
+        return this.entity.canInteractWith(player);
     }
 
     @Override

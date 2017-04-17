@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client.render.layer;
 
-import net.gegy1000.wearables.client.WearableColourUtils;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
+import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.item.WearableItem;
@@ -9,7 +10,6 @@ import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
@@ -47,7 +47,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
                     WearableComponentType componentType = component.getType();
                     ComponentRenderer renderer = RenderRegistry.getRenderer(componentType.getIdentifier());
                     boolean smallArms = WearableUtils.hasSlimArms(entity);
-                    ModelBiped model = renderer.getModel(smallArms);
+                    WearableComponentModel model = renderer.getModel(smallArms);
                     model.setModelAttributes(this.renderer.getMainModel());
                     model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
                     for (int layer = 0; layer < componentType.getLayerCount(); layer++) {

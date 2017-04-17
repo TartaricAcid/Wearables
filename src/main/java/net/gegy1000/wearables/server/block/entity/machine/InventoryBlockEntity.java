@@ -67,7 +67,7 @@ public abstract class InventoryBlockEntity extends TileEntity {
         this.getWorld().notifyBlockUpdate(this.getPos(), state, state, 3);
     }
 
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean canInteractWith(EntityPlayer player) {
         return player.getDistanceSqToCenter(this.pos) <= 64.0;
     }
 

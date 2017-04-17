@@ -1,6 +1,6 @@
 package net.gegy1000.wearables.client.render;
 
-import net.gegy1000.wearables.client.WearableColourUtils;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.core.WearablesClientHooks;
@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBiped.ArmPose;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
@@ -56,6 +57,10 @@ public class ComponentInventoryRenderer {
         ComponentRenderer renderer = RenderRegistry.getRenderer(type.getIdentifier());
         for (int layer = 0; layer < type.getLayerCount(); layer++) {
             ResourceLocation texture = renderer.getTexture(false, layer);
+            if (MC.getRenderManager().isDebugBoundingBox()) {
+                GlStateManager.disableTexture2D();
+                RenderGlobal.drawSelectionBoundingBox(renderer.getBounds(), 0.0F, 0.0F, 1.0F, 1.0F);
+            }
             if (texture == null) {
                 GlStateManager.disableTexture2D();
             } else {

@@ -1,14 +1,20 @@
 package net.gegy1000.wearables.client.render.component.head;
 
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
-import net.gegy1000.wearables.client.model.component.head.HarryPotterGlassesModel;
+import net.gegy1000.wearables.client.model.component.head.RoundGlassesModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
-public class HarryPotterGlassesRenderer extends ComponentRenderer {
-    private static final HarryPotterGlassesModel MODEL = new HarryPotterGlassesModel();
+public class RoundGlassesRenderer extends ComponentRenderer {
+    private static final RoundGlassesModel MODEL = new RoundGlassesModel();
+
+    @Override
+    public AxisAlignedBB getBounds() {
+        return new AxisAlignedBB(-0.65F, -0.3F, -0.1F, 0.65F, -0.8F, 0.7F);
+    }
 
     @Override
     public WearableComponentModel getModel(boolean smallArms) {

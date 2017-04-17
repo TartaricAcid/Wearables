@@ -6,12 +6,18 @@ import net.gegy1000.wearables.client.model.component.head.TopHatModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 
 public class TopHatRenderer extends ComponentRenderer {
     private static final TopHatModel MODEL = new TopHatModel();
     private static final ResourceLocation TEXTURE = new ResourceLocation(Wearables.MODID, "textures/component/top_hat.png");
     private static final ResourceLocation TEXTURE_LINE = new ResourceLocation(Wearables.MODID, "textures/component/top_hat_line.png");
+
+    @Override
+    public AxisAlignedBB getBounds() {
+        return new AxisAlignedBB(-0.45F, -0.7F, -0.45F, 0.45F, -1.5F, 0.45F);
+    }
 
     @Override
     public WearableComponentModel getModel(boolean smallArms) {

@@ -48,7 +48,7 @@ public class SetSelectedComponentMessage implements IMessage {
                         TileEntity tile = player.world.getTileEntity(message.pos);
                         if (tile instanceof WearableFabricatorEntity) {
                             WearableFabricatorEntity entity = (WearableFabricatorEntity) tile;
-                            if (entity.isUsableByPlayer(player)) {
+                            if (entity.canInteractWith(player)) {
                                 entity.setSelectedComponent(type);
                                 entity.markDirty();
                             }

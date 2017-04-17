@@ -4,7 +4,7 @@ import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
-public class HarryPotterGlassesModel extends WearableComponentModel {
+public class RoundGlassesModel extends WearableComponentModel {
     public ModelRenderer s1;
     public ModelRenderer S2;
     public ModelRenderer Side3;
@@ -62,7 +62,7 @@ public class HarryPotterGlassesModel extends WearableComponentModel {
     public ModelRenderer shape108_4;
     public ModelRenderer shape108_5;
 
-    public HarryPotterGlassesModel() {
+    public RoundGlassesModel() {
         this.textureWidth = 64;
         this.textureHeight = 64;
         this.textureWidth = 64;

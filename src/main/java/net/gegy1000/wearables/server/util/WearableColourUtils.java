@@ -1,4 +1,4 @@
-package net.gegy1000.wearables.client;
+package net.gegy1000.wearables.server.util;
 
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
