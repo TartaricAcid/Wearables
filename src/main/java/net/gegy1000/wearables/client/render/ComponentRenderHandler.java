@@ -3,10 +3,10 @@ package net.gegy1000.wearables.client.render;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.core.WearablesClientHooks;
-import net.gegy1000.wearables.server.util.Matrix;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
+import net.ilexiconn.llibrary.client.util.Matrix;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelBiped.ArmPose;
@@ -35,7 +35,7 @@ public class ComponentRenderHandler {
         INVENTORY_TRANSFORM_MATRIX.scale(0.625F, 0.625F, 0.625F);
 
         INVENTORY_UNTRANSFORM_MATRIX.multiply(INVENTORY_TRANSFORM_MATRIX);
-        INVENTORY_UNTRANSFORM_MATRIX.invert();
+        INVENTORY_UNTRANSFORM_MATRIX.matrixStack.peek().invert();
     }
 
     public static void fitSlot(AxisAlignedBB bounds) {

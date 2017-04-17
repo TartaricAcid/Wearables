@@ -20,6 +20,7 @@ tile.display_mannequin.name=Display Mannequin
 tile.wearable_assembler.name=Wearable Assembler
 tile.wearable_fabricator.name=Wearable Fabricator
 tile.wearable_colouriser.name=Wearable Colorizer
+tile.mannequin_head_stand.name=Mannequin Head Stand
 
 # Labels
 

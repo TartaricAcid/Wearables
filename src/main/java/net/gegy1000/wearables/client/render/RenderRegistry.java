@@ -2,6 +2,7 @@ package net.gegy1000.wearables.client.render;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.block.DisplayMannequinRenderer;
+import net.gegy1000.wearables.client.render.block.MannequinHeadStandRenderer;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.client.render.component.chest.ModOffCapeRenderer;
 import net.gegy1000.wearables.client.render.component.head.Glasses1Renderer;
@@ -13,7 +14,9 @@ import net.gegy1000.wearables.client.render.item.WearableItemRenderer;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
+import net.gegy1000.wearables.server.block.MannequinHeadStandBlock;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
+import net.gegy1000.wearables.server.block.entity.MannequinHeadStandEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableChestItemEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableComponentEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableFeetItemEntity;
@@ -62,6 +65,8 @@ public class RenderRegistry {
         ClientRegistry.bindTileEntitySpecialRenderer(WearableChestItemEntity.class, new WearableItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WearableLegsItemEntity.class, new WearableItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WearableFeetItemEntity.class, new WearableItemRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(MannequinHeadStandEntity.class, new MannequinHeadStandRenderer());
+
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_HEAD, 0, WearableHeadItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_CHEST, 0, WearableChestItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_LEGS, 0, WearableLegsItemEntity.class);
@@ -74,6 +79,7 @@ public class RenderRegistry {
         RenderRegistry.register(ComponentRegistry.MODOFF_CAPE, new ModOffCapeRenderer());
 
         ModelLoader.setCustomStateMapper(BlockRegistry.DISPLAY_MANNEQUIN, new StateMap.Builder().ignore(DisplayMannequinBlock.FACING, DisplayMannequinBlock.HALF).build());
+        ModelLoader.setCustomStateMapper(BlockRegistry.HEAD_STAND_MANNEQUIN, new StateMap.Builder().ignore(MannequinHeadStandBlock.FACING).build());
     }
 
     public static void register(Item item, String path, String type) {
