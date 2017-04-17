@@ -1,12 +1,8 @@
 package net.gegy1000.wearables.server.container;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 
-public abstract class SyncedContainer extends Container {
+public abstract class SyncedContainer extends AutoTransferContainer {
     private final int[] fields;
 
     public SyncedContainer(int fieldCount) {
@@ -31,30 +27,6 @@ public abstract class SyncedContainer extends Container {
     public void updateProgressBar(int id, int value) {
         super.updateProgressBar(id, value);
         this.setField(id, value);
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack transferred = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(slotIndex);
-        int otherSlots = this.inventorySlots.size() - 36;
-        if (slot != null && slot.getHasStack()) {
-            ItemStack current = slot.getStack();
-            transferred = current.copy();
-            if (slotIndex < otherSlots) {
-                if (!this.mergeItemStack(current, otherSlots, this.inventorySlots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.mergeItemStack(current, 0, otherSlots, false)) {
-                return ItemStack.EMPTY;
-            }
-            if (current.getCount() == 0) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
-        }
-        return transferred;
     }
 
     public abstract void setField(int id, int value);

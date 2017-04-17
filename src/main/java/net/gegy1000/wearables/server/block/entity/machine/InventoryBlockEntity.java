@@ -11,8 +11,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public abstract class MachineBlockEntity extends TileEntity {
-    protected final ItemStackHandler inventory = new BroadcastItemStackHandler(this, this.getSlotCount());
+public abstract class InventoryBlockEntity extends TileEntity {
+    protected final ItemStackHandler inventory = this.createInventory();
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
@@ -60,8 +60,9 @@ public abstract class MachineBlockEntity extends TileEntity {
         this.readFromNBT(tag);
     }
 
-    public void broadcastUpdate() {
-        this.markDirty();
+    @Override
+    public void markDirty() {
+        super.markDirty();
         IBlockState state = this.getWorld().getBlockState(this.getPos());
         this.getWorld().notifyBlockUpdate(this.getPos(), state, state, 3);
     }
@@ -70,5 +71,11 @@ public abstract class MachineBlockEntity extends TileEntity {
         return player.getDistanceSqToCenter(this.pos) <= 64.0;
     }
 
-    public abstract int getSlotCount();
+    protected int getSlotCount() {
+        return 1;
+    }
+
+    protected ItemStackHandler createInventory() {
+        return new BroadcastItemStackHandler(this, this.getSlotCount());
+    }
 }

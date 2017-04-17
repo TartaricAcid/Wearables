@@ -1,13 +1,16 @@
 package net.gegy1000.wearables.client;
 
 import net.gegy1000.wearables.client.gui.DisplayMannequinGui;
+import net.gegy1000.wearables.client.gui.WearableAssemblerGui;
 import net.gegy1000.wearables.client.gui.WearableFabricatorGui;
 import net.gegy1000.wearables.client.model.BlankModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.layer.WearableRenderLayer;
 import net.gegy1000.wearables.server.ServerProxy;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
+import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
+import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
@@ -15,6 +18,7 @@ import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -61,10 +65,13 @@ public class ClientProxy extends ServerProxy {
         BlockPos pos = new BlockPos(x, y, z);
         IBlockState state = world.getBlockState(pos);
         TileEntity entity = world.getTileEntity(pos);
+        InventoryPlayer playerInventory = player.inventory;
         if (id == DISPLAY_MANNEQUIN_GUI && entity instanceof DisplayMannequinEntity) {
-            return new DisplayMannequinGui(player.inventory, (DisplayMannequinEntity) entity);
+            return new DisplayMannequinGui(playerInventory, (DisplayMannequinEntity) entity);
         } else if (id == WEARABLE_FABRICATOR_GUI && entity instanceof WearableFabricatorEntity) {
-            return new WearableFabricatorGui(player.inventory, (WearableFabricatorEntity) entity);
+            return new WearableFabricatorGui(playerInventory, (WearableFabricatorEntity) entity);
+        }else if (id == WEARABLE_ASSEMBLER_GUI && entity instanceof WearableAssemblerEntity) {
+            return new WearableAssemblerGui(playerInventory, new WearableAssemblerContainer(playerInventory, (WearableAssemblerEntity) entity));
         }
         return null;
     }

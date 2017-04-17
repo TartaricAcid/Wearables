@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.server.block;
 
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
-import net.gegy1000.wearables.server.block.entity.machine.MachineBlockEntity;
+import net.gegy1000.wearables.server.block.entity.machine.InventoryBlockEntity;
 import net.gegy1000.wearables.server.tab.TabRegistry;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.minecraft.block.BlockContainer;
@@ -82,8 +82,8 @@ public abstract class MachineBlock extends BlockContainer implements RegisterBlo
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof MachineBlockEntity) {
-            MachineBlockEntity entity = (MachineBlockEntity) tile;
+        if (tile instanceof InventoryBlockEntity) {
+            InventoryBlockEntity entity = (InventoryBlockEntity) tile;
             IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             WearableUtils.dropInventory(world, pos, inventory);
             world.updateComparatorOutputLevel(pos, this);

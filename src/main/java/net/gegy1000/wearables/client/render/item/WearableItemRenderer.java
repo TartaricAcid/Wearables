@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.client.render.item;
 
 import net.gegy1000.wearables.client.render.ComponentInventoryRenderer;
-import net.gegy1000.wearables.server.block.entity.WearableItemEntity;
+import net.gegy1000.wearables.server.block.entity.wearable.WearableItemEntity;
 import net.gegy1000.wearables.server.core.WearablesClientHooks;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.wearable.Wearable;
@@ -15,9 +15,10 @@ public class WearableItemRenderer extends TileEntitySpecialRenderer<WearableItem
         GlStateManager.pushMatrix();
         float scale = 1.0F;
         GlStateManager.scale(-scale, -scale, scale);
+        GlStateManager.translate(0.0F, 1.0F,  0.0F);
         Wearable wearable = WearableItem.getWearable(WearablesClientHooks.getRenderedStack());
         for (WearableComponent component : wearable.getComponents()) {
-            ComponentInventoryRenderer.renderComponent(component, false);
+            ComponentInventoryRenderer.renderSingleComponent(component);
         }
         GlStateManager.popMatrix();
     }

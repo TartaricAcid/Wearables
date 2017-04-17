@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class WearableFabricatorEntity extends MachineBlockEntity implements ITickable {
+public class WearableFabricatorEntity extends InventoryBlockEntity implements ITickable {
     private WearableComponentType selectedComponent;
 
     @Override

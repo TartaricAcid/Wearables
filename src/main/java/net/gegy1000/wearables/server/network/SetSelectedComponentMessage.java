@@ -50,7 +50,7 @@ public class SetSelectedComponentMessage implements IMessage {
                             WearableFabricatorEntity entity = (WearableFabricatorEntity) tile;
                             if (entity.isUsableByPlayer(player)) {
                                 entity.setSelectedComponent(type);
-                                entity.broadcastUpdate();
+                                entity.markDirty();
                             }
                         }
                     }

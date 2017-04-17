@@ -3,7 +3,7 @@ package net.gegy1000.wearables.server.block;
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.ServerProxy;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
-import net.gegy1000.wearables.server.block.entity.machine.MachineBlockEntity;
+import net.gegy1000.wearables.server.block.entity.machine.InventoryBlockEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.minecraft.block.material.Material;
@@ -49,8 +49,8 @@ public class WearableFabricatorBlock extends MachineBlock implements RegisterIte
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof MachineBlockEntity) {
-            MachineBlockEntity entity = (MachineBlockEntity) tile;
+        if (tile instanceof InventoryBlockEntity) {
+            InventoryBlockEntity entity = (InventoryBlockEntity) tile;
             IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             WearableUtils.dropInventory(world, pos, inventory, 4);
             world.updateComparatorOutputLevel(pos, this);

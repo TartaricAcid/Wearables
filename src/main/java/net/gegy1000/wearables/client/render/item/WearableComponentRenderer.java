@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.client.render.item;
 
 import net.gegy1000.wearables.client.render.ComponentInventoryRenderer;
-import net.gegy1000.wearables.server.block.entity.WearableComponentEntity;
+import net.gegy1000.wearables.server.block.entity.wearable.WearableComponentEntity;
 import net.gegy1000.wearables.server.core.WearablesClientHooks;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
 import net.minecraft.client.renderer.GlStateManager;

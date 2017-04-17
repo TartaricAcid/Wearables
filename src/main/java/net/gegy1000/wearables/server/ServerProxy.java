@@ -3,8 +3,10 @@ package net.gegy1000.wearables.server;
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
+import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntity;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.container.DisplayMannequinContainer;
+import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.network.SetSelectedComponentMessage;
@@ -24,6 +26,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public class ServerProxy implements IGuiHandler {
     public static final int DISPLAY_MANNEQUIN_GUI = 0;
     public static final int WEARABLE_FABRICATOR_GUI = 1;
+    public static final int WEARABLE_ASSEMBLER_GUI = 2;
 
     public void onPreInit() {
         NetworkRegistry.INSTANCE.registerGuiHandler(Wearables.INSTANCE, this);
@@ -52,6 +55,8 @@ public class ServerProxy implements IGuiHandler {
             return new DisplayMannequinContainer(player.inventory, (DisplayMannequinEntity) entity);
         } else if (id == WEARABLE_FABRICATOR_GUI && entity instanceof WearableFabricatorEntity) {
             return new WearableFabricatorContainer(player.inventory, (WearableFabricatorEntity) entity);
+        } else if (id == WEARABLE_ASSEMBLER_GUI && entity instanceof WearableAssemblerEntity) {
+            return new WearableAssemblerContainer(player.inventory, (WearableAssemblerEntity) entity);
         }
         return null;
     }

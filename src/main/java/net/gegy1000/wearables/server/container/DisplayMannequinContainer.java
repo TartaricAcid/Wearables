@@ -5,14 +5,12 @@ import net.gegy1000.wearables.server.container.slot.ArmourSlot;
 import net.gegy1000.wearables.server.container.slot.WearableSlot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 
-public class DisplayMannequinContainer extends Container {
+public class DisplayMannequinContainer extends AutoTransferContainer {
     private static final EntityEquipmentSlot[] EQUIPMENT_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
 
     private final DisplayMannequinEntity entity;
@@ -42,29 +40,5 @@ public class DisplayMannequinContainer extends Container {
     @Override
     public boolean canInteractWith(EntityPlayer player) {
         return this.entity.isUsableByPlayer(player);
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack transferred = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(slotIndex);
-        int otherSlots = this.inventorySlots.size() - 36;
-        if (slot != null && slot.getHasStack()) {
-            ItemStack current = slot.getStack();
-            transferred = current.copy();
-            if (slotIndex < otherSlots) {
-                if (!this.mergeItemStack(current, otherSlots, this.inventorySlots.size(), true)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!this.mergeItemStack(current, 0, otherSlots, false)) {
-                return ItemStack.EMPTY;
-            }
-            if (current.getCount() == 0) {
-                slot.putStack(ItemStack.EMPTY);
-            } else {
-                slot.onSlotChanged();
-            }
-        }
-        return transferred;
     }
 }

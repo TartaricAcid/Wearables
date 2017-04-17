@@ -2,10 +2,10 @@ package net.gegy1000.wearables.server.item;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
-import net.gegy1000.wearables.server.block.entity.WearableChestItemEntity;
-import net.gegy1000.wearables.server.block.entity.WearableFeetItemEntity;
-import net.gegy1000.wearables.server.block.entity.WearableHeadItemEntity;
-import net.gegy1000.wearables.server.block.entity.WearableLegsItemEntity;
+import net.gegy1000.wearables.server.block.entity.wearable.WearableChestItemEntity;
+import net.gegy1000.wearables.server.block.entity.wearable.WearableFeetItemEntity;
+import net.gegy1000.wearables.server.block.entity.wearable.WearableHeadItemEntity;
+import net.gegy1000.wearables.server.block.entity.wearable.WearableLegsItemEntity;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
