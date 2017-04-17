@@ -4,7 +4,9 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.model.component.head.TopHatModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.Vec3d;
 
 public class TopHatRenderer extends ComponentRenderer {
     private static final TopHatModel MODEL = new TopHatModel();
@@ -22,13 +24,16 @@ public class TopHatRenderer extends ComponentRenderer {
     }
 
     @Override
-    public float getInventoryOffsetY() {
-        return 0.9F;
+    public float getInventoryScale(ItemCameraTransforms.TransformType type) {
+        return 1.5F;
     }
 
     @Override
-    public float getInventoryScale() {
-        return 1.5F;
+    public Vec3d getInventoryOffset(ItemCameraTransforms.TransformType type) {
+        if (type == ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND || type == ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND) {
+            return new Vec3d(0.0F, 0.9F, -0.3F);
+        }
+        return new Vec3d(0.0F, 0.9F, 0.0F);
     }
 
     @Override
