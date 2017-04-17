@@ -1,9 +1,10 @@
 package net.gegy1000.wearables.client.render;
 
-import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.core.WearablesClientHooks;
+import net.gegy1000.wearables.server.util.Matrix;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.Minecraft;
@@ -13,13 +14,49 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.vecmath.Point3f;
+
 @SideOnly(Side.CLIENT)
-public class ComponentInventoryRenderer {
-    public static final Minecraft MC = Minecraft.getMinecraft();
+public class ComponentRenderHandler {
+    private static final Minecraft MC = Minecraft.getMinecraft();
+    private static final Matrix INVENTORY_TRANSFORM_MATRIX = new Matrix();
+    private static final Matrix INVENTORY_UNTRANSFORM_MATRIX = new Matrix();
+
+    static {
+        INVENTORY_TRANSFORM_MATRIX.scale(1.0, -1.0, 1.0);
+        INVENTORY_TRANSFORM_MATRIX.translate(0.0, 0.15, 0.0);
+        INVENTORY_TRANSFORM_MATRIX.rotate(30.0F, 1.0F, 0.0F, 0.0F);
+        INVENTORY_TRANSFORM_MATRIX.rotate(45.0F, 0.0F, 1.0F, 0.0F);
+        INVENTORY_TRANSFORM_MATRIX.scale(0.625F, 0.625F, 0.625F);
+
+        INVENTORY_UNTRANSFORM_MATRIX.multiply(INVENTORY_TRANSFORM_MATRIX);
+        INVENTORY_UNTRANSFORM_MATRIX.invert();
+    }
+
+    public static void fitSlot(AxisAlignedBB bounds) {
+        ComponentRenderHandler.fitSlot(bounds, 1.4);
+    }
+
+    public static void fitSlot(AxisAlignedBB bounds, double fitSize) {
+        GlStateManager.translate(0.0, 0.45, 0.0);
+
+        Vec3d untransformedCenter = bounds.getCenter();
+        Point3f centerPoint = new Point3f((float) untransformedCenter.xCoord, (float) untransformedCenter.yCoord, (float) untransformedCenter.zCoord);
+        INVENTORY_TRANSFORM_MATRIX.transform(centerPoint);
+
+        Point3f origin = new Point3f(0, 0, 0);
+        INVENTORY_TRANSFORM_MATRIX.transform(origin);
+
+        double max = Math.max(bounds.maxX - bounds.minX, Math.max(bounds.maxY - bounds.minY, bounds.maxZ - bounds.minZ));
+        GlStateManager.scale(fitSize / max, fitSize / max, fitSize / max);
+
+        GlStateManager.translate(origin.x - untransformedCenter.xCoord, origin.y - untransformedCenter.yCoord, origin.z - untransformedCenter.zCoord);
+    }
 
     public static void renderComponent(WearableComponent component, boolean smallArms) {
         ItemCameraTransforms.TransformType cameraTransform = WearablesClientHooks.getCameraTransform();
@@ -34,17 +71,16 @@ public class ComponentInventoryRenderer {
                 MC.getTextureManager().bindTexture(texture);
             }
             ModelBiped model = renderer.getModel(smallArms);
+            model.setModelAttributes(new ModelBiped());
             model.swingProgress = 0.0F;
             model.leftArmPose = ArmPose.EMPTY;
             model.rightArmPose = ArmPose.EMPTY;
             float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
             GlStateManager.pushMatrix();
             GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
-            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(renderer.getItemRotationY() + 180.0F, 0.0F, 1.0F, 0.0F);
             float scale = renderer.getInventoryScale(cameraTransform);
             GlStateManager.scale(scale, scale, scale);
-            Vec3d offset = renderer.getInventoryOffset(cameraTransform);
-            GlStateManager.translate(offset.xCoord, offset.yCoord, offset.zCoord);
             model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
             GlStateManager.popMatrix();
         }
@@ -68,6 +104,7 @@ public class ComponentInventoryRenderer {
                 MC.getTextureManager().bindTexture(texture);
             }
             WearableComponentModel model = renderer.getModel(false);
+            model.setModelAttributes(new ModelBiped());
             model.swingProgress = 0.0F;
             model.leftArmPose = ArmPose.EMPTY;
             model.rightArmPose = ArmPose.EMPTY;
@@ -75,7 +112,7 @@ public class ComponentInventoryRenderer {
             GlStateManager.pushMatrix();
             GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
             float scale = renderer.getInventoryScale(ItemCameraTransforms.TransformType.GROUND);
-            GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(renderer.getItemRotationY() + 180.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.scale(scale, scale, scale);
             model.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
             GlStateManager.popMatrix();

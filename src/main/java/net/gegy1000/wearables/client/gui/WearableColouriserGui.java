@@ -1,13 +1,13 @@
 package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.client.render.ComponentInventoryRenderer;
-import net.gegy1000.wearables.client.render.RenderRegistry;
+import net.gegy1000.wearables.client.render.ComponentRenderHandler;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.container.WearableColouriserContainer;
 import net.gegy1000.wearables.server.container.slot.ColouredComponentSlot;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
 import net.gegy1000.wearables.server.network.SetColourMessage;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -51,7 +51,7 @@ public class WearableColouriserGui extends GuiContainer {
         this.mc.getTextureManager().bindTexture(TEXTURE);
         WearableComponent component = this.getComponent();
         if (component != null) {
-            ComponentRenderer renderer = RenderRegistry.getRenderer(component.getType().getIdentifier());
+            ComponentRenderer renderer = WearableUtils.getRenderer(component);
 
             GlStateManager.enableRescaleNormal();
             RenderHelper.enableGUIStandardItemLighting();
@@ -61,11 +61,11 @@ public class WearableColouriserGui extends GuiContainer {
             GlStateManager.enableAlpha();
             GlStateManager.translate(x + 78.0F, y + 35.0F, 50.0F);
             GlStateManager.scale(-30.0F, 30.0F, 30.0F);
-            GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
+            GlStateManager.rotate(-30.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.scale(renderer.getFabricatorScale(), renderer.getFabricatorScale(), renderer.getFabricatorScale());
-            ComponentInventoryRenderer.renderComponent(component, false);
+            ComponentRenderHandler.fitSlot(renderer.getBounds(), 1.0);
+            ComponentRenderHandler.renderComponent(component, false);
             GlStateManager.popMatrix();
 
             RenderHelper.disableStandardItemLighting();
@@ -123,13 +123,15 @@ public class WearableColouriserGui extends GuiContainer {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(TEXTURE);
 
+        int colour = 0xFFFFFF;
+
         int red = 255;
         int green = 255;
         int blue = 255;
 
         WearableComponent component = this.getComponent();
         if (component != null) {
-            int colour = component.getColour(this.selectedLayer);
+            colour = component.getColour(this.selectedLayer);
             red = colour >> 16 & 0xFF;
             green = colour >> 8 & 0xFF;
             blue = colour & 0xFF;
@@ -139,9 +141,9 @@ public class WearableColouriserGui extends GuiContainer {
         int greenX = (int) (green / 255.0F * 43);
         int blueX = (int) (blue / 255.0F * 43);
 
-        this.drawHorizontalGradientRect(111, 19, 163, 29, 0xFF000000, 0xFFFF0000);
-        this.drawHorizontalGradientRect(111, 38, 163, 48, 0xFF000000, 0xFF00FF00);
-        this.drawHorizontalGradientRect(111, 57, 163, 67, 0xFF000000, 0xFF0000FF);
+        this.drawHorizontalChannelMaskGradientRect(111, 19, 163, 29, colour, 0xFF0000);
+        this.drawHorizontalChannelMaskGradientRect(111, 38, 163, 48, colour, 0x00FF00);
+        this.drawHorizontalChannelMaskGradientRect(111, 57, 163, 67, colour, 0x0000FF);
 
         this.drawTexturedModalRect(111 + redX, 19, this.draggingSliders[0] ? 185 : 176, 24, 9, 10);
         this.drawTexturedModalRect(111 + greenX, 38, this.draggingSliders[1] ? 185 : 176, 24, 9, 10);
@@ -258,6 +260,10 @@ public class WearableColouriserGui extends GuiContainer {
             return WearableComponentItem.getComponent(stack);
         }
         return null;
+    }
+
+    private void drawHorizontalChannelMaskGradientRect(int left, int top, int right, int bottom, int colour, int mask) {
+        this.drawHorizontalGradientRect(left, top, right, bottom, (colour & ~mask) | 0xFF000000, colour | 0xFF000000 | mask);
     }
 
     protected void drawHorizontalGradientRect(int left, int top, int right, int bottom, int startColor, int endColor) {

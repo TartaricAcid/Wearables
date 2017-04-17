@@ -1,9 +1,10 @@
 package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.client.render.ComponentInventoryRenderer;
+import net.gegy1000.wearables.client.render.ComponentRenderHandler;
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
 import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.ilexiconn.llibrary.LLibrary;
@@ -56,14 +57,15 @@ public class WearableAssemblerGui extends GuiContainer {
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
             GlStateManager.enableAlpha();
-            GlStateManager.translate(73.0F, 45.0F, 50.0F);
+            GlStateManager.translate(73.0F, 25.0F, 50.0F);
             GlStateManager.scale(-25.0F, 25.0F, 25.0F);
             GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(ticks % 360, 0.0F, 1.0F, 0.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.translate(0.0F, 0.8F, 0.0F);
+            ComponentRenderHandler.fitSlot(WearableUtils.calculateUnion(wearable), 1.2);
             for (WearableComponent component : wearable.getComponents()) {
-                ComponentInventoryRenderer.renderSingleComponent(component);
+                ComponentRenderHandler.renderSingleComponent(component);
             }
             GlStateManager.popMatrix();
 

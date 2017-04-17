@@ -25,6 +25,7 @@ public abstract class AutoTransferContainer extends Container {
                 return ItemStack.EMPTY;
             }
             if (copy.getCount() == 0) {
+                slot.onTake(player, copy);
                 slot.putStack(ItemStack.EMPTY);
             } else {
                 slot.onSlotChanged();

@@ -10,6 +10,7 @@ public enum WearableCategory {
     CHEST_ARMS(EntityEquipmentSlot.CHEST, "arms"),
     CHEST_NECK(EntityEquipmentSlot.CHEST, "neck"),
     CHEST_UTILITY(EntityEquipmentSlot.CHEST, "utility"),
+    CHEST_BACK(EntityEquipmentSlot.CHEST, "back"),
     LEGS_GENERIC(EntityEquipmentSlot.LEGS, "generic"),
     FEET_GENERIC(EntityEquipmentSlot.FEET, "generic");
 

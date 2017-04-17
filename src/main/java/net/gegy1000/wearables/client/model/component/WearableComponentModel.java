@@ -6,6 +6,7 @@ import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -29,6 +30,10 @@ public abstract class WearableComponentModel extends ModelBiped {
 
     @Override
     public void render(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
+        if (entity instanceof EntityArmorStand) {
+            GlStateManager.rotate(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
+        }
+
         this.setRotationAngles(limbSwing, limbSwingAmount, age, yaw, pitch, scale, entity);
 
         GlStateManager.pushMatrix();

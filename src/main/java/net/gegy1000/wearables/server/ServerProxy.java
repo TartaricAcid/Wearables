@@ -42,7 +42,7 @@ public class ServerProxy implements IGuiHandler {
         BlockRegistry.register();
 
         Wearables.NETWORK_WRAPPER.registerMessage(SetSelectedComponentMessage.Handler.class, SetSelectedComponentMessage.class, 0, Side.SERVER);
-        Wearables.NETWORK_WRAPPER.registerMessage(SetColourMessage.Handler.class, SetColourMessage.class, 0, Side.SERVER);
+        Wearables.NETWORK_WRAPPER.registerMessage(SetColourMessage.Handler.class, SetColourMessage.class, 1, Side.SERVER);
     }
 
     public void onInit() {

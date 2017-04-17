@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.client.render.ComponentInventoryRenderer;
+import net.gegy1000.wearables.client.render.ComponentRenderHandler;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
@@ -108,10 +108,8 @@ public class WearableFabricatorGui extends GuiContainer {
             GlStateManager.rotate(-20.0F, 1.0F, 0.0F, 0.0F);
             GlStateManager.rotate(ticks % 360, 0.0F, 1.0F, 0.0F);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            GlStateManager.translate(renderer.getFabricatorOffsetX(), renderer.getFabricatorOffsetY(), renderer.getFabricatorOffsetZ());
-            GlStateManager.translate(0.0F, 0.8F, 0.0F);
-            GlStateManager.scale(renderer.getFabricatorScale(), renderer.getFabricatorScale(), renderer.getFabricatorScale());
-            ComponentInventoryRenderer.renderSingleComponent(new WearableComponent(this.entity.getSelectedComponent()));
+            ComponentRenderHandler.fitSlot(renderer.getBounds(), 1.0);
+            ComponentRenderHandler.renderSingleComponent(new WearableComponent(this.entity.getSelectedComponent()));
             GlStateManager.popMatrix();
 
             GlStateManager.pushMatrix();

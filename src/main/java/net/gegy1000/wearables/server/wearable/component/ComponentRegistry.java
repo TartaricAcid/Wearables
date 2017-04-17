@@ -2,12 +2,14 @@ package net.gegy1000.wearables.server.wearable.component;
 
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.head.Glasses1Component;
+import net.gegy1000.wearables.server.wearable.component.chest.ModOffCapeComponent;
 import net.gegy1000.wearables.server.wearable.component.head.RoundGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Retro3DGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.TopHatComponent;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -23,6 +25,7 @@ public class ComponentRegistry {
     public static final TopHatComponent TOP_HAT = new TopHatComponent();
     public static final Retro3DGlassesComponent RETRO_3D_GLASSES = new Retro3DGlassesComponent();
     public static final RoundGlassesComponent HARRY_POTTER_GLASSES = new RoundGlassesComponent();
+    public static final ModOffCapeComponent MODOFF_CAPE = new ModOffCapeComponent();
 
     public static void register() {
         try {
@@ -39,6 +42,7 @@ public class ComponentRegistry {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+        COMPONENTS.sort(Comparator.comparing(WearableComponentType::getIdentifier));
     }
 
     public static void register(WearableComponentType component) {

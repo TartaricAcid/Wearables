@@ -1,9 +1,14 @@
 package net.gegy1000.wearables.server.util;
 
+import net.gegy1000.wearables.client.render.RenderRegistry;
+import net.gegy1000.wearables.client.render.component.ComponentRenderer;
+import net.gegy1000.wearables.server.wearable.Wearable;
+import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -39,5 +44,25 @@ public class WearableUtils {
                 world.spawnEntity(entity);
             }
         }
+    }
+
+    public static AxisAlignedBB calculateUnion(Wearable wearable) {
+        AxisAlignedBB union = null;
+        for (WearableComponent component : wearable.getComponents()) {
+            ComponentRenderer renderer = WearableUtils.getRenderer(component);
+            if (union == null) {
+                union = renderer.getBounds();
+            } else {
+                union = union.union(renderer.getBounds());
+            }
+        }
+        if (union == null) {
+            union = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+        }
+        return union;
+    }
+
+    public static ComponentRenderer getRenderer(WearableComponent component) {
+        return RenderRegistry.getRenderer(component.getType().getIdentifier());
     }
 }
