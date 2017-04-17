@@ -2,7 +2,6 @@ package net.gegy1000.wearables.server.block;
 
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
-import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.block.entity.MannequinHeadStandEntity;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.tab.TabRegistry;
@@ -67,8 +66,8 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof DisplayMannequinEntity) {
-            DisplayMannequinEntity entity = (DisplayMannequinEntity) tile;
+        if (tile instanceof MannequinHeadStandEntity) {
+            MannequinHeadStandEntity entity = (MannequinHeadStandEntity) tile;
             IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             WearableUtils.dropInventory(world, pos, inventory);
             world.updateComparatorOutputLevel(pos, this);

@@ -50,6 +50,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
                     WearableComponentModel model = renderer.getModel(smallArms);
                     model.setModelAttributes(this.renderer.getMainModel());
                     model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
+                    model.setOffsets(component.getOffsetY());
                     for (int layer = 0; layer < componentType.getLayerCount(); layer++) {
                         ResourceLocation texture = renderer.getTexture(smallArms, layer);
                         if (texture == null) {
@@ -60,7 +61,9 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
                         }
                         float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
                         GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
+                        GlStateManager.pushMatrix();
                         model.render(entity, limbSwing, limbSwingAmount, age, yaw, pitch, scale);
+                        GlStateManager.popMatrix();
                     }
                 }
                 GlStateManager.enableTexture2D();

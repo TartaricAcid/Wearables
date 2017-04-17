@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.container;
 
+import net.gegy1000.wearables.client.render.ComponentProperty;
 import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntity;
 import net.gegy1000.wearables.server.container.slot.AssemblerInputSlot;
 import net.gegy1000.wearables.server.container.slot.AssemblerOutputSlot;
@@ -53,7 +54,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
 
     @Override
     public boolean canInteractWith(EntityPlayer player) {
-        return this.entity.isUsableByPlayer(player);
+        return this.entity.canInteractWith(player);
     }
 
     @Override
@@ -62,6 +63,11 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
         if (!player.world.isRemote) {
             for (int slot = 0; slot < this.components.getSlots(); slot++) {
                 ItemStack stack = this.components.getStackInSlot(slot);
+                if (stack.getItem() instanceof WearableComponentItem) {
+                    WearableComponent component = WearableComponentItem.getComponent(stack);
+                    component.clearProperties();
+                    stack.setTagCompound(component.serializeNBT());
+                }
                 this.components.extractItem(slot, stack.getCount(), false);
                 if (!stack.isEmpty()) {
                     player.dropItem(stack, false);
@@ -70,7 +76,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
         }
     }
 
-    protected void onContentsChanged() {
+    public void onContentsChanged() {
         this.result.setStackInSlot(0, this.buildResult());
     }
 
@@ -164,5 +170,9 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
                 return ItemRegistry.WEARABLE_FEET;
         }
         return ItemRegistry.WEARABLE_CHEST;
+    }
+
+    public ItemStack getResult() {
+        return this.result.getStackInSlot(0);
     }
 }

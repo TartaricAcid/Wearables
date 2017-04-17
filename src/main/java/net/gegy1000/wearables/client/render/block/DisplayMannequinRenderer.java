@@ -77,6 +77,7 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
                     WearableComponentModel model = renderer.getModel(false);
                     model.setLivingAnimations(null, 0.0F, 0.0F, partialTicks);
                     model.setModelAttributes(MODEL);
+                    model.setOffsets(component.getOffsetY());
                     for (int layer = 0; layer < componentType.getLayerCount(); layer++) {
                         ResourceLocation texture = renderer.getTexture(false, layer);
                         if (texture == null) {
@@ -86,8 +87,10 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
                             MC.getTextureManager().bindTexture(texture);
                         }
                         float[] colour = renderer.adjustColour(WearableColourUtils.toRGBFloatArray(component.getColour(layer)), layer);
+                        GlStateManager.pushMatrix();
                         GlStateManager.color(colour[0], colour[1], colour[2], 1.0F);
                         model.renderMannequin(scale);
+                        GlStateManager.popMatrix();
                     }
                 }
                 GlStateManager.enableTexture2D();

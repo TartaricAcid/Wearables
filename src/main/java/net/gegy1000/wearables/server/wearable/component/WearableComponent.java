@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.wearable.component;
 
+import net.gegy1000.wearables.client.render.ComponentProperty;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
@@ -9,6 +10,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 public class WearableComponent implements INBTSerializable<NBTTagCompound> {
     private WearableComponentType type;
     private int[] colours;
+    private float offsetY;
 
     public WearableComponent(WearableComponentType type) {
         this.type = type;
@@ -26,6 +28,13 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
         this.colours[layer] = colour;
     }
 
+    public void setProperty(int property, float offsetY) {
+        switch (property) {
+            case ComponentProperty.OFFSET_Y:
+                this.offsetY = offsetY;
+        }
+    }
+
     public WearableComponentType getType() {
         return this.type;
     }
@@ -38,11 +47,28 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
         return this.colours[layer];
     }
 
+    public float getProperty(int property) {
+        switch (property) {
+            case ComponentProperty.OFFSET_Y:
+                return this.offsetY;
+        }
+        return 0.0F;
+    }
+
+    public float getOffsetY() {
+        return this.offsetY;
+    }
+
+    public void clearProperties() {
+        this.offsetY = 0.0F;
+    }
+
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound compound = new NBTTagCompound();
         compound.setString("identifier", this.type.getIdentifier());
         compound.setIntArray("colour_layers", this.colours);
+        compound.setFloat("offset_y", this.offsetY);
         return compound;
     }
 
@@ -63,6 +89,7 @@ public class WearableComponent implements INBTSerializable<NBTTagCompound> {
                 this.colours[layer] = colour;
             }
         }
+        this.offsetY = compound.getFloat("offset_y");
     }
 
     public static WearableComponent deserialize(NBTTagCompound compound) {

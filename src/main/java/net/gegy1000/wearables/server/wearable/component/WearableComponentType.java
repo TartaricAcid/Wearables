@@ -29,4 +29,16 @@ public abstract class WearableComponentType {
     public boolean compatibleWith(WearableComponentType component) {
         return component.getCategory() != this.getCategory();
     }
+
+    public int getSupportedProperties() {
+        return 0;
+    }
+
+    public float getMinimum(int property) {
+        return 0.0F;
+    }
+
+    public float getMaximum(int property) {
+        return 0.0F;
+    }
 }

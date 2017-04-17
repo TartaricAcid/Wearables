@@ -27,6 +27,8 @@ public class ComponentRenderHandler {
     private static final Matrix INVENTORY_TRANSFORM_MATRIX = new Matrix();
     private static final Matrix INVENTORY_UNTRANSFORM_MATRIX = new Matrix();
 
+    private static final ModelBiped STATIC_MODEL = new ModelBiped();
+
     static {
         INVENTORY_TRANSFORM_MATRIX.scale(1.0, -1.0, 1.0);
         INVENTORY_TRANSFORM_MATRIX.translate(0.0, 0.15, 0.0);
@@ -70,8 +72,9 @@ public class ComponentRenderHandler {
                 GlStateManager.enableTexture2D();
                 MC.getTextureManager().bindTexture(texture);
             }
-            ModelBiped model = renderer.getModel(smallArms);
-            model.setModelAttributes(new ModelBiped());
+            WearableComponentModel model = renderer.getModel(smallArms);
+            model.setModelAttributes(STATIC_MODEL);
+            model.setOffsets(0.0F);
             model.swingProgress = 0.0F;
             model.leftArmPose = ArmPose.EMPTY;
             model.rightArmPose = ArmPose.EMPTY;
@@ -104,7 +107,8 @@ public class ComponentRenderHandler {
                 MC.getTextureManager().bindTexture(texture);
             }
             WearableComponentModel model = renderer.getModel(false);
-            model.setModelAttributes(new ModelBiped());
+            model.setModelAttributes(STATIC_MODEL);
+            model.setOffsets(0.0F);
             model.swingProgress = 0.0F;
             model.leftArmPose = ArmPose.EMPTY;
             model.rightArmPose = ArmPose.EMPTY;

@@ -12,6 +12,7 @@ import net.gegy1000.wearables.server.container.WearableColouriserContainer;
 import net.gegy1000.wearables.server.container.WearableFabricatorContainer;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.network.SetColourMessage;
+import net.gegy1000.wearables.server.network.SetPropertyMessage;
 import net.gegy1000.wearables.server.network.SetSelectedComponentMessage;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -43,6 +44,7 @@ public class ServerProxy implements IGuiHandler {
 
         Wearables.NETWORK_WRAPPER.registerMessage(SetSelectedComponentMessage.Handler.class, SetSelectedComponentMessage.class, 0, Side.SERVER);
         Wearables.NETWORK_WRAPPER.registerMessage(SetColourMessage.Handler.class, SetColourMessage.class, 1, Side.SERVER);
+        Wearables.NETWORK_WRAPPER.registerMessage(SetPropertyMessage.Handler.class, SetPropertyMessage.class, 2, Side.SERVER);
     }
 
     public void onInit() {

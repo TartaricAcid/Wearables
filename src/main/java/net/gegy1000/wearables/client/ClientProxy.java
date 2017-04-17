@@ -74,7 +74,7 @@ public class ClientProxy extends ServerProxy {
         } else if (id == WEARABLE_FABRICATOR_GUI && entity instanceof WearableFabricatorEntity) {
             return new WearableFabricatorGui(playerInventory, (WearableFabricatorEntity) entity);
         } else if (id == WEARABLE_ASSEMBLER_GUI && entity instanceof WearableAssemblerEntity) {
-            return new WearableAssemblerGui(playerInventory, new WearableAssemblerContainer(playerInventory, (WearableAssemblerEntity) entity));
+            return new WearableAssemblerGui(playerInventory, pos, new WearableAssemblerContainer(playerInventory, (WearableAssemblerEntity) entity));
         } else if (id == WEARABLE_COLOURISER_GUI && entity instanceof WearableColouriserEntity) {
             return new WearableColouriserGui(player.inventory, pos, new WearableColouriserContainer(playerInventory, (WearableColouriserEntity) entity));
         }

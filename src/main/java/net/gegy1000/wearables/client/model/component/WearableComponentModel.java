@@ -12,9 +12,12 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public abstract class WearableComponentModel extends ModelBiped {
+    private float offsetY;
+
     public void renderParented(ModelRenderer parent, ModelRenderer cuboid, float scale) {
         GlStateManager.pushMatrix();
         parent.postRender(scale);
+        GlStateManager.translate(0.0F, -this.offsetY, 0.0F);
         cuboid.render(scale);
         GlStateManager.popMatrix();
     }
@@ -22,7 +25,7 @@ public abstract class WearableComponentModel extends ModelBiped {
     public void renderParented(ModelRenderer parent, ModelRenderer cuboid, float renderScale, float offsetX, float offsetY, float offsetZ, float scale) {
         GlStateManager.pushMatrix();
         parent.postRender(scale);
-        GlStateManager.translate(offsetX, offsetY, offsetZ);
+        GlStateManager.translate(offsetX, offsetY - this.offsetY, offsetZ);
         GlStateManager.scale(renderScale, renderScale, renderScale);
         cuboid.render(scale);
         GlStateManager.popMatrix();
@@ -52,6 +55,10 @@ public abstract class WearableComponentModel extends ModelBiped {
     }
 
     public abstract void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale);
+
+    public void setOffsets(float offsetY) {
+        this.offsetY = offsetY / 2.0F;
+    }
 
     @Override
     public void setModelAttributes(ModelBase model) {

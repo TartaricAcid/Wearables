@@ -11,7 +11,7 @@ public class WearableAssemblerEntity extends TileEntity {
         return new TextComponentTranslation("tile.wearable_assembler.name");
     }
 
-    public boolean isUsableByPlayer(EntityPlayer player) {
+    public boolean canInteractWith(EntityPlayer player) {
         return player.getDistanceSqToCenter(this.pos) <= 64.0;
     }
 }
