@@ -30,6 +30,34 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
     private static final ResourceLocation TEXTURE = new ResourceLocation(Wearables.MODID, "textures/blocks/display_mannequin.png");
     private static final ResourceLocation TEXTURE_LIGHT = new ResourceLocation(Wearables.MODID, "textures/blocks/display_mannequin_light.png");
 
+    public void renderStatic(DisplayMannequinEntity entity, float partialTicks) {
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5, 1.5F, 0.5);
+        GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+
+        float lastBrightnessX = OpenGlHelper.lastBrightnessX;
+        float lastBrightnessY = OpenGlHelper.lastBrightnessY;
+
+        GlStateManager.enableRescaleNormal();
+
+        MC.getTextureManager().bindTexture(TEXTURE);
+        MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 240, 240);
+        MC.getTextureManager().bindTexture(TEXTURE_LIGHT);
+        MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
+
+        GlStateManager.enableBlend();
+        this.renderPiece(EntityEquipmentSlot.HEAD, entity, partialTicks, 0.0625F);
+        this.renderPiece(EntityEquipmentSlot.CHEST, entity, partialTicks, 0.0625F);
+        this.renderPiece(EntityEquipmentSlot.LEGS, entity, partialTicks, 0.0625F);
+        this.renderPiece(EntityEquipmentSlot.FEET, entity, partialTicks, 0.0625F);
+        GlStateManager.disableBlend();
+
+        GlStateManager.popMatrix();
+    }
+
     @Override
     public void renderTileEntityAt(DisplayMannequinEntity entity, double x, double y, double z, float partialTicks, int destroyStage) {
         if (entity != null) {

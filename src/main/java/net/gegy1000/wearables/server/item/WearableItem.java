@@ -92,7 +92,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         Wearable wearable = WearableItem.getWearable(stack);
         if (!wearable.getAppliedArmour().isEmpty()) {
-            tooltip.add(TextFormatting.BOLD + "" + TextFormatting.BLUE + "(" + wearable.getAppliedArmour().getDisplayName() + ")");
+            tooltip.add(TextFormatting.BLUE + "" + TextFormatting.BOLD + "(" + wearable.getAppliedArmour().getDisplayName() + ")");
         }
         if (!wearable.getComponents().isEmpty()) {
             tooltip.add(I18n.translateToLocal("label.wearable_components.name"));
@@ -200,5 +200,26 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
             return wearable.getAppliedArmour();
         }
         return ItemStack.EMPTY;
+    }
+
+    public static WearableItem getItem(EntityEquipmentSlot slot) {
+        switch (slot) {
+            case HEAD:
+                return ItemRegistry.WEARABLE_HEAD;
+            case CHEST:
+                return ItemRegistry.WEARABLE_CHEST;
+            case LEGS:
+                return ItemRegistry.WEARABLE_LEGS;
+            case FEET:
+                return ItemRegistry.WEARABLE_FEET;
+        }
+        return ItemRegistry.WEARABLE_CHEST;
+    }
+
+    public static WearableItem getItem(Wearable wearable) {
+        if (wearable.getComponents().size() > 0) {
+            return WearableItem.getItem(wearable.getComponents().get(0).getType().getCategory().getSlot());
+        }
+        return ItemRegistry.WEARABLE_CHEST;
     }
 }

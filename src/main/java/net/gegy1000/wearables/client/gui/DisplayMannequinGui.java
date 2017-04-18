@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client.gui;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.client.render.block.DisplayMannequinRenderer;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.container.DisplayMannequinContainer;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -10,7 +11,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 public class DisplayMannequinGui extends GuiContainer {
@@ -33,20 +33,22 @@ public class DisplayMannequinGui extends GuiContainer {
         int y = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(x, y, 0, 0, this.xSize, this.ySize);
 
-        this.drawMannequin(x + 88, y + 78, 28);
+        this.drawMannequin(x + 88, y + 78, 28, partialTicks);
     }
 
-    private void drawMannequin(int posX, int posY, int scale) {
+    private void drawMannequin(int posX, int posY, int scale, float partialTicks) {
         GlStateManager.pushMatrix();
         GlStateManager.enableBlend();
         GlStateManager.translate(posX, posY, 50.0F);
         GlStateManager.enableRescaleNormal();
         GlStateManager.scale(scale, -scale, scale);
         RenderHelper.enableStandardItemLighting();
-        GlStateManager.rotate(-45.0F, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(135.0F, 0.0F, 1.0F, 0.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        TileEntitySpecialRenderer<TileEntity> renderer = TileEntityRendererDispatcher.instance.getSpecialRenderer(this.entity);
-        renderer.renderTileEntityAt(this.entity, 0, 0, 0, 0.0F, 0);
+        TileEntitySpecialRenderer renderer = TileEntityRendererDispatcher.instance.getSpecialRenderer(this.entity);
+        if (renderer instanceof DisplayMannequinRenderer) {
+            ((DisplayMannequinRenderer) renderer).renderStatic(this.entity, partialTicks);
+        }
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.disableRescaleNormal();

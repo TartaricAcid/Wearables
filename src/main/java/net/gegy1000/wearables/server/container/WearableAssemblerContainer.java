@@ -6,6 +6,7 @@ import net.gegy1000.wearables.server.container.slot.AssemblerInputSlot;
 import net.gegy1000.wearables.server.container.slot.AssemblerOutputSlot;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
+import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
@@ -13,7 +14,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
@@ -115,7 +115,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
                 if (armour.getItem() instanceof ItemArmor && ((ItemArmor) armour.getItem()).getEquipmentSlot() == slotType) {
                     wearable.setAppliedArmour(armour);
                 }
-                ItemStack stack = new ItemStack(this.getWearableItem(slotType));
+                ItemStack stack = new ItemStack(WearableItem.getItem(slotType));
                 stack.setTagCompound(wearable.serializeNBT());
                 return stack;
             }
@@ -178,20 +178,6 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
             }
         }
         return slotType;
-    }
-
-    private Item getWearableItem(EntityEquipmentSlot slot) {
-        switch (slot) {
-            case HEAD:
-                return ItemRegistry.WEARABLE_HEAD;
-            case CHEST:
-                return ItemRegistry.WEARABLE_CHEST;
-            case LEGS:
-                return ItemRegistry.WEARABLE_LEGS;
-            case FEET:
-                return ItemRegistry.WEARABLE_FEET;
-        }
-        return ItemRegistry.WEARABLE_CHEST;
     }
 
     public ItemStack getResult() {
