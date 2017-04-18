@@ -1,8 +1,6 @@
 package net.gegy1000.wearables.server.wearable.component.chest;
 
 import net.gegy1000.wearables.client.render.ComponentProperty;
-import net.gegy1000.wearables.server.movement.JetpackMovementHandler;
-import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,13 +8,12 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
-public class JetpackComponent extends WearableComponentType {
-    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.IRON_INGOT, 60), new ItemStack(Items.BLAZE_POWDER, 20), new ItemStack(Items.LEATHER, 10), new ItemStack(Items.STRING, 5) };
-    private static final JetpackMovementHandler MOVEMENT_HANDLER = new JetpackMovementHandler();
+public class WingsComponent extends WearableComponentType {
+    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.IRON_INGOT, 30), new ItemStack(Items.FEATHER, 50), new ItemStack(Items.LEATHER, 10), new ItemStack(Items.BONE, 10) };
 
     @Override
     public String getIdentifier() {
-        return "jetpack";
+        return "wings";
     }
 
     @Override
@@ -31,12 +28,7 @@ public class JetpackComponent extends WearableComponentType {
 
     @Override
     public int getLayerCount() {
-        return 3;
-    }
-
-    @Override
-    public boolean canColour(int layer) {
-        return layer != 2;
+        return 2;
     }
 
     @Override
@@ -58,11 +50,6 @@ public class JetpackComponent extends WearableComponentType {
             return 0.1F;
         }
         return super.getMaximum(property);
-    }
-
-    @Override
-    public MovementHandler getMovementHandler() {
-        return MOVEMENT_HANDLER;
     }
 
     @Override

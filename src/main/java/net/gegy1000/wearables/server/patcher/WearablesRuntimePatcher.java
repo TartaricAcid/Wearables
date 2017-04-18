@@ -3,8 +3,10 @@ package net.gegy1000.wearables.server.patcher;
 import net.gegy1000.wearables.server.core.WearablesClientHooks;
 import net.gegy1000.wearables.server.core.WearablesHooks;
 import net.ilexiconn.llibrary.server.asm.RuntimePatcher;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.entity.RenderPlayer;
 import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -33,5 +35,14 @@ public class WearablesRuntimePatcher extends RuntimePatcher {
                         .method(INVOKESTATIC, WearablesHooks.class, "getDepthStriderModifier", EntityLivingBase.class, int.class, int.class)
                         .var(ISTORE, 1)
                         .var(ILOAD, 1));
+        this.patchClass(RenderPlayer.class)
+                .patchMethod("applyRotations", AbstractClientPlayer.class, float.class, float.class, float.class, void.class)
+                .apply(Patch.BEFORE, data -> data.node.getPrevious() != null && data.node.getPrevious().getOpcode() == INVOKESPECIAL, method -> method
+                        .var(ALOAD, 0)
+                        .var(ALOAD, 1)
+                        .var(FLOAD, 2)
+                        .var(FLOAD, 3)
+                        .var(FLOAD, 4)
+                        .method(INVOKESTATIC, WearablesClientHooks.class, "applyRotations", RenderPlayer.class, AbstractClientPlayer.class, float.class, float.class, float.class, void.class));
     }
 }

@@ -3,13 +3,23 @@ package net.gegy1000.wearables.server.wearable.component;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.chest.BowTieComponent;
 import net.gegy1000.wearables.server.wearable.component.chest.JetpackComponent;
+import net.gegy1000.wearables.server.wearable.component.chest.Shirt1Component;
+import net.gegy1000.wearables.server.wearable.component.chest.Shirt2Component;
+import net.gegy1000.wearables.server.wearable.component.chest.TShirt1Component;
+import net.gegy1000.wearables.server.wearable.component.chest.TShirt2Component;
 import net.gegy1000.wearables.server.wearable.component.chest.TieComponent;
+import net.gegy1000.wearables.server.wearable.component.chest.WingsComponent;
 import net.gegy1000.wearables.server.wearable.component.feet.FlippersComponent;
+import net.gegy1000.wearables.server.wearable.component.feet.Shoes1Component;
+import net.gegy1000.wearables.server.wearable.component.head.DragonHornsComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Glasses1Component;
 import net.gegy1000.wearables.server.wearable.component.chest.ModOffCapeComponent;
+import net.gegy1000.wearables.server.wearable.component.head.Helmet1Component;
+import net.gegy1000.wearables.server.wearable.component.head.Helmet2Component;
 import net.gegy1000.wearables.server.wearable.component.head.RoundGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Retro3DGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.TopHatComponent;
+import net.gegy1000.wearables.server.wearable.component.legs.Pants1Component;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -34,6 +44,16 @@ public class ComponentRegistry {
     public static final TieComponent TIE = new TieComponent();
     public static final FlippersComponent FLIPPERS = new FlippersComponent();
     public static final JetpackComponent JETPACK = new JetpackComponent();
+    public static final Shoes1Component SHOES_1 = new Shoes1Component();
+    public static final Pants1Component PANTS_1 = new Pants1Component();
+    public static final Helmet1Component HELMET_1 = new Helmet1Component();
+    public static final Helmet2Component HELMET_2 = new Helmet2Component();
+    public static final Shirt1Component SHIRT_1 = new Shirt1Component();
+    public static final Shirt2Component SHIRT_2 = new Shirt2Component();
+    public static final DragonHornsComponent DRAGON_HORNS = new DragonHornsComponent();
+    public static final TShirt1Component T_SHIRT_1 = new TShirt1Component();
+    public static final TShirt2Component T_SHIRT_2 = new TShirt2Component();
+    public static final WingsComponent WINGS = new WingsComponent();
 
     public static void register() {
         try {

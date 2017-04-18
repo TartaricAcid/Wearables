@@ -62,13 +62,15 @@ public class WearableFabricatorGui extends GuiContainer {
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
             int renderX = x + componentX * 18 + 22;
             int renderY = y + componentY * 18 + 8;
-            ItemStack stack = new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
-            stack.setTagCompound(new WearableComponent(componentType).serializeNBT());
-            if (componentType == this.entity.getSelectedComponent()) {
-                this.mc.getTextureManager().bindTexture(TEXTURE);
-                this.drawTexturedModalRect(renderX - 1, renderY - 1, 192, 0, 18, 18);
+            if (componentY >= 0 && componentY < 4) {
+                ItemStack stack = new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
+                stack.setTagCompound(new WearableComponent(componentType).serializeNBT());
+                if (componentType == this.entity.getSelectedComponent()) {
+                    this.mc.getTextureManager().bindTexture(TEXTURE);
+                    this.drawTexturedModalRect(renderX - 1, renderY - 1, 192, 0, 18, 18);
+                }
+                this.itemRender.renderItemAndEffectIntoGUI(stack, renderX, renderY);
             }
-            this.itemRender.renderItemAndEffectIntoGUI(stack, renderX, renderY);
             componentX++;
             if (componentX > 1) {
                 componentX = 0;
@@ -84,7 +86,7 @@ public class WearableFabricatorGui extends GuiContainer {
 
         int scrollbarX = SCROLLBAR_OFFSET_X;
         int scrollbarY = SCROLLBAR_OFFSET_Y + this.getScrollY();
-        if (this.scrolling || this.maxScroll <= 1) {
+        if (this.scrolling || this.maxScroll < 1) {
             this.drawTexturedModalRect(scrollbarX, scrollbarY, 184, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
         } else {
             this.drawTexturedModalRect(scrollbarX, scrollbarY, 176, 0, SCROLLBAR_WIDTH, SCROLLBAR_HEIGHT);
@@ -117,10 +119,11 @@ public class WearableFabricatorGui extends GuiContainer {
             ItemStack[] ingredients = this.entity.getSelectedComponent().getIngredients();
             for (int i = 0; i < ingredients.length; i++) {
                 ItemStack ingredient = ingredients[i];
-                int x = 235;
+                int x = 245;
                 int y = 20 + i * 22;
-                this.itemRender.renderItemAndEffectIntoGUI(ingredient, x, y);
-                this.fontRenderer.drawString("x" + ingredient.getCount(), x + 15, y + 10, 0xFFFFFF);
+                int offset = this.fontRenderer.getStringWidth("x" + ingredient.getCount());
+                this.itemRender.renderItemAndEffectIntoGUI(ingredient, x - offset, y);
+                this.fontRenderer.drawString("x" + ingredient.getCount(), x + 16 - offset, y + 10, 0xFFFFFF);
             }
             GlStateManager.popMatrix();
 
@@ -146,18 +149,20 @@ public class WearableFabricatorGui extends GuiContainer {
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
             int renderX = componentX * 18 + 22;
             int renderY = componentY * 18 + 8;
-            if (mouseX - screenX >= renderX && mouseY - screenY >= renderY && mouseX - screenX <= renderX + 17 && mouseY - screenY <= renderY + 17) {
-                GlStateManager.disableLighting();
-                GlStateManager.disableDepth();
-                GlStateManager.colorMask(true, true, true, false);
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5F);
-                this.drawGradientRect(renderX, renderY, renderX + 16, renderY + 16, -2130706433, -2130706433);
-                GlStateManager.colorMask(true, true, true, true);
-                GlStateManager.enableLighting();
-                GlStateManager.enableDepth();
-                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                this.drawHoveringText(I18n.translateToLocal("component." + componentType.getIdentifier() + ".name"), mouseX - screenX, mouseY - screenY);
-                break;
+            if (componentY >= 0 && componentY < 4) {
+                if (mouseX - screenX >= renderX && mouseY - screenY >= renderY && mouseX - screenX <= renderX + 17 && mouseY - screenY <= renderY + 17) {
+                    GlStateManager.disableLighting();
+                    GlStateManager.disableDepth();
+                    GlStateManager.colorMask(true, true, true, false);
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 0.5F);
+                    this.drawGradientRect(renderX, renderY, renderX + 16, renderY + 16, -2130706433, -2130706433);
+                    GlStateManager.colorMask(true, true, true, true);
+                    GlStateManager.enableLighting();
+                    GlStateManager.enableDepth();
+                    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                    this.drawHoveringText(I18n.translateToLocal("component." + componentType.getIdentifier() + ".name"), mouseX - screenX, mouseY - screenY);
+                    break;
+                }
             }
             componentX++;
             if (componentX > 1) {

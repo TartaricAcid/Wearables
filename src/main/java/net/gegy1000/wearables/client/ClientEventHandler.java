@@ -3,6 +3,7 @@ package net.gegy1000.wearables.client;
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,7 +28,11 @@ public class ClientEventHandler {
                 this.movementState = new MovementState(player);
             }
             this.movementState.unmarkDirty();
-            this.movementState.setMoveUp(MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying);
+            if (WearableUtils.getMovementHandlers(MC.player).isEmpty()) {
+                this.movementState.setMoveUp(false);
+            } else {
+                this.movementState.setMoveUp(MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying);
+            }
             if (this.movementState.isDirty()) {
                 Wearables.NETWORK_WRAPPER.sendToServer(new UpdateMovementMessage(this.movementState, false));
             }

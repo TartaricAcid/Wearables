@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client.model.component;
 
 import net.gegy1000.wearables.client.model.block.DisplayMannequinModel;
+import net.gegy1000.wearables.client.model.block.HeadDisplayStandModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelRenderer;
@@ -79,6 +80,9 @@ public abstract class WearableComponentModel extends ModelBiped {
             copyModelAngles(mannequin.head, this.bipedHead);
             copyModelAngles(mannequin.rightLeg, this.bipedRightLeg);
             copyModelAngles(mannequin.leftLeg, this.bipedLeftLeg);
+        } else if (model instanceof HeadDisplayStandModel) {
+            HeadDisplayStandModel mannequin = (HeadDisplayStandModel) model;
+            copyModelAngles(mannequin.head, this.bipedHead);
         }
     }
 

@@ -18,6 +18,8 @@ public abstract class MovementHandler {
 
     public abstract void updateMovement(EntityPlayer player, MovementState movementState);
 
+    public abstract void applyRotations(EntityPlayer player, float yaw, float bodyYaw, float partialTicks);
+
     public static void createState(EntityPlayer player) {
         MOVEMENT_STATES.put(player.getUniqueID(), new MovementState(player));
     }
