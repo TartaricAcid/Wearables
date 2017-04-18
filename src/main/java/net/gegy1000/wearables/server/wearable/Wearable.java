@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.server.wearable;
 
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
@@ -11,6 +12,7 @@ import java.util.List;
 
 public class Wearable implements INBTSerializable<NBTTagCompound> {
     private List<WearableComponent> components = new ArrayList<>();
+    private ItemStack appliedArmour = ItemStack.EMPTY;
 
     public void addComponent(WearableComponent component) {
         this.components.add(component);
@@ -18,6 +20,14 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
 
     public List<WearableComponent> getComponents() {
         return this.components;
+    }
+
+    public void setAppliedArmour(ItemStack appliedArmour) {
+        this.appliedArmour = appliedArmour;
+    }
+
+    public ItemStack getAppliedArmour() {
+        return this.appliedArmour;
     }
 
     @Override
@@ -28,6 +38,9 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
             componentList.appendTag(component.serializeNBT());
         }
         compound.setTag("components", componentList);
+        if (!this.appliedArmour.isEmpty()) {
+            compound.setTag("applied_armour", this.appliedArmour.serializeNBT());
+        }
         return compound;
     }
 
@@ -38,6 +51,9 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
             for (int i = 0; i < componentList.tagCount(); i++) {
                 this.components.add(WearableComponent.deserialize(componentList.getCompoundTagAt(i)));
             }
+        }
+        if (compound.hasKey("applied_armour")) {
+            this.appliedArmour = new ItemStack(compound.getCompoundTag("applied_armour"));
         }
     }
 

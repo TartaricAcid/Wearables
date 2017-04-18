@@ -1,11 +1,11 @@
 package net.gegy1000.wearables.server.item;
 
 import net.gegy1000.wearables.client.ClientProxy;
-import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.tab.TabRegistry;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
@@ -24,6 +24,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -32,13 +33,14 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class WearableItem extends ItemArmor implements RegisterItemModel, RegisterBlockEntity {
+public class WearableItem extends ItemArmor implements RegisterItemModel, RegisterBlockEntity, ISpecialArmor {
     public static final ArmorMaterial MATERIAL = EnumHelper.addArmorMaterial("wearable", "leather", -1, new int[4], 0, SoundEvents.ITEM_ARMOR_EQUIP_LEATHER, 0.0F);
 
     private Class<? extends TileEntity> entity;
@@ -88,6 +90,9 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
         Wearable wearable = WearableItem.getWearable(stack);
         if (!wearable.getComponents().isEmpty()) {
             tooltip.add(I18n.translateToLocal("label.wearable_components.name"));
+            if (!wearable.getAppliedArmour().isEmpty()) {
+                tooltip.add(TextFormatting.BOLD + "" + TextFormatting.BLUE + "(" + wearable.getAppliedArmour().getDisplayName() + ")");
+            }
             for (WearableComponent component : wearable.getComponents()) {
                 WearableComponentType type = component.getType();
                 TextFormatting textColour = WearableColourUtils.getClosest(component.getColour(0));
@@ -109,11 +114,80 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
         return world.getBlockState(pos).getBlock() instanceof DisplayMannequinBlock;
     }
 
+    @Override
+    public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
+        if (!source.isUnblockable()) {
+            ItemStack stack = WearableItem.getAppliedArmour(armor);
+            if (!stack.isEmpty() && stack.getItem() instanceof ItemArmor) {
+                ItemArmor item = (ItemArmor) stack.getItem();
+                return new ArmorProperties(0, item.damageReduceAmount / 25.0, armor.getMaxDamage() + 1 - armor.getItemDamage());
+            }
+        }
+        return new ArmorProperties(0, 0, -1);
+    }
+
+    @Override
+    public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
+        Item item = WearableItem.getAppliedArmour(armor).getItem();
+        if (item instanceof ItemArmor) {
+            return ((ItemArmor) item).damageReduceAmount;
+        }
+        return 0;
+    }
+
+    @Override
+    public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
+        Wearable wearable = WearableItem.getWearable(stack);
+        if (!wearable.getAppliedArmour().isEmpty()) {
+            wearable.getAppliedArmour().damageItem(damage, entity);
+            if (wearable.getAppliedArmour().getItemDamage() > wearable.getAppliedArmour().getMaxDamage()) {
+                wearable.setAppliedArmour(ItemStack.EMPTY);
+            }
+            stack.setTagCompound(wearable.serializeNBT());
+        }
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
+        if (!appliedArmour.isEmpty()) {
+            return appliedArmour.getItem().getMaxDamage(appliedArmour);
+        }
+        return super.getMaxDamage(stack);
+    }
+
+    @Override
+    public int getDamage(ItemStack stack) {
+        ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
+        if (!appliedArmour.isEmpty()) {
+            return appliedArmour.getItem().getDamage(appliedArmour);
+        }
+        return super.getDamage(stack);
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
+        if (!appliedArmour.isEmpty()) {
+            return appliedArmour.getItem().showDurabilityBar(appliedArmour);
+        }
+        return super.showDurabilityBar(stack);
+    }
+
+
     public static Wearable getWearable(ItemStack stack) {
         NBTTagCompound compound = stack.getTagCompound();
         if (compound == null) {
             compound = new NBTTagCompound();
         }
         return Wearable.deserialize(compound);
+    }
+
+    private static ItemStack getAppliedArmour(ItemStack stack) {
+        Wearable wearable = getWearable(stack);
+        if (wearable != null) {
+            return wearable.getAppliedArmour();
+        }
+        return ItemStack.EMPTY;
     }
 }

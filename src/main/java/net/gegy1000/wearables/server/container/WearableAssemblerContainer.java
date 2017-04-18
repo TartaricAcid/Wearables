@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.server.container;
 
-import net.gegy1000.wearables.client.render.ComponentProperty;
 import net.gegy1000.wearables.server.block.entity.machine.WearableAssemblerEntity;
+import net.gegy1000.wearables.server.container.slot.ArmourApplySlot;
 import net.gegy1000.wearables.server.container.slot.AssemblerInputSlot;
 import net.gegy1000.wearables.server.container.slot.AssemblerOutputSlot;
 import net.gegy1000.wearables.server.item.ItemRegistry;
@@ -14,6 +14,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
@@ -23,6 +24,12 @@ import java.util.Set;
 public class WearableAssemblerContainer extends AutoTransferContainer {
     private final WearableAssemblerEntity entity;
     private final ItemStackHandler components = new ItemStackHandler(6) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            WearableAssemblerContainer.this.onContentsChanged();
+        }
+    };
+    private final ItemStackHandler armour = new ItemStackHandler(1) {
         @Override
         protected void onContentsChanged(int slot) {
             WearableAssemblerContainer.this.onContentsChanged();
@@ -39,7 +46,8 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
             }
         }
 
-        this.addSlotToContainer(new AssemblerOutputSlot(this, this.result, 0, 144, 35));
+        this.addSlotToContainer(new ArmourApplySlot(this.armour, 0, 102, 54));
+        this.addSlotToContainer(new AssemblerOutputSlot(this, this.result, 0, 144, 30));
 
         for (int column = 0; column < 9; column++) {
             this.addSlotToContainer(new Slot(playerInventory, column, 8 + column * 18, 142));
@@ -61,17 +69,22 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
     public void onContainerClosed(EntityPlayer player) {
         super.onContainerClosed(player);
         if (!player.world.isRemote) {
-            for (int slot = 0; slot < this.components.getSlots(); slot++) {
-                ItemStack stack = this.components.getStackInSlot(slot);
-                if (stack.getItem() instanceof WearableComponentItem) {
-                    WearableComponent component = WearableComponentItem.getComponent(stack);
-                    component.clearProperties();
-                    stack.setTagCompound(component.serializeNBT());
-                }
-                this.components.extractItem(slot, stack.getCount(), false);
-                if (!stack.isEmpty()) {
-                    player.dropItem(stack, false);
-                }
+            this.dropInventory(player, this.components);
+            this.dropInventory(player, this.armour);
+        }
+    }
+
+    private void dropInventory(EntityPlayer player, ItemStackHandler inventory) {
+        for (int slot = 0; slot < inventory.getSlots(); slot++) {
+            ItemStack stack = inventory.getStackInSlot(slot);
+            if (stack.getItem() instanceof WearableComponentItem) {
+                WearableComponent component = WearableComponentItem.getComponent(stack);
+                component.clearProperties();
+                stack.setTagCompound(component.serializeNBT());
+            }
+            inventory.extractItem(slot, stack.getCount(), false);
+            if (!stack.isEmpty()) {
+                player.dropItem(stack, false);
             }
         }
     }
@@ -97,6 +110,10 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
                 }
             }
             if (wearable.getComponents().size() > 0) {
+                ItemStack armour = this.armour.getStackInSlot(0);
+                if (armour.getItem() instanceof ItemArmor && ((ItemArmor) armour.getItem()).getEquipmentSlot() == slotType) {
+                    wearable.setAppliedArmour(armour);
+                }
                 ItemStack stack = new ItemStack(this.getWearableItem(slotType));
                 stack.setTagCompound(wearable.serializeNBT());
                 return stack;
@@ -118,6 +135,10 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
                     usedCategories.add(category);
                 }
             }
+        }
+        ItemStack armour = this.armour.getStackInSlot(0);
+        if (armour.getItem() instanceof ItemArmor && ((ItemArmor) armour.getItem()).getEquipmentSlot() == slotType) {
+            this.armour.extractItem(0, 1, false);
         }
         this.onContentsChanged();
     }
