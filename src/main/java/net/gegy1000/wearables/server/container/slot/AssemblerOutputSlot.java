@@ -1,6 +1,8 @@
 package net.gegy1000.wearables.server.container.slot;
 
 import net.gegy1000.wearables.server.container.WearableAssemblerContainer;
+import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.wearable.Wearable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandler;
@@ -16,7 +18,15 @@ public class AssemblerOutputSlot extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return false;
+        return !this.container.hasInput() && stack.getItem() instanceof WearableItem;
+    }
+
+    @Override
+    public void putStack(ItemStack stack) {
+        super.putStack(ItemStack.EMPTY);
+        Wearable wearable = WearableItem.getWearable(stack);
+        this.container.disassemble(wearable);
+        this.container.onContentsChanged();
     }
 
     @Override

@@ -19,6 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class WearableAssemblerContainer extends AutoTransferContainer {
@@ -195,5 +196,29 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
 
     public ItemStack getResult() {
         return this.result.getStackInSlot(0);
+    }
+
+    public boolean hasInput() {
+        for (int i = 0; i < this.components.getSlots(); i++) {
+            if (!this.components.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        for (int i = 0; i < this.armour.getSlots(); i++) {
+            if (!this.armour.getStackInSlot(i).isEmpty()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void disassemble(Wearable wearable) {
+        List<WearableComponent> components = wearable.getComponents();
+        for (int i = 0; i < components.size(); i++) {
+            ItemStack stack = new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
+            stack.setTagCompound(components.get(i).serializeNBT());
+            this.components.setStackInSlot(i, stack);
+        }
+        this.armour.setStackInSlot(0, wearable.getAppliedArmour());
     }
 }
