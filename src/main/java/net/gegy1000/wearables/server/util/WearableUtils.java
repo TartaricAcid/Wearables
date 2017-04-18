@@ -2,20 +2,29 @@ package net.gegy1000.wearables.server.util;
 
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
+import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
+import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class WearableUtils {
+    private static final EntityEquipmentSlot[] ARMOUR_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
+
     public static boolean hasSlimArms(Entity entity) {
         if (entity instanceof AbstractClientPlayer) {
             String skinType = ((AbstractClientPlayer) entity).getSkinType();
@@ -64,5 +73,17 @@ public class WearableUtils {
 
     public static ComponentRenderer getRenderer(WearableComponent component) {
         return RenderRegistry.getRenderer(component.getType().getIdentifier());
+    }
+
+    public static List<WearableComponentType> getActiveComponents(EntityPlayer player) {
+        List<WearableComponentType> componentTypes = new ArrayList<>();
+        for (EntityEquipmentSlot slot : ARMOUR_SLOTS) {
+            ItemStack stack = player.getItemStackFromSlot(slot);
+            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+                Wearable wearable = WearableItem.getWearable(stack);
+                componentTypes.addAll(wearable.getComponents().stream().map(WearableComponent::getType).collect(Collectors.toList()));
+            }
+        }
+        return componentTypes;
     }
 }

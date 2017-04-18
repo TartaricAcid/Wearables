@@ -3,6 +3,7 @@ package net.gegy1000.wearables.server.wearable.component;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.chest.BowTieComponent;
 import net.gegy1000.wearables.server.wearable.component.chest.TieComponent;
+import net.gegy1000.wearables.server.wearable.component.feet.FlippersComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Glasses1Component;
 import net.gegy1000.wearables.server.wearable.component.chest.ModOffCapeComponent;
 import net.gegy1000.wearables.server.wearable.component.head.RoundGlassesComponent;
@@ -30,6 +31,7 @@ public class ComponentRegistry {
     public static final ModOffCapeComponent MODOFF_CAPE = new ModOffCapeComponent();
     public static final BowTieComponent BOW_TIE = new BowTieComponent();
     public static final TieComponent TIE = new TieComponent();
+    public static final FlippersComponent FLIPPERS = new FlippersComponent();
 
     public static void register() {
         try {

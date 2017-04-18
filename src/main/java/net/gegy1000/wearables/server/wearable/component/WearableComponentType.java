@@ -43,6 +43,10 @@ public abstract class WearableComponentType {
         return 0.0F;
     }
 
+    public float getSpeedModifier(EntityPlayer player) {
+        return -1.0F;
+    }
+
     public void tick(EntityPlayer player) {
     }
 
@@ -51,5 +55,9 @@ public abstract class WearableComponentType {
     }
 
     public void onFall(EntityPlayer player) {
+    }
+
+    public int getDepthStrideModifier(EntityPlayer player) {
+        return -1;
     }
 }
