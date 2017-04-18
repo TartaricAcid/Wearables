@@ -1,5 +1,7 @@
 package net.gegy1000.wearables.server.item;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import net.gegy1000.wearables.client.ClientProxy;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
@@ -13,6 +15,7 @@ import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -88,11 +91,11 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         Wearable wearable = WearableItem.getWearable(stack);
+        if (!wearable.getAppliedArmour().isEmpty()) {
+            tooltip.add(TextFormatting.BOLD + "" + TextFormatting.BLUE + "(" + wearable.getAppliedArmour().getDisplayName() + ")");
+        }
         if (!wearable.getComponents().isEmpty()) {
             tooltip.add(I18n.translateToLocal("label.wearable_components.name"));
-            if (!wearable.getAppliedArmour().isEmpty()) {
-                tooltip.add(TextFormatting.BOLD + "" + TextFormatting.BLUE + "(" + wearable.getAppliedArmour().getDisplayName() + ")");
-            }
             for (WearableComponent component : wearable.getComponents()) {
                 WearableComponentType type = component.getType();
                 TextFormatting textColour = WearableColourUtils.getClosest(component.getColour(0));
@@ -174,6 +177,14 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
         return super.showDurabilityBar(stack);
     }
 
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
+        if (!appliedArmour.isEmpty()) {
+            return appliedArmour.getItem().getAttributeModifiers(slot, appliedArmour);
+        }
+        return HashMultimap.create();
+    }
 
     public static Wearable getWearable(ItemStack stack) {
         NBTTagCompound compound = stack.getTagCompound();
