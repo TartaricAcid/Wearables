@@ -7,7 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class ModOffCapeComponent extends WearableComponentType {
-    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Blocks.WOOL, 4), new ItemStack(Items.STRING, 2) };
+    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Blocks.WOOL, 6), new ItemStack(Items.STRING, 2) };
 
     @Override
     public String getIdentifier() {

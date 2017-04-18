@@ -25,4 +25,9 @@ public class ColouredComponentSlot extends SlotItemHandler {
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
+
+    @Override
+    public int getSlotStackLimit() {
+        return 1;
+    }
 }

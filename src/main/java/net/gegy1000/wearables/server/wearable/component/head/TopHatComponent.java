@@ -6,7 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class TopHatComponent extends WearableComponentType {
-    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.LEATHER, 3), new ItemStack(Items.STRING) };
+    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.LEATHER, 4), new ItemStack(Items.STRING, 2) };
 
     @Override
     public String getIdentifier() {

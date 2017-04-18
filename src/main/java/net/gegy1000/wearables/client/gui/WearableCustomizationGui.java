@@ -76,6 +76,16 @@ public class WearableCustomizationGui extends GuiScreen {
                 }
                 RenderHelper.enableGUIStandardItemLighting();
                 this.itemRender.renderItemAndEffectIntoGUI(stack, x + 148, y + 27 + componentIndex * 21);
+                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+                GlStateManager.disableLighting();
+                this.mc.getTextureManager().bindTexture(TEXTURE);
+            } else {
+                this.drawTexturedModalRect(x + 147, y + 26 + componentIndex * 21, 216, 0, 18, 18);
+            }
+        }
+        for (int componentIndex = 0; componentIndex < 6; componentIndex++) {
+            ItemStack stack = this.container.getSlot(componentIndex).getStack();
+            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
                 if (mouseX >= x + 147 && mouseY >= y + 26 + componentIndex * 21 && mouseX <= x + 165 && mouseY < y + 44 + componentIndex * 21) {
                     if (this.selectedComponent != componentIndex) {
                         GlStateManager.disableLighting();
@@ -86,13 +96,13 @@ public class WearableCustomizationGui extends GuiScreen {
                         GlStateManager.enableDepth();
                     }
                     this.renderToolTip(stack, mouseX, mouseY);
+                    break;
                 }
-                GlStateManager.disableLighting();
-                this.mc.getTextureManager().bindTexture(TEXTURE);
-            } else {
-                this.drawTexturedModalRect(x + 147, y + 26 + componentIndex * 21, 216, 0, 18, 18);
             }
         }
+
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.disableLighting();
 
         this.drawPropertyWidgets(x + 39, y + 34, mouseX, mouseY, ComponentProperty.OFFSET_Y);
 

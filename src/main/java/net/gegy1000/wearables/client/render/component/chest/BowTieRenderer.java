@@ -1,13 +1,16 @@
 package net.gegy1000.wearables.client.render.component.chest;
 
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
-import net.gegy1000.wearables.client.model.component.head.BowTieModel;
+import net.gegy1000.wearables.client.model.component.chest.BowTieModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 
 public class BowTieRenderer extends ComponentRenderer {
     private static final BowTieModel MODEL = new BowTieModel();
+    private static final ResourceLocation TEXTURE_1 = new ResourceLocation(Wearables.MODID, "textures/component/bowtie_1.png");
+    private static final ResourceLocation TEXTURE_2 = new ResourceLocation(Wearables.MODID, "textures/component/bowtie_2.png");
 
     @Override
     public WearableComponentModel getModel(boolean smallArms) {
@@ -16,7 +19,7 @@ public class BowTieRenderer extends ComponentRenderer {
 
     @Override
     public ResourceLocation getTexture(boolean smallArms, int layer) {
-        return null;
+        return layer == 0 ? TEXTURE_1 : TEXTURE_2;
     }
 
     @Override

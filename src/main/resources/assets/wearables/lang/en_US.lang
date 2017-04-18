@@ -25,6 +25,7 @@ tile.mannequin_head_stand.name=Mannequin Head Stand
 # Labels
 
 label.wearable_components.name=Components:
+label.wearable_layers.name=Layers:
 label.wearable_customization.name=Wearable Customization
 label.wearable_height.name=Height
 

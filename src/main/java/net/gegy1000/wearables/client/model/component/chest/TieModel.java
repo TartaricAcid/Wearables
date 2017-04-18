@@ -1,4 +1,4 @@
-package net.gegy1000.wearables.client.model.component.head;
+package net.gegy1000.wearables.client.model.component.chest;
 
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.minecraft.client.model.ModelRenderer;

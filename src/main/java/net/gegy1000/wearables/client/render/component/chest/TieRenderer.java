@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.client.render.component.chest;
 
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
-import net.gegy1000.wearables.client.model.component.head.TieModel;
+import net.gegy1000.wearables.client.model.component.chest.TieModel;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;

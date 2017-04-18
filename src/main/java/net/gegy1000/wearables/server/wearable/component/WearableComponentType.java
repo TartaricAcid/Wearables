@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.server.wearable.component;
 
 import net.gegy1000.wearables.server.wearable.WearableCategory;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 public abstract class WearableComponentType {
@@ -40,5 +41,15 @@ public abstract class WearableComponentType {
 
     public float getMaximum(int property) {
         return 0.0F;
+    }
+
+    public void tick(EntityPlayer player) {
+    }
+
+    public boolean onJump(EntityPlayer player) {
+        return false;
+    }
+
+    public void onFall(EntityPlayer player) {
     }
 }

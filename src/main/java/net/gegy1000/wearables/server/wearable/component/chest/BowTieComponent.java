@@ -44,4 +44,9 @@ public class BowTieComponent extends WearableComponentType {
         }
         return super.getMaximum(property);
     }
+
+    @Override
+    public int getLayerCount() {
+        return 2;
+    }
 }
