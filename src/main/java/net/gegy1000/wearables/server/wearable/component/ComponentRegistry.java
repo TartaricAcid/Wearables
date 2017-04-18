@@ -2,6 +2,7 @@ package net.gegy1000.wearables.server.wearable.component;
 
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.chest.BowTieComponent;
+import net.gegy1000.wearables.server.wearable.component.chest.JetpackComponent;
 import net.gegy1000.wearables.server.wearable.component.chest.TieComponent;
 import net.gegy1000.wearables.server.wearable.component.feet.FlippersComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Glasses1Component;
@@ -32,6 +33,7 @@ public class ComponentRegistry {
     public static final BowTieComponent BOW_TIE = new BowTieComponent();
     public static final TieComponent TIE = new TieComponent();
     public static final FlippersComponent FLIPPERS = new FlippersComponent();
+    public static final JetpackComponent JETPACK = new JetpackComponent();
 
     public static void register() {
         try {

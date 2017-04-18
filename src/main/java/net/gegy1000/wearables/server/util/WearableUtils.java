@@ -3,6 +3,7 @@ package net.gegy1000.wearables.server.util;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -85,5 +86,17 @@ public class WearableUtils {
             }
         }
         return componentTypes;
+    }
+
+    public static List<MovementHandler> getMovementHandlers(EntityPlayer player) {
+        List<MovementHandler> movementHandlers = new ArrayList<>();
+        List<WearableComponentType> componentTypes = WearableUtils.getActiveComponents(player);
+        for (WearableComponentType type : componentTypes) {
+            MovementHandler movementHandler = type.getMovementHandler();
+            if (movementHandler != null) {
+                movementHandlers.add(movementHandler);
+            }
+        }
+        return movementHandlers;
     }
 }

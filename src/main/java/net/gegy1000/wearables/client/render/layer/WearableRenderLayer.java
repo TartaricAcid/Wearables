@@ -1,10 +1,10 @@
 package net.gegy1000.wearables.client.render.layer;
 
-import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
@@ -35,6 +35,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
         this.renderPiece(EntityEquipmentSlot.CHEST, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
         this.renderPiece(EntityEquipmentSlot.LEGS, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
         this.renderPiece(EntityEquipmentSlot.FEET, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
+        GlStateManager.disableBlend();
     }
 
     private void renderPiece(EntityEquipmentSlot slot, EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {

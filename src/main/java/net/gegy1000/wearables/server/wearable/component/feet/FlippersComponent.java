@@ -38,8 +38,13 @@ public class FlippersComponent extends WearableComponentType {
     @Override
     public void tick(EntityPlayer player) {
         super.tick(player);
-        if (player.isInWater() && (Math.abs(player.moveForward) > 0.0F || !player.onGround)) {
+        if (player.isInWater() && (Math.abs(player.moveForward) > 0.01F || !player.onGround)) {
             WearablesHooks.setFlag(player, 7, true);
+        } else if (player.onGround && !player.isInWater() && player.isElytraFlying()) {
+            WearablesHooks.setFlag(player, 7, false);
+        }
+        if (!player.onGround && player.isInWater() && Math.abs(player.moveForward) <= 0.01F) {
+            player.motionY += 0.02;
         }
     }
 

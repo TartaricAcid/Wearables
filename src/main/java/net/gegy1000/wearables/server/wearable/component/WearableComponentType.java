@@ -1,8 +1,10 @@
 package net.gegy1000.wearables.server.wearable.component;
 
+import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 public abstract class WearableComponentType {
     public abstract String getIdentifier();
@@ -54,10 +56,14 @@ public abstract class WearableComponentType {
         return false;
     }
 
-    public void onFall(EntityPlayer player) {
+    public void onFall(EntityPlayer player, LivingFallEvent event) {
     }
 
     public int getDepthStrideModifier(EntityPlayer player) {
         return -1;
+    }
+
+    public MovementHandler getMovementHandler() {
+        return null;
     }
 }

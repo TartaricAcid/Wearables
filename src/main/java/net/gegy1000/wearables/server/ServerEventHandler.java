@@ -1,5 +1,7 @@
 package net.gegy1000.wearables.server;
 
+import net.gegy1000.wearables.server.movement.MovementHandler;
+import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.entity.EntityLivingBase;
@@ -7,8 +9,12 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 
@@ -20,6 +26,11 @@ public class ServerEventHandler {
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             for (WearableComponentType component : components) {
                 component.tick(player);
+                MovementHandler movementHandler = component.getMovementHandler();
+                if (movementHandler != null) {
+                    MovementState movementState = MovementHandler.MOVEMENT_STATES.computeIfAbsent(player.getUniqueID(), uuid -> new MovementState(player));
+                    movementHandler.updateMovement(player, movementState);
+                }
             }
             boolean hasSpeedModifier = false;
             float speedModifier = 1.0F;
@@ -56,8 +67,47 @@ public class ServerEventHandler {
             EntityPlayer player = (EntityPlayer) entity;
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             for (WearableComponentType component : components) {
-                component.onFall(player);
+                component.onFall(player, event);
             }
         }
+    }
+
+    @SubscribeEvent
+    public void onServerTick(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END && event.side == Side.SERVER) {
+            MovementHandler.update();
+        }
+    }
+
+    @SubscribeEvent
+    public void onStartTracking(PlayerEvent.StartTracking event) {
+        EntityPlayer tracker = event.getEntityPlayer();
+        if (!tracker.world.isRemote) {
+            if (event.getTarget() instanceof EntityPlayer) {
+                EntityPlayer tracked = (EntityPlayer) event.getTarget();
+                MovementHandler.startTracking(tracker, tracked);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onStopTracking(PlayerEvent.StopTracking event) {
+        EntityPlayer tracker = event.getEntityPlayer();
+        if (!tracker.world.isRemote) {
+            if (event.getTarget() instanceof EntityPlayer) {
+                EntityPlayer tracked = (EntityPlayer) event.getTarget();
+                MovementHandler.stopTracking(tracker, tracked);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLogin(PlayerLoggedInEvent event) {
+        MovementHandler.createState(event.player);
+    }
+
+    @SubscribeEvent
+    public void onPlayerLogout(PlayerLoggedOutEvent event) {
+        MovementHandler.removeState(event.player);
     }
 }

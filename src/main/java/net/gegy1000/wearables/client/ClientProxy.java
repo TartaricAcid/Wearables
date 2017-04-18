@@ -89,4 +89,12 @@ public class ClientProxy extends ServerProxy {
             super.schedule(runnable, ctx);
         }
     }
+
+    @Override
+    public EntityPlayer getPlayer(MessageContext ctx) {
+        if (ctx.side.isClient()) {
+            return MC.player;
+        }
+        return super.getPlayer(ctx);
+    }
 }

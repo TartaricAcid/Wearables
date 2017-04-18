@@ -14,6 +14,8 @@ import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.network.SetColourMessage;
 import net.gegy1000.wearables.server.network.SetPropertyMessage;
 import net.gegy1000.wearables.server.network.SetSelectedComponentMessage;
+import net.gegy1000.wearables.server.network.StopTrackingMovementMessage;
+import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.recipe.RecipeRegistry;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.block.state.IBlockState;
@@ -48,6 +50,9 @@ public class ServerProxy implements IGuiHandler {
         Wearables.NETWORK_WRAPPER.registerMessage(SetSelectedComponentMessage.Handler.class, SetSelectedComponentMessage.class, 0, Side.SERVER);
         Wearables.NETWORK_WRAPPER.registerMessage(SetColourMessage.Handler.class, SetColourMessage.class, 1, Side.SERVER);
         Wearables.NETWORK_WRAPPER.registerMessage(SetPropertyMessage.Handler.class, SetPropertyMessage.class, 2, Side.SERVER);
+        Wearables.NETWORK_WRAPPER.registerMessage(UpdateMovementMessage.Handler.class, UpdateMovementMessage.class, 3, Side.SERVER);
+        Wearables.NETWORK_WRAPPER.registerMessage(UpdateMovementMessage.Handler.class, UpdateMovementMessage.class, 4, Side.CLIENT);
+        Wearables.NETWORK_WRAPPER.registerMessage(StopTrackingMovementMessage.Handler.class, StopTrackingMovementMessage.class, 5, Side.CLIENT);
     }
 
     public void onInit() {
@@ -81,5 +86,9 @@ public class ServerProxy implements IGuiHandler {
     public void schedule(Runnable runnable, MessageContext ctx) {
         WorldServer server = ctx.getServerHandler().player.getServerWorld();
         server.addScheduledTask(runnable);
+    }
+
+    public EntityPlayer getPlayer(MessageContext ctx) {
+        return ctx.getServerHandler().player;
     }
 }
