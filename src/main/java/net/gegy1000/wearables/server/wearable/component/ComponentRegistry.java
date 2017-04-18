@@ -16,6 +16,7 @@ import net.gegy1000.wearables.server.wearable.component.head.Glasses1Component;
 import net.gegy1000.wearables.server.wearable.component.chest.ModOffCapeComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Helmet1Component;
 import net.gegy1000.wearables.server.wearable.component.head.Helmet2Component;
+import net.gegy1000.wearables.server.wearable.component.head.NightVisionGogglesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.RoundGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.Retro3DGlassesComponent;
 import net.gegy1000.wearables.server.wearable.component.head.TopHatComponent;
@@ -54,6 +55,7 @@ public class ComponentRegistry {
     public static final TShirt1Component T_SHIRT_1 = new TShirt1Component();
     public static final TShirt2Component T_SHIRT_2 = new TShirt2Component();
     public static final WingsComponent WINGS = new WingsComponent();
+    public static final NightVisionGogglesComponent NIGHT_VISION_GOGGLES = new NightVisionGogglesComponent();
 
     public static void register() {
         try {

@@ -17,6 +17,7 @@ import net.gegy1000.wearables.client.render.component.feet.FlippersRenderer;
 import net.gegy1000.wearables.client.render.component.head.DragonHornsRenderer;
 import net.gegy1000.wearables.client.render.component.head.Helmet1Renderer;
 import net.gegy1000.wearables.client.render.component.head.Helmet2Renderer;
+import net.gegy1000.wearables.client.render.component.head.NightVisionGogglesRenderer;
 import net.gegy1000.wearables.client.render.component.legs.Pants1Renderer;
 import net.gegy1000.wearables.client.render.component.feet.Shoes1Renderer;
 import net.gegy1000.wearables.client.render.component.head.Glasses1Renderer;
@@ -105,6 +106,7 @@ public class RenderRegistry {
         RenderRegistry.register(ComponentRegistry.T_SHIRT_1, new TShirt1Renderer());
         RenderRegistry.register(ComponentRegistry.T_SHIRT_2, new TShirt2Renderer());
         RenderRegistry.register(ComponentRegistry.WINGS, new WingsRenderer());
+        RenderRegistry.register(ComponentRegistry.NIGHT_VISION_GOGGLES, new NightVisionGogglesRenderer());
 
         ModelLoader.setCustomStateMapper(BlockRegistry.DISPLAY_MANNEQUIN, new StateMap.Builder().ignore(DisplayMannequinBlock.FACING, DisplayMannequinBlock.HALF).build());
         ModelLoader.setCustomStateMapper(BlockRegistry.HEAD_STAND_MANNEQUIN, new StateMap.Builder().ignore(MannequinHeadStandBlock.FACING).build());
