@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.container.slot;
 
+import net.gegy1000.wearables.server.item.WearableItem;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
@@ -19,7 +20,7 @@ public class ArmourApplySlot extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        return stack.getItem() instanceof ItemArmor;
+        return stack.getItem() instanceof ItemArmor && !(stack.getItem() instanceof WearableItem);
     }
 
     @Override

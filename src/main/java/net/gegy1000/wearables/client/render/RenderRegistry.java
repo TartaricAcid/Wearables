@@ -4,7 +4,9 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.block.DisplayMannequinRenderer;
 import net.gegy1000.wearables.client.render.block.MannequinHeadStandRenderer;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
+import net.gegy1000.wearables.client.render.component.chest.BowTieRenderer;
 import net.gegy1000.wearables.client.render.component.chest.ModOffCapeRenderer;
+import net.gegy1000.wearables.client.render.component.chest.TieRenderer;
 import net.gegy1000.wearables.client.render.component.head.Glasses1Renderer;
 import net.gegy1000.wearables.client.render.component.head.RoundGlassesRenderer;
 import net.gegy1000.wearables.client.render.component.head.Retro3DGlassesRenderer;
@@ -77,6 +79,8 @@ public class RenderRegistry {
         RenderRegistry.register(ComponentRegistry.RETRO_3D_GLASSES, new Retro3DGlassesRenderer());
         RenderRegistry.register(ComponentRegistry.HARRY_POTTER_GLASSES, new RoundGlassesRenderer());
         RenderRegistry.register(ComponentRegistry.MODOFF_CAPE, new ModOffCapeRenderer());
+        RenderRegistry.register(ComponentRegistry.BOW_TIE, new BowTieRenderer());
+        RenderRegistry.register(ComponentRegistry.TIE, new TieRenderer());
 
         ModelLoader.setCustomStateMapper(BlockRegistry.DISPLAY_MANNEQUIN, new StateMap.Builder().ignore(DisplayMannequinBlock.FACING, DisplayMannequinBlock.HALF).build());
         ModelLoader.setCustomStateMapper(BlockRegistry.HEAD_STAND_MANNEQUIN, new StateMap.Builder().ignore(MannequinHeadStandBlock.FACING).build());
