@@ -19,6 +19,7 @@ public class ItemRegistry {
     public static final List<Item> ITEMS = new ArrayList<>();
 
     public static final DisplayMannequinItem DISPLAY_MANNEQUIN = new DisplayMannequinItem();
+    public static final JetpackFuelItem JETPACK_FUEL = new JetpackFuelItem();
 
     public static final WearableItem WEARABLE_HEAD = new WearableItem(WearableHeadItemEntity.class, EntityEquipmentSlot.HEAD);
     public static final WearableItem WEARABLE_CHEST = new WearableItem(WearableChestItemEntity.class, EntityEquipmentSlot.CHEST);

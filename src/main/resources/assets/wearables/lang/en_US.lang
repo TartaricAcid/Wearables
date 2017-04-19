@@ -14,6 +14,8 @@ item.wearable_chest.name=Wearable Chest Piece
 item.wearable_legs.name=Wearable Leg Piece
 item.wearable_feet.name=Wearable Foot Piece
 
+item.jetpack_fuel.name=Jetpack Fuel
+
 # Blocks
 
 tile.display_mannequin.name=Display Mannequin
@@ -54,7 +56,7 @@ component.night_vision_goggles.name=Night Vision Goggles
 
 # Tooltips
 
-tooltip.wearable.jetpack.name=Provides powered flight
+tooltip.wearable.jetpack.name=Provides powered flight (requires Jetpack Fuel)
 tooltip.wearable.wings.name=Provides unpowered flight
 tooltip.wearable.flippers.name=Provides faster swimming
 tooltip.wearable.night_vision_goggles.name=Improves vision at night
