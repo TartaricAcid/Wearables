@@ -28,6 +28,6 @@ public class WingsRenderer extends ComponentRenderer {
 
     @Override
     public AxisAlignedBB getBounds() {
-        return new AxisAlignedBB(-2.5F, 1.0F, -2.0F, 2.5F, -0.6F, 0.1F);
+        return new AxisAlignedBB(-2.0F, 1.0F, -2.0F, 2.0F, -0.6F, 0.1F);
     }
 }

@@ -34,6 +34,9 @@ public class WingsModel extends WearableComponentModel {
     public ModelRenderer shape54_2;
     public ModelRenderer shape54_3;
 
+    private ModelRenderer[] rightWingParts;
+    private ModelRenderer[] leftWingParts;
+
     public WingsModel() {
         this.textureWidth = 128;
         this.textureHeight = 128;
@@ -176,18 +179,52 @@ public class WingsModel extends WearableComponentModel {
         this.Main.addChild(this.leftWing);
         this.WING2_1.addChild(this.shape54_3);
         this.shape46.addChild(this.shape47);
+
+        this.rightWingParts = new ModelRenderer[] { this.rightWing, this.shape46, this.shape47, this.wingggg };
+        this.leftWingParts = new ModelRenderer[] { this.leftWing, this.shape46_1, this.shape47_1, this.wingggg_1 };
     }
 
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
-        this.renderParented(this.bipedBody, this.Main, scale);
-        if (entity != null && !WearableUtils.onGround(entity)) {
+        boolean onGround = entity == null || WearableUtils.onGround(entity);
+        if (entity != null && !onGround) {
             limbSwing = age;
             limbSwingAmount = 1.2F;
+        } else {
+            limbSwing = age * 0.25F;
+            limbSwingAmount = 0.4F;
         }
-        this.rightWing.rotateAngleY = this.calculateRotation(0.5F, 0.5F, false, 0.0F, 0.4F, limbSwing, limbSwingAmount) + 0.5F;
-        this.leftWing.rotateAngleY = this.calculateRotation(0.5F, 0.5F, true, 0.0F, 0.4F, limbSwing, limbSwingAmount) - 0.5F;
-        this.shape46.rotateAngleZ = this.calculateRotation(0.5F, 0.5F, true, 0.5F, 0.4F, limbSwing, limbSwingAmount);
-        this.shape46_1.rotateAngleZ = this.calculateRotation(0.5F, 0.5F, false, 0.5F, 0.4F, limbSwing, limbSwingAmount);
+        float flapOffset = this.calculateChainOffset(-2, this.rightWingParts);
+        for (int index = 0; index < this.rightWingParts.length; index++) {
+            ModelRenderer part = this.rightWingParts[index];
+            float rotation = this.calculateChainRotation(0.25F, 0.3F, limbSwing, limbSwingAmount, flapOffset, index);
+            if (index == 0) {
+                part.rotateAngleY = rotation + 0.4F;
+                if (onGround) {
+                    part.rotateAngleY += 0.8F;
+                }
+            } else {
+                part.rotateAngleZ = rotation - 0.2F;
+                if (onGround) {
+                    part.rotateAngleZ -= 0.8F;
+                }
+            }
+        }
+        for (int index = 0; index < this.leftWingParts.length; index++) {
+            ModelRenderer part = this.leftWingParts[index];
+            float rotation = this.calculateChainRotation(0.25F, 0.3F, limbSwing, limbSwingAmount, flapOffset, index);
+            if (index == 0) {
+                part.rotateAngleY = -rotation - 0.4F;
+                if (onGround) {
+                    part.rotateAngleY -= 0.8F;
+                }
+            } else {
+                part.rotateAngleZ = -rotation + 0.2F;
+                if (onGround) {
+                    part.rotateAngleZ += 0.8F;
+                }
+            }
+        }
+        this.renderParented(this.bipedBody, this.Main, scale);
     }
 }

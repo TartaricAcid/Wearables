@@ -39,8 +39,6 @@ public abstract class WearableComponentModel extends ModelBiped {
             GlStateManager.rotate(entity.rotationYaw, 0.0F, 1.0F, 0.0F);
         }
 
-        this.setRotationAngles(limbSwing, limbSwingAmount, age, yaw, pitch, scale, entity);
-
         GlStateManager.pushMatrix();
         if (entity != null) {
             if (entity.isSneaking()) {
@@ -96,5 +94,13 @@ public abstract class WearableComponentModel extends ModelBiped {
     protected float calculateRotation(float speed, float degree, boolean invert, float offset, float weight, float f, float f1) {
         float rotation = (MathHelper.cos(f * speed + offset) * degree * f1) + (weight * f1);
         return invert ? -rotation : rotation;
+    }
+
+    protected float calculateChainRotation(float speed, float degree, float swing, float swingAmount, float offset, int boxIndex) {
+        return MathHelper.cos(swing * speed + offset * boxIndex) * swingAmount * degree;
+    }
+
+    protected float calculateChainOffset(double rootOffset, ModelRenderer... boxes) {
+        return (float) ((rootOffset * Math.PI) / (2 * boxes.length));
     }
 }

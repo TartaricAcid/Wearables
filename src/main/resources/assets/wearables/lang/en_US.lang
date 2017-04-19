@@ -54,7 +54,7 @@ component.night_vision_goggles.name=Night Vision Goggles
 
 # Tooltips
 
-tooltip.wearable.jetpack.name=Allows powered flight
-tooltip.wearable.wings.name=Allows gliding flight
-tooltip.wearable.flippers.name=Allows faster swimming
+tooltip.wearable.jetpack.name=Provides powered flight
+tooltip.wearable.wings.name=Provides unpowered flight
+tooltip.wearable.flippers.name=Provides faster swimming
 tooltip.wearable.night_vision_goggles.name=Improves vision at night

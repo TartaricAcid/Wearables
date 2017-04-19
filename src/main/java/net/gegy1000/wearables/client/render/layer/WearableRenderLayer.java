@@ -9,14 +9,18 @@ import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
+import net.ilexiconn.llibrary.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderLivingBase;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 
 public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
     private static final Minecraft MC = Minecraft.getMinecraft();
@@ -51,6 +55,9 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
                     ComponentRenderer renderer = RenderRegistry.getRenderer(componentType.getIdentifier());
                     boolean smallArms = WearableUtils.hasSlimArms(entity);
                     WearableComponentModel model = renderer.getModel(smallArms);
+                    if (entity instanceof EntityPlayer && this.renderer.getMainModel() instanceof ModelPlayer) {
+                        MinecraftForge.EVENT_BUS.post(new PlayerModelEvent.SetRotationAngles((ModelPlayer) this.renderer.getMainModel(), (EntityPlayer) entity, limbSwing, limbSwingAmount, age, yaw, pitch, scale));
+                    }
                     model.setModelAttributes(this.renderer.getMainModel());
                     model.setLivingAnimations(entity, limbSwing, limbSwingAmount, partialTicks);
                     model.setOffsets(component.getOffsetY());

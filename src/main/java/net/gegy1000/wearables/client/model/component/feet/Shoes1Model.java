@@ -111,7 +111,7 @@ public class Shoes1Model extends WearableComponentModel {
 
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
-        this.renderParented(this.bipedRightLeg, this.rightBase, scale);
-        this.renderParented(this.bipedLeftLeg, this.leftBase, scale);
+        this.renderParented(this.bipedRightLeg, this.rightBase, 1.1F, 0.0F, -0.05F, 0.0F, scale);
+        this.renderParented(this.bipedLeftLeg, this.leftBase, 1.1F, 0.0F, -0.05F, 0.0F, scale);
     }
 }

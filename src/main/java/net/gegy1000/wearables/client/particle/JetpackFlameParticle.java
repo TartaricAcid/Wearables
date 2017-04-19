@@ -28,7 +28,6 @@ public class JetpackFlameParticle extends Particle {
         this.particleMaxAge = (int) (8.0D / (Math.random() * 0.8D + 0.2D)) + 4;
         this.canCollide = true;
         this.setParticleTextureIndex(48);
-        this.setSize(0.5F, 0.5F);
     }
 
     @Override
