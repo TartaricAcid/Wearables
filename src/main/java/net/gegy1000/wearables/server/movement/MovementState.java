@@ -5,6 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 public class MovementState {
     private final EntityPlayer player;
     private boolean moveUp;
+    private boolean moveForward;
+    private boolean moveBackward;
 
     private boolean dirty;
 
@@ -19,8 +21,30 @@ public class MovementState {
         this.moveUp = moveUp;
     }
 
+    public void setMoveForward(boolean moveForward) {
+        if (this.moveForward != moveForward) {
+            this.dirty = true;
+        }
+        this.moveForward = moveForward;
+    }
+
+    public void setMoveBackward(boolean moveBackward) {
+        if (this.moveBackward != moveBackward) {
+            this.dirty = true;
+        }
+        this.moveBackward = moveBackward;
+    }
+
     public boolean shouldMoveUp() {
         return this.moveUp;
+    }
+
+    public boolean shouldMoveForward() {
+        return this.moveForward;
+    }
+
+    public boolean shouldMoveBackward() {
+        return this.moveBackward;
     }
 
     public EntityPlayer getPlayer() {

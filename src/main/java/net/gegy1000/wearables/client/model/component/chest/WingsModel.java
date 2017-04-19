@@ -6,8 +6,8 @@ import net.minecraft.entity.Entity;
 
 public class WingsModel extends WearableComponentModel {
     public ModelRenderer Main;
-    public ModelRenderer shape45;
-    public ModelRenderer shape45_1;
+    public ModelRenderer rightWing;
+    public ModelRenderer leftWing;
     public ModelRenderer shape46;
     public ModelRenderer shape53;
     public ModelRenderer shape47;
@@ -94,10 +94,10 @@ public class WingsModel extends WearableComponentModel {
         this.shape54.setRotationPoint(10.3F, 0.0F, 0.7F);
         this.shape54.addBox(0.0F, -0.5F, -0.5F, 12, 1, 1, 0.0F);
         this.setRotateAngle(this.shape54, 0.0F, 0.3141592653589793F, 0.0F);
-        this.shape45 = new ModelRenderer(this, 0, 0);
-        this.shape45.setRotationPoint(-3.0F, 0.89F, 2.84F);
-        this.shape45.addBox(-13.0F, -0.5F, -1.0F, 13, 3, 3, 0.0F);
-        this.setRotateAngle(this.shape45, -1.661378914973402F, 0.7929030791810239F, -0.27523842303950574F);
+        this.rightWing = new ModelRenderer(this, 0, 0);
+        this.rightWing.setRotationPoint(-3.0F, 0.89F, 2.84F);
+        this.rightWing.addBox(-13.0F, -0.5F, -1.0F, 13, 3, 3, 0.0F);
+        this.setRotateAngle(this.rightWing, -1.661378914973402F, 0.7929030791810239F, -0.27523842303950574F);
         this.WING2_1 = new ModelRenderer(this, 33, 0);
         this.WING2_1.setRotationPoint(12.3F, 0.2F, 0.4F);
         this.WING2_1.addBox(-9.0F, -0.5F, -1.0F, 9, 1, 2, 0.0F);
@@ -137,10 +137,10 @@ public class WingsModel extends WearableComponentModel {
         this.shape51_3.setRotationPoint(0.0F, 0.1F, 0.0F);
         this.shape51_3.addBox(0.0F, 0.0F, 0.0F, 17, 0, 17, 0.0F);
         this.setRotateAngle(this.shape51_3, 0.012566370614359173F, 0.27960174616949157F, 0.0F);
-        this.shape45_1 = new ModelRenderer(this, 0, 0);
-        this.shape45_1.setRotationPoint(3.0F, 0.89F, 2.84F);
-        this.shape45_1.addBox(0.0F, -0.5F, -1.0F, 13, 3, 3, 0.0F);
-        this.setRotateAngle(this.shape45_1, -1.661378914973402F, -0.7929030791810239F, 0.27523842303950574F);
+        this.leftWing = new ModelRenderer(this, 0, 0);
+        this.leftWing.setRotationPoint(3.0F, 0.89F, 2.84F);
+        this.leftWing.addBox(0.0F, -0.5F, -1.0F, 13, 3, 3, 0.0F);
+        this.setRotateAngle(this.leftWing, -1.661378914973402F, -0.7929030791810239F, 0.27523842303950574F);
         this.shape54_3 = new ModelRenderer(this, 33, 4);
         this.shape54_3.setRotationPoint(-8.8F, 0.0F, 0.1F);
         this.shape54_3.addBox(-9.0F, -0.5F, -0.5F, 9, 1, 1, 0.0F);
@@ -152,27 +152,27 @@ public class WingsModel extends WearableComponentModel {
         this.shape46_1.addChild(this.shape47_1);
         this.WINGSHIT_1.addChild(this.shape54_2);
         this.shape47.addChild(this.shape51);
-        this.shape45_1.addChild(this.shape53_1);
+        this.leftWing.addChild(this.shape53_1);
         this.shape47.addChild(this.wingggg);
         this.wingggg.addChild(this.shape51_1);
         this.shape47.addChild(this.WINGSHIT);
         this.shape47_1.addChild(this.shape51_2);
         this.wingggg.addChild(this.shape48);
-        this.shape45_1.addChild(this.shape46_1);
+        this.leftWing.addChild(this.shape46_1);
         this.shape46.addChild(this.shape52);
         this.WING2.addChild(this.shape54_1);
         this.WINGSHIT.addChild(this.shape54);
-        this.Main.addChild(this.shape45);
+        this.Main.addChild(this.rightWing);
         this.shape46_1.addChild(this.WING2_1);
-        this.shape45.addChild(this.shape46);
+        this.rightWing.addChild(this.shape46);
         this.shape46_1.addChild(this.shape52_1);
-        this.shape45.addChild(this.shape53);
+        this.rightWing.addChild(this.shape53);
         this.shape47_1.addChild(this.WINGSHIT_1);
         this.shape47_1.addChild(this.wingggg_1);
         this.shape46.addChild(this.WING2);
         this.wingggg_1.addChild(this.shape48_1);
         this.wingggg_1.addChild(this.shape51_3);
-        this.Main.addChild(this.shape45_1);
+        this.Main.addChild(this.leftWing);
         this.WING2_1.addChild(this.shape54_3);
         this.shape46.addChild(this.shape47);
     }
@@ -180,5 +180,9 @@ public class WingsModel extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedBody, this.Main, scale);
+        this.rightWing.rotateAngleY = this.calculateRotation(0.5F, 0.5F, false, 0.0F, 0.4F, limbSwing, limbSwingAmount) + 0.5F;
+        this.leftWing.rotateAngleY = this.calculateRotation(0.5F, 0.5F, true, 0.0F, 0.4F, limbSwing, limbSwingAmount) - 0.5F;
+        this.shape46.rotateAngleZ = this.calculateRotation(0.5F, 0.5F, true, 0.5F, 0.4F, limbSwing, limbSwingAmount);
+        this.shape46_1.rotateAngleZ = this.calculateRotation(0.5F, 0.5F, false, 0.5F, 0.4F, limbSwing, limbSwingAmount);
     }
 }

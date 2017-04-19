@@ -8,6 +8,7 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -90,5 +91,10 @@ public abstract class WearableComponentModel extends ModelBiped {
         modelRenderer.rotateAngleX = x;
         modelRenderer.rotateAngleY = y;
         modelRenderer.rotateAngleZ = z;
+    }
+
+    protected float calculateRotation(float speed, float degree, boolean invert, float offset, float weight, float f, float f1) {
+        float rotation = (MathHelper.cos(f * speed + offset) * degree * f1) + (weight * f1);
+        return invert ? -rotation : rotation;
     }
 }

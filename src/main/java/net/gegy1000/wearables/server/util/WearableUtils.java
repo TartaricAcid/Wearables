@@ -15,6 +15,8 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 
@@ -24,6 +26,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class WearableUtils {
+    private static final float TO_RADIANS = 0.017453292F;
     private static final EntityEquipmentSlot[] ARMOUR_SLOTS = new EntityEquipmentSlot[] { EntityEquipmentSlot.HEAD, EntityEquipmentSlot.CHEST, EntityEquipmentSlot.LEGS, EntityEquipmentSlot.FEET };
 
     public static boolean hasSlimArms(Entity entity) {
@@ -113,5 +116,33 @@ public class WearableUtils {
             }
         }
         return false;
+    }
+
+    public static Vec3d offsetFront(EntityPlayer player, float front, float pitch) {
+        float cos = MathHelper.cos(-player.renderYawOffset * TO_RADIANS - (float) Math.PI) * front;
+        float sin = MathHelper.sin(-player.renderYawOffset * TO_RADIANS - (float) Math.PI) * front;
+        float pitchCos = -MathHelper.cos(-pitch * TO_RADIANS);
+        float pitchSin = MathHelper.sin(-pitch * TO_RADIANS);
+        return new Vec3d(player.prevPosX + (sin * pitchCos), player.prevPosY + pitchSin, player.prevPosZ + (cos * pitchCos));
+    }
+
+    public static Vec3d offsetSide(EntityPlayer player, float side, float pitch) {
+        float yaw = player.renderYawOffset;
+        if (side < 0) {
+            side = -side;
+            yaw += 90;
+        } else {
+            yaw -= 90;
+        }
+        float cos = MathHelper.cos(-yaw * TO_RADIANS - (float) Math.PI) * side;
+        float sin = MathHelper.sin(-yaw * TO_RADIANS - (float) Math.PI) * side;
+        float pitchCos = -MathHelper.cos(-pitch * TO_RADIANS);
+        float pitchSin = MathHelper.sin(-pitch * TO_RADIANS);
+        return new Vec3d(player.prevPosX + (sin * pitchCos), player.prevPosY + pitchSin, player.prevPosZ + (cos * pitchCos));
+    }
+
+    public static Vec3d offset(EntityPlayer player, float front, float side, float pitch) {
+        Vec3d frontVec = WearableUtils.offsetFront(player, front, pitch).addVector(-player.prevPosX, -player.prevPosY, -player.prevPosZ);
+        return WearableUtils.offsetSide(player, side, pitch).add(frontVec);
     }
 }

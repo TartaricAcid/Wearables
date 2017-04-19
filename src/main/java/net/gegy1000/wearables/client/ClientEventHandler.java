@@ -33,8 +33,12 @@ public class ClientEventHandler {
             this.movementState.unmarkDirty();
             if (WearableUtils.getMovementHandlers(MC.player).isEmpty()) {
                 this.movementState.setMoveUp(false);
+                this.movementState.setMoveForward(false);
+                this.movementState.setMoveBackward(false);
             } else {
                 this.movementState.setMoveUp(MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying);
+                this.movementState.setMoveForward(MC.gameSettings.keyBindForward.isKeyDown());
+                this.movementState.setMoveBackward(MC.gameSettings.keyBindBack.isKeyDown());
             }
             if (this.movementState.isDirty()) {
                 Wearables.NETWORK_WRAPPER.sendToServer(new UpdateMovementMessage(this.movementState, false));
@@ -46,9 +50,7 @@ public class ClientEventHandler {
     public void setFogDensity(EntityViewRenderEvent.FogDensity event) {
         if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
             GlStateManager.setFog(GlStateManager.FogMode.EXP);
-            float brightnessFactor = MC.world.getSunBrightnessFactor(1.0F);
-            float inverseFactor = 1.0F - brightnessFactor;
-            event.setDensity(0.01F * inverseFactor + event.getDensity() * brightnessFactor);
+            event.setDensity(0.04F);
             event.setCanceled(true);
         }
     }
@@ -58,9 +60,9 @@ public class ClientEventHandler {
         if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
             float brightnessFactor = MC.world.getSunBrightnessFactor(1.0F);
             float inverseFactor = 1.0F - brightnessFactor;
-            event.setRed(0.2F * inverseFactor + event.getRed() * brightnessFactor);
-            event.setGreen(1.0F * inverseFactor + event.getGreen() * brightnessFactor);
-            event.setBlue(0.4F * inverseFactor + event.getBlue() * brightnessFactor);
+            event.setRed(0.05F * inverseFactor + event.getRed() * brightnessFactor);
+            event.setGreen(0.5F * inverseFactor + event.getGreen() * brightnessFactor);
+            event.setBlue(0.1F * inverseFactor + event.getBlue() * brightnessFactor);
         }
     }
 }

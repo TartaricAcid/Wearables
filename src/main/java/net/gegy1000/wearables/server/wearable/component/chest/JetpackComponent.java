@@ -67,7 +67,7 @@ public class JetpackComponent extends WearableComponentType {
 
     @Override
     public void onFall(EntityPlayer player, LivingFallEvent event) {
-        float distance = (float) (player.lastTickPosY - player.posY) * 7.0F;
+        float distance = (float) (player.lastTickPosY - player.posY) * 10.0F;
         event.setDistance(distance);
     }
 }
