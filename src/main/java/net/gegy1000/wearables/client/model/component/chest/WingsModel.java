@@ -199,7 +199,7 @@ public class WingsModel extends WearableComponentModel {
             ModelRenderer part = this.rightWingParts[index];
             float rotation = this.calculateChainRotation(0.25F, 0.3F, limbSwing, limbSwingAmount, flapOffset, index);
             if (index == 0) {
-                part.rotateAngleY = rotation + 0.4F;
+                part.rotateAngleY = rotation + 0.5F;
                 if (onGround) {
                     part.rotateAngleY += 0.8F;
                 }
@@ -214,7 +214,7 @@ public class WingsModel extends WearableComponentModel {
             ModelRenderer part = this.leftWingParts[index];
             float rotation = this.calculateChainRotation(0.25F, 0.3F, limbSwing, limbSwingAmount, flapOffset, index);
             if (index == 0) {
-                part.rotateAngleY = -rotation - 0.4F;
+                part.rotateAngleY = -rotation - 0.5F;
                 if (onGround) {
                     part.rotateAngleY -= 0.8F;
                 }
