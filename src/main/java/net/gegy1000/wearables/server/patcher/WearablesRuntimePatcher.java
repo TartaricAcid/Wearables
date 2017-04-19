@@ -11,7 +11,11 @@ import net.minecraft.client.renderer.tileentity.TileEntityItemStackRenderer;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraftforge.client.ForgeHooksClient;
+
+import java.util.Map;
 
 public class WearablesRuntimePatcher extends RuntimePatcher {
     @Override
@@ -44,5 +48,26 @@ public class WearablesRuntimePatcher extends RuntimePatcher {
                         .var(FLOAD, 3)
                         .var(FLOAD, 4)
                         .method(INVOKESTATIC, WearablesClientHooks.class, "applyRotations", RenderPlayer.class, AbstractClientPlayer.class, float.class, float.class, float.class, void.class));
+        this.patchClass(EntityLivingBase.class)
+                .patchMethod("isPotionActive", Potion.class, boolean.class)
+                .apply(Patch.BEFORE, data -> data.node.getPrevious() == null, method -> method
+                        .var(ALOAD, 0)
+                        .field(GETFIELD, EntityLivingBase.class, "activePotionsMap", Map.class)
+                        .var(ASTORE, 2)
+                        .var(ALOAD, 0)
+                        .var(ALOAD, 1)
+                        .var(ALOAD, 2)
+                        .method(INVOKESTATIC, WearablesHooks.class, "isPotionActive", EntityLivingBase.class, Potion.class, Map.class, boolean.class)
+                        .node(IRETURN)).pop()
+                .patchMethod("getActivePotionEffect", Potion.class, PotionEffect.class)
+                .apply(Patch.BEFORE, data -> data.node.getPrevious() == null, method -> method
+                        .var(ALOAD, 0)
+                        .field(GETFIELD, EntityLivingBase.class, "activePotionsMap", Map.class)
+                        .var(ASTORE, 2)
+                        .var(ALOAD, 0)
+                        .var(ALOAD, 1)
+                        .var(ALOAD, 2)
+                        .method(INVOKESTATIC, WearablesHooks.class, "getActivePotionEffect", EntityLivingBase.class, Potion.class, Map.class, PotionEffect.class)
+                        .node(ARETURN));
     }
 }

@@ -4,8 +4,11 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.util.WearableUtils;
+import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -36,6 +39,28 @@ public class ClientEventHandler {
             if (this.movementState.isDirty()) {
                 Wearables.NETWORK_WRAPPER.sendToServer(new UpdateMovementMessage(this.movementState, false));
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void setFogDensity(EntityViewRenderEvent.FogDensity event) {
+        if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
+            GlStateManager.setFog(GlStateManager.FogMode.EXP);
+            float brightnessFactor = MC.world.getSunBrightnessFactor(1.0F);
+            float inverseFactor = 1.0F - brightnessFactor;
+            event.setDensity(0.01F * inverseFactor + event.getDensity() * brightnessFactor);
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void setFogColors(EntityViewRenderEvent.FogColors event) {
+        if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
+            float brightnessFactor = MC.world.getSunBrightnessFactor(1.0F);
+            float inverseFactor = 1.0F - brightnessFactor;
+            event.setRed(0.2F * inverseFactor + event.getRed() * brightnessFactor);
+            event.setGreen(1.0F * inverseFactor + event.getGreen() * brightnessFactor);
+            event.setBlue(0.4F * inverseFactor + event.getBlue() * brightnessFactor);
         }
     }
 }

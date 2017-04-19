@@ -99,4 +99,19 @@ public class WearableUtils {
         }
         return movementHandlers;
     }
+
+    public static boolean hasComponent(EntityPlayer player, WearableComponentType type) {
+        for (EntityEquipmentSlot slot : ARMOUR_SLOTS) {
+            ItemStack stack = player.getItemStackFromSlot(slot);
+            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+                Wearable wearable = WearableItem.getWearable(stack);
+                for (WearableComponent component : wearable.getComponents()) {
+                    if (component.getType().equals(type)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
