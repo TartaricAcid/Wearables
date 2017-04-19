@@ -185,7 +185,7 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
     @Override
     public IBlockState getStateFromMeta(int meta) {
         Half half = Half.fromMetadata(meta & 1);
-        EnumFacing facing = EnumFacing.getFront((meta >> 1) & 4);
+        EnumFacing facing = EnumFacing.getHorizontal((meta >> 1) & 7);
         if (facing.getAxis() == Axis.Y) {
             facing = EnumFacing.NORTH;
         }
@@ -194,7 +194,7 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(HALF).getMetadata() | (state.getValue(FACING).getHorizontalIndex() << 1);
+        return state.getValue(HALF).getMetadata() | (state.getValue(FACING).getIndex() << 1);
     }
 
     @Override

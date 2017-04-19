@@ -35,7 +35,6 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
         this.setHardness(0.5F);
         this.setUnlocalizedName("mannequin_head_stand");
         this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
-        this.setLightLevel(0.3F);
         this.setCreativeTab(TabRegistry.GENERAL);
     }
 
@@ -51,7 +50,7 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
             MannequinHeadStandEntity entity = (MannequinHeadStandEntity) tile;
             ItemStack heldItem = player.getHeldItem(hand);
             if (player.inventory.getFirstEmptyStack() >= 0) {
-                if (!(heldItem.getItem() instanceof WearableItem) || ((WearableItem) heldItem.getItem()).getEquipmentSlot() != EntityEquipmentSlot.HEAD) {
+                if (!(heldItem.getItem() instanceof WearableItem) || ((WearableItem) heldItem.getItem()).armorType != EntityEquipmentSlot.HEAD) {
                     heldItem = ItemStack.EMPTY;
                 }
                 ItemStack result = entity.swapItem(heldItem);
@@ -102,7 +101,7 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing facing = EnumFacing.getFront(meta & 4);
+        EnumFacing facing = EnumFacing.getFront(meta);
         if (facing.getAxis() == Axis.Y) {
             facing = EnumFacing.NORTH;
         }
@@ -111,7 +110,7 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     @Override

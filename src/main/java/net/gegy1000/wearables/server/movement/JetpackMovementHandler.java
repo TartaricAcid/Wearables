@@ -14,9 +14,12 @@ import java.util.Random;
 public class JetpackMovementHandler extends MovementHandler {
     @Override
     public void updateMovement(EntityPlayer player, MovementState movementState) {
+        ItemStack fuel = this.getFuel(player);
+        if (!player.world.isRemote) {
+            movementState.setHasFuel(!fuel.isEmpty() || player.capabilities.isCreativeMode);
+        }
         if (movementState.shouldMoveUp()) {
-            ItemStack fuel = this.getFuel(player);
-            if (!fuel.isEmpty() || player.capabilities.isCreativeMode) {
+            if (movementState.hasFuel()) {
                 if (!player.world.isRemote && !player.capabilities.isCreativeMode && player.ticksExisted % 10 == 0) {
                     fuel.setItemDamage(fuel.getItemDamage() + 1);
                     if (fuel.getItemDamage() >= fuel.getMaxDamage()) {

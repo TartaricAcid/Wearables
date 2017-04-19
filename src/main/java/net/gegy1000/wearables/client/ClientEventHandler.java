@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.util.WearableUtils;
@@ -31,6 +32,7 @@ public class ClientEventHandler {
         if (player != null) {
             if (this.movementState == null || this.movementState.getPlayer() != player) {
                 this.movementState = new MovementState(player);
+                MovementHandler.MOVEMENT_STATES.put(player.getUniqueID(), this.movementState);
             }
             this.movementState.unmarkDirty();
             if (WearableUtils.getMovementHandlers(MC.player).isEmpty()) {

@@ -13,9 +13,7 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 public class UpdateMovementMessage implements IMessage {
     private int playerId;
     private boolean hasPlayer;
-    private boolean moveUp;
-    private boolean moveForward;
-    private boolean moveBackward;
+    private byte flags;
 
     public UpdateMovementMessage() {
     }
@@ -23,9 +21,7 @@ public class UpdateMovementMessage implements IMessage {
     public UpdateMovementMessage(MovementState state, boolean hasPlayer) {
         this.playerId = state.getPlayer().getEntityId();
         this.hasPlayer = hasPlayer;
-        this.moveUp = state.shouldMoveUp();
-        this.moveForward = state.shouldMoveForward();
-        this.moveBackward = state.shouldMoveBackward();
+        this.flags = state.getFlags();
     }
 
     @Override
@@ -34,9 +30,7 @@ public class UpdateMovementMessage implements IMessage {
         if (this.hasPlayer) {
             this.playerId = buf.readInt();
         }
-        this.moveUp = buf.readBoolean();
-        this.moveForward = buf.readBoolean();
-        this.moveBackward = buf.readBoolean();
+        this.flags = buf.readByte();
     }
 
     @Override
@@ -45,9 +39,7 @@ public class UpdateMovementMessage implements IMessage {
         if (this.hasPlayer) {
             buf.writeInt(this.playerId);
         }
-        buf.writeBoolean(this.moveUp);
-        buf.writeBoolean(this.moveForward);
-        buf.writeBoolean(this.moveBackward);
+        buf.writeByte(this.flags);
     }
 
     public static class Handler implements IMessageHandler<UpdateMovementMessage, IMessage> {
@@ -57,17 +49,13 @@ public class UpdateMovementMessage implements IMessage {
                 EntityPlayer player = Wearables.PROXY.getPlayer(ctx);
                 if (ctx.side.isServer()) {
                     MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(player.getUniqueID(), uuid -> new MovementState(player));
-                    state.setMoveUp(message.moveUp);
-                    state.setMoveForward(message.moveForward);
-                    state.setMoveBackward(message.moveBackward);
+                    state.setFlags(message.flags);
                 } else {
                     Entity senderEntity = player.world.getEntityByID(message.playerId);
                     if (senderEntity instanceof EntityPlayer) {
                         EntityPlayer sender = (EntityPlayer) senderEntity;
                         MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(sender.getUniqueID(), uuid -> new MovementState(player));
-                        state.setMoveUp(message.moveUp);
-                        state.setMoveForward(message.moveForward);
-                        state.setMoveBackward(message.moveBackward);
+                        state.setFlags(message.flags);
                     }
                 }
             }, ctx);
