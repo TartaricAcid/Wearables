@@ -36,9 +36,11 @@ public abstract class MovementHandler {
                 if (world instanceof WorldServer) {
                     WorldServer worldServer = (WorldServer) world;
                     Set<? extends EntityPlayer> trackers = worldServer.getEntityTracker().getTrackingPlayers(state.getPlayer());
+                    UpdateMovementMessage message = new UpdateMovementMessage(state, true);
                     for (EntityPlayer tracker : trackers) {
-                        Wearables.NETWORK_WRAPPER.sendTo(new UpdateMovementMessage(state, true), (EntityPlayerMP) tracker);
+                        Wearables.NETWORK_WRAPPER.sendTo(message, (EntityPlayerMP) tracker);
                     }
+                    Wearables.NETWORK_WRAPPER.sendTo(message, (EntityPlayerMP) state.getPlayer());
                 }
                 state.unmarkDirty();
             }

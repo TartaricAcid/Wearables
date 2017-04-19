@@ -82,6 +82,9 @@ public class MovementState {
     }
 
     public void setFlags(byte flags) {
+        if (flags != this.flags) {
+            this.dirty = true;
+        }
         this.flags = flags;
     }
 

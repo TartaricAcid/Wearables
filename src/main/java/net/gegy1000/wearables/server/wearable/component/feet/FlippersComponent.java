@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.server.wearable.component.feet;
 
-import net.gegy1000.wearables.server.core.WearablesHooks;
+import net.gegy1000.wearables.server.movement.MovementHandler;
+import net.gegy1000.wearables.server.movement.SwimMovementHandler;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 
 public class FlippersComponent extends WearableComponentType {
     private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.LEATHER, 8), new ItemStack(Items.IRON_INGOT, 2), new ItemStack(Items.STRING, 2) };
+    private static final SwimMovementHandler MOVEMENT_HANDLER = new SwimMovementHandler();
 
     @Override
     public String getIdentifier() {
@@ -36,19 +38,6 @@ public class FlippersComponent extends WearableComponentType {
     }
 
     @Override
-    public void tick(EntityPlayer player) {
-        super.tick(player);
-        if (player.isInWater() && (Math.abs(player.moveForward) > 0.01F || !player.onGround)) {
-            WearablesHooks.setFlag(player, 7, true);
-        } else if (player.onGround && !player.isInWater() && player.isElytraFlying()) {
-            WearablesHooks.setFlag(player, 7, false);
-        }
-        if (!player.onGround && player.isInWater() && Math.abs(player.moveForward) <= 0.01F) {
-            player.motionY += 0.02;
-        }
-    }
-
-    @Override
     public int getDepthStrideModifier(EntityPlayer player) {
         int modifier = 8;
         if (!player.onGround) {
@@ -60,5 +49,10 @@ public class FlippersComponent extends WearableComponentType {
     @Override
     public boolean hasTooltip() {
         return true;
+    }
+
+    @Override
+    public MovementHandler getMovementHandler() {
+        return MOVEMENT_HANDLER;
     }
 }
