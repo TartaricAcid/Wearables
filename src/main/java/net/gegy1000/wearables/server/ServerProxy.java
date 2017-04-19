@@ -19,6 +19,7 @@ import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.recipe.RecipeRegistry;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -90,5 +91,9 @@ public class ServerProxy implements IGuiHandler {
 
     public EntityPlayer getPlayer(MessageContext ctx) {
         return ctx.getServerHandler().player;
+    }
+
+    public boolean isClientPlayer(Entity entity) {
+        return false;
     }
 }

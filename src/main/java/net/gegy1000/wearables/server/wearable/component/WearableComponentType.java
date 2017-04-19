@@ -66,4 +66,8 @@ public abstract class WearableComponentType {
     public MovementHandler getMovementHandler() {
         return null;
     }
+
+    public boolean hasTooltip() {
+        return false;
+    }
 }

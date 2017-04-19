@@ -70,4 +70,9 @@ public class JetpackComponent extends WearableComponentType {
         float distance = (float) (player.lastTickPosY - player.posY) * 10.0F;
         event.setDistance(distance);
     }
+
+    @Override
+    public boolean hasTooltip() {
+        return true;
+    }
 }

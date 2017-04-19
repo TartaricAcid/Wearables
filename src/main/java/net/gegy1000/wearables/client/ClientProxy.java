@@ -97,4 +97,9 @@ public class ClientProxy extends ServerProxy {
         }
         return super.getPlayer(ctx);
     }
+
+    @Override
+    public boolean isClientPlayer(Entity entity) {
+        return entity == MC.player;
+    }
 }

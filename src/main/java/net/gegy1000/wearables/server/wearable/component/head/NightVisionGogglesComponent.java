@@ -54,4 +54,9 @@ public class NightVisionGogglesComponent extends WearableComponentType {
         }
         return super.getMaximum(property);
     }
+
+    @Override
+    public boolean hasTooltip() {
+        return true;
+    }
 }

@@ -1,15 +1,19 @@
 package net.gegy1000.wearables.server.wearable.component.chest;
 
 import net.gegy1000.wearables.client.render.ComponentProperty;
+import net.gegy1000.wearables.server.movement.MovementHandler;
+import net.gegy1000.wearables.server.movement.WingsMovementHandler;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 
 public class WingsComponent extends WearableComponentType {
-    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Items.IRON_INGOT, 30), new ItemStack(Items.FEATHER, 50), new ItemStack(Items.LEATHER, 10), new ItemStack(Items.BONE, 10) };
+    private static final ItemStack[] INGREDIENTS = new ItemStack[] { new ItemStack(Blocks.DRAGON_EGG), new ItemStack(Items.IRON_INGOT, 30), new ItemStack(Items.FEATHER, 50), new ItemStack(Items.BONE, 10) };
+    private static final WingsMovementHandler MOVEMENT_HANDLER = new WingsMovementHandler();
 
     @Override
     public String getIdentifier() {
@@ -54,7 +58,16 @@ public class WingsComponent extends WearableComponentType {
 
     @Override
     public void onFall(EntityPlayer player, LivingFallEvent event) {
-        float distance = (float) (player.lastTickPosY - player.posY) * 7.0F;
-        event.setDistance(distance);
+        event.setDistance(0.0F);
+    }
+
+    @Override
+    public boolean hasTooltip() {
+        return true;
+    }
+
+    @Override
+    public MovementHandler getMovementHandler() {
+        return MOVEMENT_HANDLER;
     }
 }

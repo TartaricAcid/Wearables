@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.gegy1000.wearables.server.util.WearableUtils;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
 
@@ -180,6 +181,10 @@ public class WingsModel extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedBody, this.Main, scale);
+        if (entity != null && !WearableUtils.onGround(entity)) {
+            limbSwing = age;
+            limbSwingAmount = 1.2F;
+        }
         this.rightWing.rotateAngleY = this.calculateRotation(0.5F, 0.5F, false, 0.0F, 0.4F, limbSwing, limbSwingAmount) + 0.5F;
         this.leftWing.rotateAngleY = this.calculateRotation(0.5F, 0.5F, true, 0.0F, 0.4F, limbSwing, limbSwingAmount) - 0.5F;
         this.shape46.rotateAngleZ = this.calculateRotation(0.5F, 0.5F, true, 0.5F, 0.4F, limbSwing, limbSwingAmount);

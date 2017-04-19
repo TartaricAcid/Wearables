@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
@@ -50,8 +51,11 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, player, tooltip, advanced);
-        tooltip.add(I18n.translateToLocal("label.wearable_layers.name"));
         WearableComponent component = WearableComponentItem.getComponent(stack);
+        if (component.getType().hasTooltip()) {
+            tooltip.add(TextFormatting.BOLD + I18n.translateToLocal("tooltip.wearable." + component.getType().getIdentifier() + ".name"));
+        }
+        tooltip.add(I18n.translateToLocal("label.wearable_layers.name"));
         int layer = 1;
         for (int i = 0; i < component.getType().getLayerCount(); i++) {
             if (component.getType().canColour(i)) {

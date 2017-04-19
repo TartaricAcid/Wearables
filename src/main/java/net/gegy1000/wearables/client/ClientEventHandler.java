@@ -5,7 +5,9 @@ import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
+import net.ilexiconn.llibrary.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
@@ -63,6 +65,24 @@ public class ClientEventHandler {
             event.setRed(0.05F * inverseFactor + event.getRed() * brightnessFactor);
             event.setGreen(0.5F * inverseFactor + event.getGreen() * brightnessFactor);
             event.setBlue(0.1F * inverseFactor + event.getBlue() * brightnessFactor);
+        }
+    }
+
+    @SubscribeEvent
+    public void setRotationAngles(PlayerModelEvent.SetRotationAngles event) {
+        EntityPlayer player = event.getEntityPlayer();
+        if (!WearableUtils.onGround(player)) {
+            if (WearableUtils.hasComponent(player, ComponentRegistry.JETPACK) || WearableUtils.hasComponent(player, ComponentRegistry.WINGS)) {
+                ModelPlayer model = event.getModel();
+                model.bipedRightArm.rotateAngleX = 0.0F;
+                model.bipedLeftArm.rotateAngleX = 0.0F;
+                model.bipedRightLeg.rotateAngleX = 0.0F;
+                model.bipedLeftLeg.rotateAngleX = 0.0F;
+                model.bipedRightArmwear.rotateAngleX = 0.0F;
+                model.bipedLeftArmwear.rotateAngleX = 0.0F;
+                model.bipedRightLegwear.rotateAngleX = 0.0F;
+                model.bipedLeftLegwear.rotateAngleX = 0.0F;
+            }
         }
     }
 }

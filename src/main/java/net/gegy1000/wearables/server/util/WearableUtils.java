@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.util;
 
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.item.WearableItem;
@@ -144,5 +145,19 @@ public class WearableUtils {
     public static Vec3d offset(EntityPlayer player, float front, float side, float pitch) {
         Vec3d frontVec = WearableUtils.offsetFront(player, front, pitch).addVector(-player.prevPosX, -player.prevPosY, -player.prevPosZ);
         return WearableUtils.offsetSide(player, side, pitch).add(frontVec);
+    }
+
+    public static boolean onGround(Entity entity) {
+        boolean onGround = entity.onGround;
+        if (!Wearables.PROXY.isClientPlayer(entity)) {
+            double moveY = -0.2;
+            double actualMoveY = moveY;
+            List collidingEntities = entity.world.getCollisionBoxes(entity, entity.getEntityBoundingBox().addCoord(0, moveY, 0));
+            for (Object collidingEntity : collidingEntities) {
+                moveY = ((AxisAlignedBB) collidingEntity).calculateYOffset(entity.getEntityBoundingBox(), moveY);
+            }
+            onGround = actualMoveY != moveY;
+        }
+        return onGround || entity.isRiding();
     }
 }

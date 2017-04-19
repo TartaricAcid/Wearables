@@ -56,4 +56,9 @@ public class FlippersComponent extends WearableComponentType {
         }
         return modifier;
     }
+
+    @Override
+    public boolean hasTooltip() {
+        return true;
+    }
 }
