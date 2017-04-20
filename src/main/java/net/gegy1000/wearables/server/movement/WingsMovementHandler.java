@@ -30,12 +30,12 @@ public class WingsMovementHandler extends MovementHandler {
                 player.motionY *= 0.9;
             }
         }
-        state.setWingsOpen(!WearableUtils.onGround(player));
+        state.setFlying(!WearableUtils.onGround(player));
     }
 
     @Override
     public void applyRotations(EntityPlayer player, float yaw, float bodyYaw, float partialTicks) {
-        float animationTimer = LocalPlayerState.getState(player).getRenderWingTimer(partialTicks);
+        float animationTimer = LocalPlayerState.getState(player).getRenderFlyTimer(partialTicks);
         float limbSwingAmount = player.prevLimbSwingAmount + (player.limbSwingAmount - player.prevLimbSwingAmount) * partialTicks;
         GlStateManager.rotate(ClientUtils.interpolateRotation(0.0F, -limbSwingAmount * 40.0F, animationTimer), 1.0F, 0.0F, 0.0F);
     }

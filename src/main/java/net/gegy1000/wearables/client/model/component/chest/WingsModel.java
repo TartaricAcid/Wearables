@@ -201,7 +201,7 @@ public class WingsModel extends WearableComponentModel {
         float timer = 1.0F;
         if (entity instanceof EntityPlayer) {
             LocalPlayerState state = LocalPlayerState.getState((EntityPlayer) entity);
-            timer = 1.0F - state.getRenderWingTimer(LLibrary.PROXY.getPartialTicks());
+            timer = 1.0F - state.getRenderFlyTimer(LLibrary.PROXY.getPartialTicks());
             limbSwing += age * 0.15F;
             limbSwingAmount = ClientUtils.interpolate(limbSwingAmount, 0.4F, timer);
         }

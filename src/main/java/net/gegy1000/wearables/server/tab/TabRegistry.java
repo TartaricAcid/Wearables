@@ -12,7 +12,7 @@ public class TabRegistry {
     public static final CreativeTabs GENERAL = new CreativeTabs(Wearables.MODID + ".general") {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(BlockRegistry.DISPLAY_MANNEQUIN);
+            return new ItemStack(BlockRegistry.WEARABLE_FABRICATOR);
         }
     };
     public static final CreativeTabs COMPONENTS = new CreativeTabs(Wearables.MODID + ".components") {

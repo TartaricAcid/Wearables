@@ -62,7 +62,7 @@ public abstract class MachineBlock extends BlockContainer implements RegisterBlo
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        EnumFacing facing = EnumFacing.getFront(meta & 4);
+        EnumFacing facing = EnumFacing.getHorizontal(meta);
         if (facing.getAxis() == EnumFacing.Axis.Y) {
             facing = EnumFacing.NORTH;
         }
@@ -71,7 +71,7 @@ public abstract class MachineBlock extends BlockContainer implements RegisterBlo
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).getHorizontalIndex();
+        return state.getValue(FACING).getIndex();
     }
 
     @Override

@@ -65,7 +65,7 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void setFogColors(EntityViewRenderEvent.FogColors event) {
         if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
-            float brightnessFactor = MC.world.getSunBrightnessFactor(1.0F);
+            float brightnessFactor = MC.world.getLightBrightness(MC.player.getPosition());
             float inverseFactor = 1.0F - brightnessFactor;
             event.setRed(0.05F * inverseFactor + event.getRed() * brightnessFactor);
             event.setGreen(0.5F * inverseFactor + event.getGreen() * brightnessFactor);

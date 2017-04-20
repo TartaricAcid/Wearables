@@ -56,7 +56,6 @@ public class UpdateMovementMessage implements IMessage {
                         EntityPlayer sender = (EntityPlayer) senderEntity;
                         MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(sender.getUniqueID(), uuid -> new MovementState(player));
                         state.setFlags(message.flags);
-                        System.out.println(state.getPlayer().getName() + ": " + state.shouldMoveUp());
                     }
                 }
             }, ctx);

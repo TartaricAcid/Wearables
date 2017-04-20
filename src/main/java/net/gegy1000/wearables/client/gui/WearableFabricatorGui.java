@@ -66,6 +66,7 @@ public class WearableFabricatorGui extends GuiContainer {
                 ItemStack stack = new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
                 stack.setTagCompound(new WearableComponent(componentType).serializeNBT());
                 if (componentType == this.entity.getSelectedComponent()) {
+                    GlStateManager.disableLighting();
                     this.mc.getTextureManager().bindTexture(TEXTURE);
                     this.drawTexturedModalRect(renderX - 1, renderY - 1, 192, 0, 18, 18);
                 }

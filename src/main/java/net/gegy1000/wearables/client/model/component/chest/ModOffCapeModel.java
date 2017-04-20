@@ -41,9 +41,7 @@ public class ModOffCapeModel extends WearableComponentModel {
             float lift = (float) MathHelper.clamp(deltaY * 10.0F, -6.0F, 32.0F);
             float forwardMovement = (float) (deltaX * sin + deltaZ * cos) * 100.0F;
             float sidewardMovement = (float) (deltaX * cos - deltaZ * sin) * 100.0F;
-            if (forwardMovement < 0.0F) {
-                forwardMovement = 0.0F;
-            }
+            forwardMovement = MathHelper.clamp(forwardMovement, 0.0F, 200.0F);
             float cameraYaw = player.prevCameraYaw + (player.cameraYaw - player.prevCameraYaw) * partialTicks;
             lift = lift + MathHelper.sin((player.prevDistanceWalkedModified + (player.distanceWalkedModified - player.prevDistanceWalkedModified) * partialTicks) * 6.0F) * 32.0F * cameraYaw;
             if (player.isSneaking()) {

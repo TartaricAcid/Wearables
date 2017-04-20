@@ -3,6 +3,7 @@ package net.gegy1000.wearables.server.movement;
 import net.gegy1000.wearables.client.particle.WearableParticles;
 import net.gegy1000.wearables.server.item.JetpackFuelItem;
 import net.gegy1000.wearables.server.util.WearableUtils;
+import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -14,6 +15,7 @@ import java.util.Random;
 public class JetpackMovementHandler extends MovementHandler {
     @Override
     public void updateMovement(EntityPlayer player, MovementState movementState) {
+        LocalPlayerState state = LocalPlayerState.getState(player);
         ItemStack fuel = this.getFuel(player);
         if (!player.world.isRemote) {
             movementState.setHasFuel(!fuel.isEmpty() || player.capabilities.isCreativeMode);
@@ -55,15 +57,14 @@ public class JetpackMovementHandler extends MovementHandler {
                 }
             }
         }
+        state.setFlying(!WearableUtils.onGround(player));
     }
 
     @Override
     public void applyRotations(EntityPlayer player, float yaw, float bodyYaw, float partialTicks) {
-        if (WearableUtils.onGround(player)) {
-            return;
-        }
+        float animationTimer = LocalPlayerState.getState(player).getRenderFlyTimer(partialTicks);
         float limbSwingAmount = player.prevLimbSwingAmount + (player.limbSwingAmount - player.prevLimbSwingAmount) * partialTicks;
-        GlStateManager.rotate(-limbSwingAmount * 40.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(ClientUtils.interpolateRotation(0.0F, -limbSwingAmount * 40.0F, animationTimer), 1.0F, 0.0F, 0.0F);
     }
 
     private ItemStack getFuel(EntityPlayer player) {

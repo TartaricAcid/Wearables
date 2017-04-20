@@ -18,8 +18,8 @@ public class LocalPlayerState {
     private int swimAnimation;
     private boolean swimming;
 
-    private int wingAnimation;
-    private boolean wingsOpen;
+    private int flyAnimation;
+    private boolean flying;
 
     public LocalPlayerState(EntityPlayer player) {
         this.player = player;
@@ -29,7 +29,6 @@ public class LocalPlayerState {
         if (this.lastEquipment != null) {
             for (WearableComponentType component : this.lastEquipment) {
                 if (!equipment.contains(component)) {
-                    System.out.println(component.getIdentifier() + " removed on " + this.player.world.isRemote);
                     component.onRemoved(this.player);
                 }
             }
@@ -39,24 +38,8 @@ public class LocalPlayerState {
 
     public void update() {
         if (this.player.world.isRemote) {
-            if (this.swimming) {
-                if (this.swimAnimation < 10) {
-                    this.swimAnimation++;
-                }
-            } else {
-                if (this.swimAnimation > 0) {
-                    this.swimAnimation--;
-                }
-            }
-            if (this.wingsOpen) {
-                if (this.wingAnimation < 5) {
-                    this.wingAnimation++;
-                }
-            } else {
-                if (this.wingAnimation > 0) {
-                    this.wingAnimation--;
-                }
-            }
+            this.swimAnimation = WearableUtils.updateAnimation(this.swimAnimation, this.swimming, 10);
+            this.flyAnimation = WearableUtils.updateAnimation(this.flyAnimation, this.flying, 5);
         }
     }
 
@@ -64,16 +47,16 @@ public class LocalPlayerState {
         this.swimming = swimming;
     }
 
-    public void setWingsOpen(boolean wingsOpen) {
-        this.wingsOpen = wingsOpen;
+    public void setFlying(boolean flying) {
+        this.flying = flying;
     }
 
     public float getRenderSwimTimer(float partialTicks) {
         return WearableUtils.scaleTimer(this.swimAnimation, this.swimming, partialTicks, 10.0F);
     }
 
-    public float getRenderWingTimer(float partialTicks) {
-        return WearableUtils.scaleTimer(this.wingAnimation, this.wingsOpen, partialTicks, 5.0F);
+    public float getRenderFlyTimer(float partialTicks) {
+        return WearableUtils.scaleTimer(this.flyAnimation, this.flying, partialTicks, 5.0F);
     }
 
     public static LocalPlayerState getState(EntityPlayer player) {

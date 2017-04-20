@@ -170,4 +170,17 @@ public class WearableUtils {
         }
         return MathHelper.clamp(offset / maximum, 0.0F, 1.0F);
     }
+
+    public static int updateAnimation(int timer, boolean enabled, int maximum) {
+        if (enabled) {
+            if (timer < maximum) {
+                timer++;
+            }
+        } else {
+            if (timer > 0) {
+                timer--;
+            }
+        }
+        return timer;
+    }
 }
