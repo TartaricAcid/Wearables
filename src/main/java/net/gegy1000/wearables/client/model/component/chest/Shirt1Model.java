@@ -63,7 +63,7 @@ public class Shirt1Model extends WearableComponentModel {
     @Override
     public void renderComponent(Entity entity, float limbSwing, float limbSwingAmount, float age, float yaw, float pitch, float scale) {
         this.renderParented(this.bipedBody, this.chest, 0.95F, 0.0F, 0.025F, 0.0F, scale);
-        this.renderParented(this.bipedLeftArm, this.armLeft, 0.9F, 0.0F, -0.01F, 0.0F, scale);
-        this.renderParented(this.bipedRightArm, this.armRight, 0.9F, 0.0F, -0.01F, 0.0F, scale);
+        this.renderParented(this.bipedLeftArm, this.armLeft, 1.0F, 0.0F, -0.01F, 0.0F, scale);
+        this.renderParented(this.bipedRightArm, this.armRight, 1.0F, 0.0F, -0.01F, 0.0F, scale);
     }
 }

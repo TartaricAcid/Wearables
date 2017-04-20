@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -65,7 +66,7 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void setFogColors(EntityViewRenderEvent.FogColors event) {
         if (WearableUtils.hasComponent(MC.player, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
-            float brightnessFactor = MC.world.getLightBrightness(MC.player.getPosition());
+            float brightnessFactor = MC.world.getLightFor(EnumSkyBlock.SKY, MC.player.getPosition()) / 15.0F * MC.world.getSunBrightnessFactor(1.0F);
             float inverseFactor = 1.0F - brightnessFactor;
             event.setRed(0.05F * inverseFactor + event.getRed() * brightnessFactor);
             event.setGreen(0.5F * inverseFactor + event.getGreen() * brightnessFactor);
@@ -80,14 +81,16 @@ public class ClientEventHandler {
             ModelPlayer model = event.getModel();
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             if (components.contains(ComponentRegistry.JETPACK) || components.contains(ComponentRegistry.WINGS)) {
-                model.bipedRightArm.rotateAngleX = 0.0F;
-                model.bipedLeftArm.rotateAngleX = 0.0F;
-                model.bipedRightLeg.rotateAngleX = 0.0F;
-                model.bipedLeftLeg.rotateAngleX = 0.0F;
-                model.bipedRightArmwear.rotateAngleX = 0.0F;
-                model.bipedLeftArmwear.rotateAngleX = 0.0F;
-                model.bipedRightLegwear.rotateAngleX = 0.0F;
-                model.bipedLeftLegwear.rotateAngleX = 0.0F;
+                if (!player.isInWater()) {
+                    model.bipedRightArm.rotateAngleX = 0.0F;
+                    model.bipedLeftArm.rotateAngleX = 0.0F;
+                    model.bipedRightLeg.rotateAngleX = 0.0F;
+                    model.bipedLeftLeg.rotateAngleX = 0.0F;
+                    model.bipedRightArmwear.rotateAngleX = 0.0F;
+                    model.bipedLeftArmwear.rotateAngleX = 0.0F;
+                    model.bipedRightLegwear.rotateAngleX = 0.0F;
+                    model.bipedLeftLegwear.rotateAngleX = 0.0F;
+                }
             } else if (components.contains(ComponentRegistry.FLIPPERS)) {
                 if (player.isInWater() && !player.capabilities.isFlying && !player.world.getBlockState(player.getPosition().down()).isFullBlock()) {
                     model.bipedHead.rotateAngleX = -1.55F;
