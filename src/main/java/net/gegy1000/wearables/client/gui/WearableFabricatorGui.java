@@ -185,11 +185,13 @@ public class WearableFabricatorGui extends GuiContainer {
         int componentX = 0;
         int componentY = -this.scroll;
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
-            int renderX = x + componentX * 18 + 22;
-            int renderY = y + componentY * 18 + 8;
-            if (mouseX >= renderX && mouseY >= renderY && mouseX <= renderX + 17 && mouseY <= renderY + 17) {
-                Wearables.NETWORK_WRAPPER.sendToServer(new SetSelectedComponentMessage(this.entity.getPos(), componentType.getIdentifier()));
-                break;
+            if (componentY >= 0 && componentY < 4) {
+                int renderX = x + componentX * 18 + 22;
+                int renderY = y + componentY * 18 + 8;
+                if (mouseX >= renderX && mouseY >= renderY && mouseX <= renderX + 17 && mouseY <= renderY + 17) {
+                    Wearables.NETWORK_WRAPPER.sendToServer(new SetSelectedComponentMessage(this.entity.getPos(), componentType.getIdentifier()));
+                    break;
+                }
             }
             componentX++;
             if (componentX > 1) {

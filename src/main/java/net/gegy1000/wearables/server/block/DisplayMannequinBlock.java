@@ -100,22 +100,24 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
         }
         state = world.getBlockState(pos);
         if (state.getBlock() instanceof DisplayMannequinBlock && state.getValue(HALF) == Half.LOWER) {
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof DisplayMannequinEntity) {
-                DisplayMannequinEntity entity = (DisplayMannequinEntity) tile;
-                ItemStack heldItem = player.getHeldItem(hand);
-                if (player.isSneaking() && heldItem.getItem() instanceof WearableItem && player.inventory.getFirstEmptyStack() >= 0) {
-                    WearableItem wearableItem = (WearableItem) heldItem.getItem();
-                    EntityEquipmentSlot slot = wearableItem.armorType;
-                    ItemStack result = entity.swapItem(slot, heldItem);
-                    heldItem.shrink(1);
-                    player.inventory.addItemStackToInventory(result);
+            if (player.canPlayerEdit(pos, facing, player.getHeldItem(hand))) {
+                TileEntity tile = world.getTileEntity(pos);
+                if (tile instanceof DisplayMannequinEntity) {
+                    DisplayMannequinEntity entity = (DisplayMannequinEntity) tile;
+                    ItemStack heldItem = player.getHeldItem(hand);
+                    if (player.isSneaking() && heldItem.getItem() instanceof WearableItem && player.inventory.getFirstEmptyStack() >= 0) {
+                        WearableItem wearableItem = (WearableItem) heldItem.getItem();
+                        EntityEquipmentSlot slot = wearableItem.armorType;
+                        ItemStack result = entity.swapItem(slot, heldItem);
+                        heldItem.shrink(1);
+                        player.inventory.addItemStackToInventory(result);
+                        return true;
+                    }
+                    if (!world.isRemote) {
+                        player.openGui(Wearables.INSTANCE, ServerProxy.DISPLAY_MANNEQUIN_GUI, world, pos.getX(), pos.getY(), pos.getZ());
+                    }
                     return true;
                 }
-                if (!world.isRemote) {
-                    player.openGui(Wearables.INSTANCE, ServerProxy.DISPLAY_MANNEQUIN_GUI, world, pos.getX(), pos.getY(), pos.getZ());
-                }
-                return true;
             }
         }
         return false;

@@ -2,6 +2,7 @@ package net.gegy1000.wearables.client.render;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.block.DisplayMannequinRenderer;
+import net.gegy1000.wearables.client.render.block.WearableFabricatorRenderer;
 import net.gegy1000.wearables.client.render.block.MannequinHeadStandRenderer;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.client.render.component.chest.BowTieRenderer;
@@ -14,24 +15,28 @@ import net.gegy1000.wearables.client.render.component.chest.TShirt2Renderer;
 import net.gegy1000.wearables.client.render.component.chest.TieRenderer;
 import net.gegy1000.wearables.client.render.component.chest.WingsRenderer;
 import net.gegy1000.wearables.client.render.component.feet.FlippersRenderer;
+import net.gegy1000.wearables.client.render.component.feet.Shoes1Renderer;
 import net.gegy1000.wearables.client.render.component.head.DragonHornsRenderer;
+import net.gegy1000.wearables.client.render.component.head.Glasses1Renderer;
 import net.gegy1000.wearables.client.render.component.head.Helmet1Renderer;
 import net.gegy1000.wearables.client.render.component.head.Helmet2Renderer;
 import net.gegy1000.wearables.client.render.component.head.NightVisionGogglesRenderer;
-import net.gegy1000.wearables.client.render.component.legs.Pants1Renderer;
-import net.gegy1000.wearables.client.render.component.feet.Shoes1Renderer;
-import net.gegy1000.wearables.client.render.component.head.Glasses1Renderer;
-import net.gegy1000.wearables.client.render.component.head.RoundGlassesRenderer;
 import net.gegy1000.wearables.client.render.component.head.Retro3DGlassesRenderer;
+import net.gegy1000.wearables.client.render.component.head.RoundGlassesRenderer;
 import net.gegy1000.wearables.client.render.component.head.TopHatRenderer;
+import net.gegy1000.wearables.client.render.component.legs.Pants1Renderer;
 import net.gegy1000.wearables.client.render.item.WearableComponentRenderer;
 import net.gegy1000.wearables.client.render.item.WearableItemRenderer;
 import net.gegy1000.wearables.server.api.item.RegisterItemModel;
 import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.block.MannequinHeadStandBlock;
+import net.gegy1000.wearables.server.block.WearableAssemblerBlock;
+import net.gegy1000.wearables.server.block.WearableColouriserBlock;
+import net.gegy1000.wearables.server.block.WearableFabricatorBlock;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.block.entity.MannequinHeadStandEntity;
+import net.gegy1000.wearables.server.block.entity.machine.WearableFabricatorEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableChestItemEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableComponentEntity;
 import net.gegy1000.wearables.server.block.entity.wearable.WearableFeetItemEntity;
@@ -81,11 +86,13 @@ public class RenderRegistry {
         ClientRegistry.bindTileEntitySpecialRenderer(WearableLegsItemEntity.class, new WearableItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(WearableFeetItemEntity.class, new WearableItemRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(MannequinHeadStandEntity.class, new MannequinHeadStandRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(WearableFabricatorEntity.class, new WearableFabricatorRenderer());
 
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_HEAD, 0, WearableHeadItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_CHEST, 0, WearableChestItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_LEGS, 0, WearableLegsItemEntity.class);
         ForgeHooksClient.registerTESRItemStack(ItemRegistry.WEARABLE_FEET, 0, WearableFeetItemEntity.class);
+        ForgeHooksClient.registerTESRItemStack(Item.getItemFromBlock(BlockRegistry.WEARABLE_FABRICATOR), 0, WearableFabricatorEntity.class);
 
         RenderRegistry.register(ComponentRegistry.GLASSES_1, new Glasses1Renderer());
         RenderRegistry.register(ComponentRegistry.TOP_HAT, new TopHatRenderer());
@@ -110,6 +117,9 @@ public class RenderRegistry {
 
         ModelLoader.setCustomStateMapper(BlockRegistry.DISPLAY_MANNEQUIN, new StateMap.Builder().ignore(DisplayMannequinBlock.FACING, DisplayMannequinBlock.HALF).build());
         ModelLoader.setCustomStateMapper(BlockRegistry.HEAD_STAND_MANNEQUIN, new StateMap.Builder().ignore(MannequinHeadStandBlock.FACING).build());
+        ModelLoader.setCustomStateMapper(BlockRegistry.WEARABLE_FABRICATOR, new StateMap.Builder().ignore(WearableFabricatorBlock.FACING).build());
+        ModelLoader.setCustomStateMapper(BlockRegistry.WEARABLE_ASSEMBLER, new StateMap.Builder().ignore(WearableAssemblerBlock.FACING).build());
+        ModelLoader.setCustomStateMapper(BlockRegistry.WEARABLE_COLOURISER, new StateMap.Builder().ignore(WearableColouriserBlock.FACING).build());
     }
 
     public static void register(Item item, String path, String type) {

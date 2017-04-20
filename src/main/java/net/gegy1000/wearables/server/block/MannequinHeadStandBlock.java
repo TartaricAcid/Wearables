@@ -46,17 +46,19 @@ public class MannequinHeadStandBlock extends BlockContainer implements RegisterI
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof MannequinHeadStandEntity) {
-            MannequinHeadStandEntity entity = (MannequinHeadStandEntity) tile;
-            ItemStack heldItem = player.getHeldItem(hand);
-            if (player.inventory.getFirstEmptyStack() >= 0) {
-                if (!(heldItem.getItem() instanceof WearableItem) || ((WearableItem) heldItem.getItem()).armorType != EntityEquipmentSlot.HEAD) {
-                    heldItem = ItemStack.EMPTY;
+        if (player.canPlayerEdit(pos, facing, player.getHeldItem(hand))) {
+            if (tile instanceof MannequinHeadStandEntity) {
+                MannequinHeadStandEntity entity = (MannequinHeadStandEntity) tile;
+                ItemStack heldItem = player.getHeldItem(hand);
+                if (player.inventory.getFirstEmptyStack() >= 0) {
+                    if (!(heldItem.getItem() instanceof WearableItem) || ((WearableItem) heldItem.getItem()).armorType != EntityEquipmentSlot.HEAD) {
+                        heldItem = ItemStack.EMPTY;
+                    }
+                    ItemStack result = entity.swapItem(heldItem);
+                    heldItem.shrink(1);
+                    player.inventory.addItemStackToInventory(result);
+                    return true;
                 }
-                ItemStack result = entity.swapItem(heldItem);
-                heldItem.shrink(1);
-                player.inventory.addItemStackToInventory(result);
-                return true;
             }
         }
         return false;
