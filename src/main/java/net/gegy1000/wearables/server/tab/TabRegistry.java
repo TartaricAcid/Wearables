@@ -15,23 +15,6 @@ public class TabRegistry {
             return new ItemStack(BlockRegistry.WEARABLE_FABRICATOR);
         }
     };
-    public static final CreativeTabs COMPONENTS = new CreativeTabs(Wearables.MODID + ".components") {
-        private NonNullList<ItemStack> subtypes;
-
-        @Override
-        public ItemStack getTabIconItem() {
-            return new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
-        }
-
-        @Override
-        public ItemStack getIconItemStack() {
-            if (this.subtypes == null) {
-                this.subtypes = NonNullList.create();
-                ItemRegistry.WEARABLE_COMPONENT.getSubItems(ItemRegistry.WEARABLE_COMPONENT, this, this.subtypes);
-            }
-            return this.subtypes.get((ClientEventHandler.ticks / 40) % this.subtypes.size());
-        }
-    };
     public static final CreativeTabs TEMPLATES = new CreativeTabs(Wearables.MODID + ".templates") {
         private NonNullList<ItemStack> subtypes;
 

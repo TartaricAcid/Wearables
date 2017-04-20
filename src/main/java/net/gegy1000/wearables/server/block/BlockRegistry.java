@@ -2,6 +2,7 @@ package net.gegy1000.wearables.server.block;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.api.item.RegisterBlockEntity;
+import net.gegy1000.wearables.server.api.item.RegisterItemBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.util.ResourceLocation;
@@ -13,12 +14,13 @@ import java.util.List;
 
 public class BlockRegistry {
     public static final List<Block> BLOCKS = new ArrayList<>();
-    public static final DisplayMannequinBlock DISPLAY_MANNEQUIN = new DisplayMannequinBlock();
-    public static final MannequinHeadStandBlock HEAD_STAND_MANNEQUIN = new MannequinHeadStandBlock();
 
     public static final WearableFabricatorBlock WEARABLE_FABRICATOR = new WearableFabricatorBlock();
-    public static final WearableAssemblerBlock WEARABLE_ASSEMBLER = new WearableAssemblerBlock();
     public static final WearableColouriserBlock WEARABLE_COLOURISER = new WearableColouriserBlock();
+    public static final WearableAssemblerBlock WEARABLE_ASSEMBLER = new WearableAssemblerBlock();
+
+    public static final DisplayMannequinBlock DISPLAY_MANNEQUIN = new DisplayMannequinBlock();
+    public static final MannequinHeadStandBlock HEAD_STAND_MANNEQUIN = new MannequinHeadStandBlock();
 
     public static void register() {
         try {
@@ -49,6 +51,9 @@ public class BlockRegistry {
     }
 
     private static ItemBlock createItemBlock(Block block) {
+        if (block instanceof RegisterItemBlock) {
+            return ((RegisterItemBlock) block).createItemBlock();
+        }
         return new ItemBlock(block);
     }
 }

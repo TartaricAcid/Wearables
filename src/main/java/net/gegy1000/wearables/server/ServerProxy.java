@@ -42,8 +42,8 @@ public class ServerProxy implements IGuiHandler {
         MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
 
         ComponentRegistry.register();
-        ItemRegistry.register();
         BlockRegistry.register();
+        ItemRegistry.register();
 
         RecipeRegistry.register();
 

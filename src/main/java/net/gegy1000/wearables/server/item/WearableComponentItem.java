@@ -24,7 +24,7 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     public WearableComponentItem() {
         super();
         this.setUnlocalizedName("wearable_component");
-        this.setCreativeTab(TabRegistry.COMPONENTS);
+        this.setCreativeTab(TabRegistry.GENERAL);
     }
 
     @Override
