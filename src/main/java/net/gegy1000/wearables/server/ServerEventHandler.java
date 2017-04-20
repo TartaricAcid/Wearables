@@ -1,5 +1,7 @@
 package net.gegy1000.wearables.server;
 
+import net.gegy1000.wearables.server.movement.EntityRemovedListener;
+import net.gegy1000.wearables.server.movement.LocalPlayerState;
 import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.util.WearableUtils;
@@ -10,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
@@ -43,6 +46,9 @@ public class ServerEventHandler {
             if (hasSpeedModifier) {
                 player.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(speedModifier * 0.1);
             }
+            LocalPlayerState state = LocalPlayerState.getState(player);
+            state.update();
+            state.updateEquipment(components);
         }
     }
 
@@ -91,17 +97,6 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onStopTracking(PlayerEvent.StopTracking event) {
-        EntityPlayer tracker = event.getEntityPlayer();
-        if (!tracker.world.isRemote) {
-            if (event.getTarget() instanceof EntityPlayer) {
-                EntityPlayer tracked = (EntityPlayer) event.getTarget();
-                MovementHandler.stopTracking(tracker, tracked);
-            }
-        }
-    }
-
-    @SubscribeEvent
     public void onPlayerLogin(PlayerLoggedInEvent event) {
         MovementHandler.createState(event.player);
     }
@@ -109,5 +104,11 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onPlayerLogout(PlayerLoggedOutEvent event) {
         MovementHandler.removeState(event.player);
+        LocalPlayerState.removeState(event.player);
+    }
+
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        event.getWorld().addEventListener(new EntityRemovedListener());
     }
 }

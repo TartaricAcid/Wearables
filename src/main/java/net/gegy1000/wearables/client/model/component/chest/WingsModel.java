@@ -1,9 +1,13 @@
 package net.gegy1000.wearables.client.model.component.chest;
 
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
+import net.gegy1000.wearables.server.movement.LocalPlayerState;
 import net.gegy1000.wearables.server.util.WearableUtils;
+import net.ilexiconn.llibrary.LLibrary;
+import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class WingsModel extends WearableComponentModel {
     public ModelRenderer Main;
@@ -190,9 +194,16 @@ public class WingsModel extends WearableComponentModel {
         if (entity != null && !onGround) {
             limbSwing = age;
             limbSwingAmount = 1.2F;
-        } else {
+        } else if (entity == null) {
             limbSwing = age * 0.25F;
             limbSwingAmount = 0.4F;
+        }
+        float timer = 1.0F;
+        if (entity instanceof EntityPlayer) {
+            LocalPlayerState state = LocalPlayerState.getState((EntityPlayer) entity);
+            timer = 1.0F - state.getRenderWingTimer(LLibrary.PROXY.getPartialTicks());
+            limbSwing += age * 0.15F;
+            limbSwingAmount = ClientUtils.interpolate(limbSwingAmount, 0.4F, timer);
         }
         float flapOffset = this.calculateChainOffset(-2, this.rightWingParts);
         for (int index = 0; index < this.rightWingParts.length; index++) {
@@ -201,12 +212,12 @@ public class WingsModel extends WearableComponentModel {
             if (index == 0) {
                 part.rotateAngleY = rotation + 0.5F;
                 if (onGround) {
-                    part.rotateAngleY += 0.8F;
+                    part.rotateAngleY += timer * 0.8F;
                 }
             } else {
                 part.rotateAngleZ = rotation - 0.2F;
                 if (onGround) {
-                    part.rotateAngleZ -= 0.8F;
+                    part.rotateAngleZ -= timer * 0.8F;
                 }
             }
         }
@@ -216,12 +227,12 @@ public class WingsModel extends WearableComponentModel {
             if (index == 0) {
                 part.rotateAngleY = -rotation - 0.5F;
                 if (onGround) {
-                    part.rotateAngleY -= 0.8F;
+                    part.rotateAngleY -= timer * 0.8F;
                 }
             } else {
                 part.rotateAngleZ = -rotation + 0.2F;
                 if (onGround) {
-                    part.rotateAngleZ += 0.8F;
+                    part.rotateAngleZ += timer * 0.8F;
                 }
             }
         }

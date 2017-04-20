@@ -6,6 +6,7 @@ import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
+import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.ilexiconn.llibrary.client.event.PlayerModelEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelPlayer;
@@ -16,6 +17,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 @SideOnly(Side.CLIENT)
 public class ClientEventHandler {
@@ -74,8 +77,9 @@ public class ClientEventHandler {
     public void setRotationAngles(PlayerModelEvent.SetRotationAngles event) {
         EntityPlayer player = event.getEntityPlayer();
         if (!WearableUtils.onGround(player)) {
-            if (WearableUtils.hasComponent(player, ComponentRegistry.JETPACK) || WearableUtils.hasComponent(player, ComponentRegistry.WINGS)) {
-                ModelPlayer model = event.getModel();
+            ModelPlayer model = event.getModel();
+            List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
+            if (components.contains(ComponentRegistry.JETPACK) || components.contains(ComponentRegistry.WINGS)) {
                 model.bipedRightArm.rotateAngleX = 0.0F;
                 model.bipedLeftArm.rotateAngleX = 0.0F;
                 model.bipedRightLeg.rotateAngleX = 0.0F;
@@ -84,6 +88,11 @@ public class ClientEventHandler {
                 model.bipedLeftArmwear.rotateAngleX = 0.0F;
                 model.bipedRightLegwear.rotateAngleX = 0.0F;
                 model.bipedLeftLegwear.rotateAngleX = 0.0F;
+            } else if (components.contains(ComponentRegistry.FLIPPERS)) {
+                if (player.isInWater() && !player.capabilities.isFlying && !player.world.getBlockState(player.getPosition().down()).isFullBlock()) {
+                    model.bipedHead.rotateAngleX = -1.55F;
+                    model.bipedHeadwear.rotateAngleX = -1.55F;
+                }
             }
         }
     }

@@ -52,6 +52,11 @@ public class FlippersComponent extends WearableComponentType {
     }
 
     @Override
+    public void onRemoved(EntityPlayer player) {
+        player.eyeHeight = player.getDefaultEyeHeight();
+    }
+
+    @Override
     public MovementHandler getMovementHandler() {
         return MOVEMENT_HANDLER;
     }

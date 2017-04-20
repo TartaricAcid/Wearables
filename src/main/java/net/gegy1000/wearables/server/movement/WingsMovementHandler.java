@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.server.movement;
 
 import net.gegy1000.wearables.server.util.WearableUtils;
+import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.MathHelper;
@@ -8,6 +9,7 @@ import net.minecraft.util.math.MathHelper;
 public class WingsMovementHandler extends MovementHandler {
     @Override
     public void updateMovement(EntityPlayer player, MovementState movementState) {
+        LocalPlayerState state = LocalPlayerState.getState(player);
         if (movementState.shouldMoveUp()) {
             float angle = 0.0F;
             if (movementState.shouldMoveForward() || movementState.shouldMoveBackward()) {
@@ -23,17 +25,18 @@ public class WingsMovementHandler extends MovementHandler {
             player.motionY += pitchSin * speed + 0.05F;
             player.motionX += moveX * speed;
             player.motionZ += moveZ * speed;
-        } else if (player.motionY < 0.0) {
-            player.motionY *= 0.9;
+        } else {
+            if (player.motionY < 0.0) {
+                player.motionY *= 0.9;
+            }
         }
+        state.setWingsOpen(!WearableUtils.onGround(player));
     }
 
     @Override
     public void applyRotations(EntityPlayer player, float yaw, float bodyYaw, float partialTicks) {
-        if (WearableUtils.onGround(player)) {
-            return;
-        }
+        float animationTimer = LocalPlayerState.getState(player).getRenderWingTimer(partialTicks);
         float limbSwingAmount = player.prevLimbSwingAmount + (player.limbSwingAmount - player.prevLimbSwingAmount) * partialTicks;
-        GlStateManager.rotate(-limbSwingAmount * 40.0F, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(ClientUtils.interpolateRotation(0.0F, -limbSwingAmount * 40.0F, animationTimer), 1.0F, 0.0F, 0.0F);
     }
 }

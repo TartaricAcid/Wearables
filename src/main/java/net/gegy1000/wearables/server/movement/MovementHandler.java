@@ -1,7 +1,6 @@
 package net.gegy1000.wearables.server.movement;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.server.network.StopTrackingMovementMessage;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -52,9 +51,5 @@ public abstract class MovementHandler {
         if (state != null) {
             Wearables.NETWORK_WRAPPER.sendTo(new UpdateMovementMessage(state, true), (EntityPlayerMP) tracker);
         }
-    }
-
-    public static void stopTracking(EntityPlayer tracker, EntityPlayer tracked) {
-        Wearables.NETWORK_WRAPPER.sendTo(new StopTrackingMovementMessage(tracked.getEntityId()), (EntityPlayerMP) tracker);
     }
 }

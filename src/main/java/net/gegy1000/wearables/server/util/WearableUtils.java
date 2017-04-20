@@ -160,4 +160,14 @@ public class WearableUtils {
         }
         return onGround || entity.isRiding();
     }
+
+    public static float scaleTimer(int timer, boolean enabled, float partialTicks, float maximum) {
+        float offset = timer;
+        if (enabled) {
+            offset += partialTicks;
+        } else {
+            offset -= partialTicks;
+        }
+        return MathHelper.clamp(offset / maximum, 0.0F, 1.0F);
+    }
 }

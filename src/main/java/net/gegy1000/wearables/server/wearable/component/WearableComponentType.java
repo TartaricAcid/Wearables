@@ -70,4 +70,7 @@ public abstract class WearableComponentType {
     public boolean hasTooltip() {
         return false;
     }
+
+    public void onRemoved(EntityPlayer player) {
+    }
 }
