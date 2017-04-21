@@ -14,7 +14,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -44,7 +43,7 @@ public class WearableAssemblerBlock extends MachineBlock implements RegisterItem
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (state.getValue(HALF) == Half.UPPER) {
             pos = pos.down();
         }
@@ -74,14 +73,14 @@ public class WearableAssemblerBlock extends MachineBlock implements RegisterItem
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
         if (state.getValue(HALF) == Half.UPPER) {
             BlockPos down = pos.down();
             IBlockState downState = world.getBlockState(down);
             if (downState.getBlock() != this) {
                 world.setBlockToAir(pos);
             } else if (block != this) {
-                downState.neighborChanged(world, down, block, fromPos);
+                downState.neighborChanged(world, down, block);
             }
         } else {
             BlockPos up = pos.up();
@@ -106,7 +105,7 @@ public class WearableAssemblerBlock extends MachineBlock implements RegisterItem
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return state.getValue(HALF) == WearableAssemblerBlock.Half.UPPER ? Items.AIR : super.getItemDropped(state, rand, fortune);
+        return state.getValue(HALF) == WearableAssemblerBlock.Half.UPPER ? null : super.getItemDropped(state, rand, fortune);
     }
 
     @Override

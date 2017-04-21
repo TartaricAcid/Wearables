@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Collections;
 import java.util.List;
@@ -32,6 +33,26 @@ public class FabricatorRecipeWrapper implements IRecipeWrapper {
         ItemStack output = new ItemStack(ItemRegistry.WEARABLE_COMPONENT);
         output.setTagCompound(new WearableComponent(this.componentType).serializeNBT());
         ingredients.setOutput(ItemStack.class, output);
+    }
+
+    @Override
+    public List getInputs() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List getOutputs() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<FluidStack> getFluidInputs() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<FluidStack> getFluidOutputs() {
+        return Collections.emptyList();
     }
 
     @Override
@@ -61,6 +82,11 @@ public class FabricatorRecipeWrapper implements IRecipeWrapper {
         GlStateManager.disableTexture2D();
         GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
         GlStateManager.popMatrix();
+    }
+
+    @Override
+    public void drawAnimations(Minecraft minecraft, int recipeWidth, int recipeHeight) {
+
     }
 
     @Override

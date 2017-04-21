@@ -61,7 +61,7 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
             stack.setTagCompound(new WearableComponent(this.selectedComponent).serializeNBT());
             this.inventory.setStackInSlot(4, stack);
         } else {
-            this.inventory.setStackInSlot(4, ItemStack.EMPTY);
+            this.inventory.setStackInSlot(4, null);
         }
     }
 
@@ -71,9 +71,9 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
             Collections.addAll(required, this.selectedComponent.getIngredients());
             for (int i = 0; i < 4; i++) {
                 ItemStack inventoryStack = this.inventory.getStackInSlot(i);
-                if (!inventoryStack.isEmpty()) {
+                if (inventoryStack != null) {
                     for (ItemStack stack : this.selectedComponent.getIngredients()) {
-                        if (stack.getItem() == inventoryStack.getItem() && stack.getItemDamage() == inventoryStack.getItemDamage() && inventoryStack.getCount() >= stack.getCount()) {
+                        if (stack.getItem() == inventoryStack.getItem() && stack.getItemDamage() == inventoryStack.getItemDamage() && inventoryStack.stackSize >= stack.stackSize) {
                             required.remove(stack);
                             break;
                         }
@@ -91,10 +91,10 @@ public class WearableFabricatorEntity extends InventoryBlockEntity implements IT
         if (this.selectedComponent != null) {
             for (int i = 0; i < 4; i++) {
                 ItemStack inventoryStack = this.inventory.getStackInSlot(i);
-                if (!inventoryStack.isEmpty()) {
+                if (inventoryStack != null) {
                     for (ItemStack stack : this.selectedComponent.getIngredients()) {
-                        if (stack.getItem() == inventoryStack.getItem() && stack.getItemDamage() == inventoryStack.getItemDamage() && inventoryStack.getCount() >= stack.getCount()) {
-                            this.inventory.extractItem(i, stack.getCount(), false);
+                        if (stack.getItem() == inventoryStack.getItem() && stack.getItemDamage() == inventoryStack.getItemDamage() && inventoryStack.stackSize >= stack.stackSize) {
+                            this.inventory.extractItem(i, stack.stackSize, false);
                             break;
                         }
                     }

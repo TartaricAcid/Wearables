@@ -47,7 +47,7 @@ public class MannequinHeadStandRenderer extends TileEntitySpecialRenderer<Manneq
 
             GlStateManager.pushMatrix();
             ItemStack stack = entity.getStack();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+            if (stack != null && stack.getItem() instanceof WearableItem) {
                 Wearable wearable = WearableItem.getWearable(stack);
                 for (WearableComponent component : wearable.getComponents()) {
                     WearableComponentType componentType = component.getType();

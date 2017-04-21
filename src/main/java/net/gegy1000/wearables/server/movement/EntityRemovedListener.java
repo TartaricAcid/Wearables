@@ -35,10 +35,6 @@ public class EntityRemovedListener implements IWorldEventListener {
     }
 
     @Override
-    public void spawnParticle(int id, boolean ignoreRange, boolean p_190570_3_, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed, int... parameters) {
-    }
-
-    @Override
     public void onEntityAdded(Entity entity) {
     }
 

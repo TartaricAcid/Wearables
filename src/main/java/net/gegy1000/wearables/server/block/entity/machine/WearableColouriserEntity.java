@@ -20,7 +20,7 @@ public class WearableColouriserEntity extends InventoryBlockEntity {
 
     public void setColour(int layer, int red, int green, int blue) {
         ItemStack stack = this.inventory.getStackInSlot(0);
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+        if (stack != null && stack.getItem() instanceof WearableComponentItem) {
             WearableComponent component = WearableComponentItem.getComponent(stack);
             component.setColour(layer, WearableColourUtils.fromRGB(red, green, blue));
         }

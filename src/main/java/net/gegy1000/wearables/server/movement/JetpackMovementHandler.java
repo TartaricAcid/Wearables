@@ -18,14 +18,15 @@ public class JetpackMovementHandler extends MovementHandler {
         LocalPlayerState state = LocalPlayerState.getState(player);
         ItemStack fuel = this.getFuel(player);
         if (!player.world.isRemote) {
-            movementState.setHasFuel(!fuel.isEmpty() || player.capabilities.isCreativeMode);
+            movementState.setHasFuel(fuel != null || player.capabilities.isCreativeMode);
         }
         if (movementState.shouldMoveUp()) {
             if (movementState.hasFuel()) {
-                if (!player.world.isRemote && !player.capabilities.isCreativeMode && player.ticksExisted % 10 == 0) {
+                if (fuel != null && !player.world.isRemote && !player.capabilities.isCreativeMode && player.ticksExisted % 10 == 0) {
                     fuel.setItemDamage(fuel.getItemDamage() + 1);
                     if (fuel.getItemDamage() >= fuel.getMaxDamage()) {
-                        fuel.shrink(1);
+                        fuel.stackSize--;
+                        player.inventory.setInventorySlotContents(player.inventory.getSlotFor(fuel), null);
                     }
                 }
                 float angle = 0.0F;
@@ -69,10 +70,10 @@ public class JetpackMovementHandler extends MovementHandler {
 
     private ItemStack getFuel(EntityPlayer player) {
         for (ItemStack stack : player.inventory.mainInventory) {
-            if (!stack.isEmpty() && stack.getItem() instanceof JetpackFuelItem) {
+            if (stack != null && stack.getItem() instanceof JetpackFuelItem) {
                 return stack;
             }
         }
-        return ItemStack.EMPTY;
+        return null;
     }
 }

@@ -53,11 +53,11 @@ public class WearableFabricatorRenderer extends TileEntitySpecialRenderer<Wearab
             MC.getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             for (int i = 0; i < 4; i++) {
                 ItemStack stack = inventory.getStackInSlot(i);
-                if (!stack.isEmpty()) {
+                if (stack != null) {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0.0F, i % 2 * -1.2F, 0.0F);
                     GlStateManager.translate(i / 2 * 1.0F, 0.0F, 0.0F);
-                    for (int size = 0; size < Math.min(stack.getCount(), 4); size++) {
+                    for (int size = 0; size < Math.min(stack.stackSize, 4); size++) {
                         Random random = new Random(size << 16);
                         GlStateManager.translate((random.nextDouble() - 0.5) * 0.4, (random.nextDouble() - 0.5) * 0.4, -0.06F);
                         MC.getRenderItem().renderItem(stack, ItemCameraTransforms.TransformType.FIXED);

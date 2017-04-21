@@ -48,7 +48,7 @@ public class WearableColouriserRenderer extends TileEntitySpecialRenderer<Wearab
             IItemHandler inventory = entity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             ItemStack stack = inventory.getStackInSlot(0);
             GlStateManager.enableRescaleNormal();
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+            if (stack != null && stack.getItem() instanceof WearableComponentItem) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 ComponentRenderer renderer = WearableUtils.getRenderer(component);
                 GlStateManager.pushMatrix();

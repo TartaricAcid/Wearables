@@ -59,7 +59,7 @@ public class LocalPlayerState {
         this.jumping = jumping;
     }
 
-    public boolean camFly() {
+    public boolean canFly() {
         return this.jumpDelay >= 3;
     }
 

@@ -69,7 +69,7 @@ public class MannequinHeadStandEntity extends TileEntity {
 
     public ItemStack swapItem(ItemStack heldItem) {
         ItemStack previous = this.inventory.getStackInSlot(0);
-        this.inventory.setStackInSlot(0, heldItem.copy());
+        this.inventory.setStackInSlot(0, heldItem != null ? heldItem.copy() : null);
         return previous;
     }
 

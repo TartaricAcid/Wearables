@@ -111,7 +111,7 @@ public class WearableColouriserGui extends GuiContainer {
             GlStateManager.pushMatrix();
             for (int i = 0; i < layerCount; i++) {
                 if (component.getType().canColour(i)) {
-                    this.fontRenderer.drawString("#" + (i + 1), x + 9, y + 10 + i * 12, 0);
+                    this.fontRendererObj.drawString("#" + (i + 1), x + 9, y + 10 + i * 12, 0);
                 }
             }
             GlStateManager.popMatrix();
@@ -210,7 +210,7 @@ public class WearableColouriserGui extends GuiContainer {
                 int sliderX = x + 111;
                 WearableComponent component = null;
                 ItemStack stack = this.getComponentStack();
-                if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+                if (stack != null && stack.getItem() instanceof WearableComponentItem) {
                     component = WearableComponentItem.getComponent(stack);
                 }
                 if (component != null) {
@@ -256,7 +256,7 @@ public class WearableColouriserGui extends GuiContainer {
 
     private WearableComponent getComponent() {
         ItemStack stack = this.getComponentStack();
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+        if (stack != null && stack.getItem() instanceof WearableComponentItem) {
             return WearableComponentItem.getComponent(stack);
         }
         return null;

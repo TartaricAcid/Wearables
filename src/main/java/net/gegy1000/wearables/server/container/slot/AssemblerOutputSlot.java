@@ -23,7 +23,7 @@ public class AssemblerOutputSlot extends SlotItemHandler {
 
     @Override
     public void putStack(ItemStack stack) {
-        super.putStack(ItemStack.EMPTY);
+        super.putStack(null);
         Wearable wearable = WearableItem.getWearable(stack);
         this.container.disassemble(wearable);
         this.container.onContentsChanged();
@@ -35,8 +35,8 @@ public class AssemblerOutputSlot extends SlotItemHandler {
     }
 
     @Override
-    public ItemStack onTake(EntityPlayer player, ItemStack take) {
+    public void onPickupFromSlot(EntityPlayer player, ItemStack take) {
         this.container.consumeComponents();
-        return super.onTake(player, take);
+        super.onPickupFromSlot(player, take);
     }
 }

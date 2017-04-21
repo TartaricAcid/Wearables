@@ -51,7 +51,7 @@ public class SetColourMessage implements IMessage {
         public IMessage onMessage(SetColourMessage message, MessageContext ctx) {
             if (ctx.side.isServer()) {
                 Wearables.PROXY.schedule(() -> {
-                    EntityPlayer player = ctx.getServerHandler().player;
+                    EntityPlayer player = ctx.getServerHandler().playerEntity;
                     if (player.world.isBlockLoaded(message.pos)) {
                         TileEntity tile = player.world.getTileEntity(message.pos);
                         if (tile instanceof WearableColouriserEntity) {

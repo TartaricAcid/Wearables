@@ -95,7 +95,7 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
 
     private void renderPiece(EntityEquipmentSlot slot, DisplayMannequinEntity entity, float partialTicks, float scale) {
         ItemStack stack = entity.getStack(slot);
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+        if (stack != null && stack.getItem() instanceof WearableItem) {
             WearableItem item = (WearableItem) stack.getItem();
             if (item.getEquipmentSlot() == slot) {
                 Wearable wearable = WearableItem.getWearable(stack);

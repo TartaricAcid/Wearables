@@ -6,7 +6,6 @@ import net.gegy1000.wearables.server.wearable.Wearable;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
 
@@ -17,12 +16,12 @@ public class ExtractArmourRecipe implements IRecipe {
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
                 ItemStack stack = inv.getStackInRowAndColumn(row, column);
-                if (!stack.isEmpty() && stack.getItem() instanceof WearableItem && !WearableItem.getWearable(stack).getAppliedArmour().isEmpty()) {
+                if (stack != null && stack.getItem() instanceof WearableItem && WearableItem.getWearable(stack).getAppliedArmour() != null) {
                     if (hasWearable) {
                         return false;
                     }
                     hasWearable = true;
-                } else if (!stack.isEmpty()) {
+                } else if (stack != null) {
                     return false;
                 }
             }
@@ -35,15 +34,15 @@ public class ExtractArmourRecipe implements IRecipe {
         for (int row = 0; row < 3; row++) {
             for (int column = 0; column < 3; column++) {
                 ItemStack stack = inv.getStackInRowAndColumn(row, column);
-                if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+                if (stack != null && stack.getItem() instanceof WearableItem) {
                     Wearable wearable = WearableItem.getWearable(stack);
-                    if (!wearable.getAppliedArmour().isEmpty()) {
+                    if (wearable.getAppliedArmour() != null) {
                         return wearable.getAppliedArmour();
                     }
                 }
             }
         }
-        return ItemStack.EMPTY;
+        return null;
     }
 
     @Override
@@ -57,17 +56,17 @@ public class ExtractArmourRecipe implements IRecipe {
     }
 
     @Override
-    public NonNullList<ItemStack> getRemainingItems(InventoryCrafting inv) {
-        NonNullList<ItemStack> remaining = NonNullList.withSize(inv.getSizeInventory(), ItemStack.EMPTY);
-        for (int i = 0; i < remaining.size(); ++i) {
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        ItemStack[] remaining = new ItemStack[inv.getSizeInventory()];
+        for (int i = 0; i < remaining.length; ++i) {
             ItemStack stack = inv.getStackInSlot(i);
-            if (stack.getItem() instanceof WearableItem) {
+            if (stack != null && stack.getItem() instanceof WearableItem) {
                 Wearable wearable = WearableItem.getWearable(stack);
-                wearable.setAppliedArmour(ItemStack.EMPTY);
+                wearable.setAppliedArmour(null);
                 stack.setTagCompound(wearable.serializeNBT());
-                remaining.set(i, stack.copy());
+                remaining[i] = stack.copy();
             } else {
-                remaining.set(i, ForgeHooks.getContainerItem(stack));
+                remaining[i] = ForgeHooks.getContainerItem(stack);
             }
         }
         return remaining;

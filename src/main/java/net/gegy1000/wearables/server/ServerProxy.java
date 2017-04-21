@@ -83,12 +83,12 @@ public class ServerProxy implements IGuiHandler {
     }
 
     public void schedule(Runnable runnable, MessageContext ctx) {
-        WorldServer server = ctx.getServerHandler().player.getServerWorld();
+        WorldServer server = ctx.getServerHandler().playerEntity.getServerWorld();
         server.addScheduledTask(runnable);
     }
 
     public EntityPlayer getPlayer(MessageContext ctx) {
-        return ctx.getServerHandler().player;
+        return ctx.getServerHandler().playerEntity;
     }
 
     public boolean isClientPlayer(Entity entity) {

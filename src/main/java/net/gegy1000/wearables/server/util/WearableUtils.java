@@ -47,7 +47,7 @@ public class WearableUtils {
         Random random = world.rand;
         for (int i = 0; i < slotCount; i++) {
             ItemStack stack = inventory.getStackInSlot(i);
-            if (!stack.isEmpty()) {
+            if (stack != null) {
                 float offsetX = random.nextFloat() * 0.8F + 0.1F;
                 float offsetY = random.nextFloat() * 0.8F + 0.1F;
                 float offsetZ = random.nextFloat() * 0.8F + 0.1F;
@@ -84,7 +84,7 @@ public class WearableUtils {
         List<WearableComponentType> componentTypes = new ArrayList<>();
         for (EntityEquipmentSlot slot : ARMOUR_SLOTS) {
             ItemStack stack = player.getItemStackFromSlot(slot);
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+            if (stack != null && stack.getItem() instanceof WearableItem) {
                 Wearable wearable = WearableItem.getWearable(stack);
                 componentTypes.addAll(wearable.getComponents().stream().map(WearableComponent::getType).collect(Collectors.toList()));
             }
@@ -107,7 +107,7 @@ public class WearableUtils {
     public static boolean hasComponent(EntityPlayer player, WearableComponentType type) {
         for (EntityEquipmentSlot slot : ARMOUR_SLOTS) {
             ItemStack stack = player.getItemStackFromSlot(slot);
-            if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+            if (stack != null && stack.getItem() instanceof WearableItem) {
                 Wearable wearable = WearableItem.getWearable(stack);
                 for (WearableComponent component : wearable.getComponents()) {
                     if (component.getType().equals(type)) {

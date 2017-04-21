@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.client.gui;
 
+import com.google.common.collect.Lists;
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.ComponentRenderHandler;
 import net.gegy1000.wearables.client.render.RenderRegistry;
@@ -122,9 +123,9 @@ public class WearableFabricatorGui extends GuiContainer {
                 ItemStack ingredient = ingredients[i];
                 int x = 245;
                 int y = 20 + i * 22;
-                int offset = this.fontRenderer.getStringWidth("x" + ingredient.getCount());
+                int offset = this.fontRendererObj.getStringWidth("x" + ingredient.stackSize);
                 this.itemRender.renderItemAndEffectIntoGUI(ingredient, x - offset, y);
-                this.fontRenderer.drawString("x" + ingredient.getCount(), x + 16 - offset, y + 10, 0xFFFFFF);
+                this.fontRendererObj.drawString("x" + ingredient.stackSize, x + 16 - offset, y + 10, 0xFFFFFF);
             }
             GlStateManager.popMatrix();
 
@@ -161,7 +162,7 @@ public class WearableFabricatorGui extends GuiContainer {
                     GlStateManager.enableLighting();
                     GlStateManager.enableDepth();
                     GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-                    this.drawHoveringText(I18n.translateToLocal("component." + componentType.getIdentifier() + ".name"), mouseX - screenX, mouseY - screenY);
+                    this.drawHoveringText(Lists.newArrayList(I18n.translateToLocal("component." + componentType.getIdentifier() + ".name")), mouseX - screenX, mouseY - screenY);
                     break;
                 }
             }

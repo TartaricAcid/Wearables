@@ -5,28 +5,31 @@ import net.gegy1000.wearables.client.ClientEventHandler;
 import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TabRegistry {
     public static final CreativeTabs GENERAL = new CreativeTabs(Wearables.MODID + ".general") {
         @Override
-        public ItemStack getTabIconItem() {
-            return new ItemStack(BlockRegistry.WEARABLE_FABRICATOR);
+        public Item getTabIconItem() {
+            return Item.getItemFromBlock(BlockRegistry.WEARABLE_FABRICATOR);
         }
     };
     public static final CreativeTabs TEMPLATES = new CreativeTabs(Wearables.MODID + ".templates") {
-        private NonNullList<ItemStack> subtypes;
+        private List<ItemStack> subtypes;
 
         @Override
-        public ItemStack getTabIconItem() {
-            return new ItemStack(ItemRegistry.WEARABLE_CHEST);
+        public Item getTabIconItem() {
+            return ItemRegistry.WEARABLE_CHEST;
         }
 
         @Override
         public ItemStack getIconItemStack() {
             if (this.subtypes == null) {
-                this.subtypes = NonNullList.create();
+                this.subtypes = new ArrayList<>();
                 ItemRegistry.WEARABLE_HEAD.getSubItems(ItemRegistry.WEARABLE_HEAD, this, this.subtypes);
                 ItemRegistry.WEARABLE_CHEST.getSubItems(ItemRegistry.WEARABLE_CHEST, this, this.subtypes);
                 ItemRegistry.WEARABLE_LEGS.getSubItems(ItemRegistry.WEARABLE_LEGS, this, this.subtypes);

@@ -17,7 +17,7 @@ public class AssemblerInputSlot extends SlotItemHandler {
 
     @Override
     public boolean isItemValid(ItemStack stack) {
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+        if (stack != null && stack.getItem() instanceof WearableComponentItem) {
             WearableComponent component = WearableComponentItem.getComponent(stack);
             return this.container.canAddComponent(component);
         }

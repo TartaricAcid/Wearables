@@ -78,13 +78,13 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
     private void dropInventory(EntityPlayer player, ItemStackHandler inventory) {
         for (int slot = 0; slot < inventory.getSlots(); slot++) {
             ItemStack stack = inventory.getStackInSlot(slot);
-            if (stack.getItem() instanceof WearableComponentItem) {
-                WearableComponent component = WearableComponentItem.getComponent(stack);
-                component.clearProperties();
-                stack.setTagCompound(component.serializeNBT());
-            }
-            inventory.extractItem(slot, stack.getCount(), false);
-            if (!stack.isEmpty()) {
+            if (stack != null) {
+                if (stack.getItem() instanceof WearableComponentItem) {
+                    WearableComponent component = WearableComponentItem.getComponent(stack);
+                    component.clearProperties();
+                    stack.setTagCompound(component.serializeNBT());
+                }
+                inventory.extractItem(slot, stack.stackSize, false);
                 player.dropItem(stack, false);
             }
         }
@@ -101,7 +101,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
             Wearable wearable = new Wearable();
             for (int i = 0; i < this.components.getSlots(); i++) {
                 ItemStack stack = this.components.getStackInSlot(i);
-                if (!stack.isEmpty() && stack.getItem() instanceof WearableComponentItem) {
+                if (stack != null && stack.getItem() instanceof WearableComponentItem) {
                     WearableComponent component = WearableComponentItem.getComponent(stack);
                     WearableCategory category = component.getType().getCategory();
                     if (category.getSlot() == slotType && !usedCategories.contains(category)) {
@@ -112,7 +112,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
             }
             if (wearable.getComponents().size() > 0) {
                 ItemStack armour = this.armour.getStackInSlot(0);
-                if (armour.getItem() instanceof ItemArmor && ((ItemArmor) armour.getItem()).getEquipmentSlot() == slotType) {
+                if (armour != null && armour.getItem() instanceof ItemArmor && ((ItemArmor) armour.getItem()).getEquipmentSlot() == slotType) {
                     wearable.setAppliedArmour(armour);
                 }
                 ItemStack stack = new ItemStack(WearableItem.getItem(slotType));
@@ -120,7 +120,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
                 return stack;
             }
         }
-        return ItemStack.EMPTY;
+        return null;
     }
 
     public void consumeComponents() {
@@ -128,17 +128,20 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
         Set<WearableCategory> usedCategories = new HashSet<>();
         for (int i = 0; i < this.components.getSlots(); i++) {
             ItemStack stack = this.components.getStackInSlot(i);
-            if (stack.getItem() instanceof WearableComponentItem && stack.getCount() > 0) {
+            if (stack != null && stack.getItem() instanceof WearableComponentItem && stack.stackSize > 0) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 WearableCategory category = component.getType().getCategory();
                 if (category.getSlot() == slotType && !usedCategories.contains(category)) {
-                    stack.shrink(1);
+                    stack.stackSize--;
+                    if (stack.stackSize <= 0) {
+                        this.components.setStackInSlot(i, null);
+                    }
                     usedCategories.add(category);
                 }
             }
         }
         ItemStack armour = this.armour.getStackInSlot(0);
-        if (armour.getItem() instanceof ItemArmor && ((ItemArmor) armour.getItem()).getEquipmentSlot() == slotType) {
+        if (armour != null && armour.getItem() instanceof ItemArmor && ((ItemArmor) armour.getItem()).getEquipmentSlot() == slotType) {
             this.armour.extractItem(0, 1, false);
         }
         this.onContentsChanged();
@@ -152,7 +155,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
         WearableCategory checkCategory = checkComponent.getType().getCategory();
         for (int i = 0; i < this.components.getSlots(); i++) {
             ItemStack stack = this.components.getStackInSlot(i);
-            if (stack.getItem() instanceof WearableComponentItem && stack.getCount() > 0) {
+            if (stack != null && stack.getItem() instanceof WearableComponentItem && stack.stackSize > 0) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 WearableCategory category = component.getType().getCategory();
                 if (checkCategory == category || checkCategory.getSlot() != category.getSlot()) {
@@ -167,7 +170,7 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
         EntityEquipmentSlot slotType = null;
         for (int i = 0; i < this.components.getSlots(); i++) {
             ItemStack stack = this.components.getStackInSlot(i);
-            if (stack.getItem() instanceof WearableComponentItem && stack.getCount() > 0) {
+            if (stack != null && stack.getItem() instanceof WearableComponentItem && stack.stackSize > 0) {
                 WearableComponent component = WearableComponentItem.getComponent(stack);
                 EntityEquipmentSlot slot = component.getType().getCategory().getSlot();
                 if (slotType == null) {
@@ -186,12 +189,12 @@ public class WearableAssemblerContainer extends AutoTransferContainer {
 
     public boolean hasInput() {
         for (int i = 0; i < this.components.getSlots(); i++) {
-            if (!this.components.getStackInSlot(i).isEmpty()) {
+            if (this.components.getStackInSlot(i) != null) {
                 return true;
             }
         }
         for (int i = 0; i < this.armour.getSlots(); i++) {
-            if (!this.armour.getStackInSlot(i).isEmpty()) {
+            if (this.armour.getStackInSlot(i) != null) {
                 return true;
             }
         }

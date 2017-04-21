@@ -22,7 +22,7 @@ public class WearableAssemblerItem extends ItemBlock implements RegisterItemMode
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (facing != EnumFacing.UP) {
             return EnumActionResult.FAIL;
         } else {
@@ -31,12 +31,11 @@ public class WearableAssemblerItem extends ItemBlock implements RegisterItemMode
             if (!block.isReplaceable(world, pos)) {
                 pos = pos.offset(facing);
             }
-            ItemStack stack = player.getHeldItem(hand);
             if (player.canPlayerEdit(pos, facing, stack) && this.block.canPlaceBlockAt(world, pos)) {
                 this.place(world, pos, EnumFacing.fromAngle(player.rotationYaw), this.block);
                 SoundType soundType = world.getBlockState(pos).getBlock().getSoundType(world.getBlockState(pos), world, pos, player);
                 world.playSound(player, pos, soundType.getPlaceSound(), SoundCategory.BLOCKS, (soundType.getVolume() + 1.0F) / 2.0F, soundType.getPitch() * 0.8F);
-                stack.shrink(1);
+                stack.stackSize--;
                 return EnumActionResult.SUCCESS;
             } else {
                 return EnumActionResult.FAIL;
@@ -49,7 +48,7 @@ public class WearableAssemblerItem extends ItemBlock implements RegisterItemMode
         IBlockState state = block.getDefaultState().withProperty(WearableAssemblerBlock.FACING, facing);
         world.setBlockState(pos, state.withProperty(WearableAssemblerBlock.HALF, WearableAssemblerBlock.Half.LOWER), 2);
         world.setBlockState(top, state.withProperty(WearableAssemblerBlock.HALF, WearableAssemblerBlock.Half.UPPER), 2);
-        world.notifyNeighborsOfStateChange(pos, block, false);
-        world.notifyNeighborsOfStateChange(top, block, false);
+        world.notifyNeighborsOfStateChange(pos, block);
+        world.notifyNeighborsOfStateChange(top, block);
     }
 }

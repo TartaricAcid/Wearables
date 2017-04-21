@@ -1,6 +1,5 @@
 package net.gegy1000.wearables.server.container.slot;
 
-import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -28,12 +27,6 @@ public class ArmourSlot extends Slot {
     @Override
     public boolean isItemValid(ItemStack stack) {
         return stack.getItem().isValidArmor(stack, this.slot, this.player);
-    }
-
-    @Override
-    public boolean canTakeStack(EntityPlayer player) {
-        ItemStack stack = this.getStack();
-        return !(!stack.isEmpty() && !player.isCreative() && EnchantmentHelper.hasBindingCurse(stack)) && super.canTakeStack(player);
     }
 
     @Override

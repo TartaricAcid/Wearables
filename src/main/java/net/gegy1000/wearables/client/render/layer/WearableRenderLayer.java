@@ -46,7 +46,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
 
     private void renderPiece(EntityEquipmentSlot slot, EntityLivingBase entity, float limbSwing, float limbSwingAmount, float partialTicks, float age, float yaw, float pitch, float scale) {
         ItemStack stack = entity.getItemStackFromSlot(slot);
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+        if (stack != null && stack.getItem() instanceof WearableItem) {
             WearableItem item = (WearableItem) stack.getItem();
             if (item.getEquipmentSlot() == slot) {
                 Wearable wearable = WearableItem.getWearable(stack);

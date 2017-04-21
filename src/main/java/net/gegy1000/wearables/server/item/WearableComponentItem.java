@@ -14,7 +14,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
 
@@ -39,7 +38,7 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> subItems) {
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
             WearableComponent component = new WearableComponent(componentType);
             ItemStack stack = new ItemStack(this);
@@ -66,7 +65,7 @@ public class WearableComponentItem extends Item implements RegisterItemModel, Re
     }
 
     public static WearableComponent getComponent(ItemStack stack) {
-        NBTTagCompound compound = stack.getTagCompound();
+        NBTTagCompound compound = stack != null ? stack.getTagCompound() : null;
         if (compound == null) {
             compound = new NBTTagCompound();
         }

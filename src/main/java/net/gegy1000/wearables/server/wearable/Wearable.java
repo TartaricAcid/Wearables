@@ -12,7 +12,7 @@ import java.util.List;
 
 public class Wearable implements INBTSerializable<NBTTagCompound> {
     private List<WearableComponent> components = new ArrayList<>();
-    private ItemStack appliedArmour = ItemStack.EMPTY;
+    private ItemStack appliedArmour = null;
 
     public void addComponent(WearableComponent component) {
         this.components.add(component);
@@ -38,7 +38,7 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
             componentList.appendTag(component.serializeNBT());
         }
         compound.setTag("components", componentList);
-        if (!this.appliedArmour.isEmpty()) {
+        if (this.appliedArmour != null) {
             compound.setTag("applied_armour", this.appliedArmour.serializeNBT());
         }
         return compound;
@@ -53,7 +53,7 @@ public class Wearable implements INBTSerializable<NBTTagCompound> {
             }
         }
         if (compound.hasKey("applied_armour")) {
-            this.appliedArmour = new ItemStack(compound.getCompoundTag("applied_armour"));
+            this.appliedArmour = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("applied_armour"));
         }
     }
 

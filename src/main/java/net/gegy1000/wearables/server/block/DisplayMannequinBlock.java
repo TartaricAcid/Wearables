@@ -17,7 +17,6 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -63,14 +62,14 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block) {
         if (state.getValue(HALF) == Half.UPPER) {
             BlockPos down = pos.down();
             IBlockState downState = world.getBlockState(down);
             if (downState.getBlock() != this) {
                 world.setBlockToAir(pos);
             } else if (block != this) {
-                downState.neighborChanged(world, down, block, fromPos);
+                downState.neighborChanged(world, down, block);
             }
         } else {
             BlockPos up = pos.up();
@@ -94,22 +93,21 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
     }
 
     @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, ItemStack heldItem, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (state.getValue(HALF) == Half.UPPER) {
             pos = pos.down();
         }
         state = world.getBlockState(pos);
         if (state.getBlock() instanceof DisplayMannequinBlock && state.getValue(HALF) == Half.LOWER) {
-            if (player.canPlayerEdit(pos, facing, player.getHeldItem(hand))) {
+            if (player.canPlayerEdit(pos, facing, heldItem)) {
                 TileEntity tile = world.getTileEntity(pos);
                 if (tile instanceof DisplayMannequinEntity) {
                     DisplayMannequinEntity entity = (DisplayMannequinEntity) tile;
-                    ItemStack heldItem = player.getHeldItem(hand);
                     if (player.isSneaking() && heldItem.getItem() instanceof WearableItem && player.inventory.getFirstEmptyStack() >= 0) {
                         WearableItem wearableItem = (WearableItem) heldItem.getItem();
                         EntityEquipmentSlot slot = wearableItem.armorType;
                         ItemStack result = entity.swapItem(slot, heldItem);
-                        heldItem.shrink(1);
+                        heldItem.stackSize--;
                         player.inventory.addItemStackToInventory(result);
                         return true;
                     }
@@ -137,7 +135,7 @@ public class DisplayMannequinBlock extends Block implements RegisterItemModel, R
 
     @Override
     public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-        return state.getValue(HALF) == Half.UPPER ? Items.AIR : this.getItem();
+        return state.getValue(HALF) == Half.UPPER ? null : this.getItem();
     }
 
     @Override

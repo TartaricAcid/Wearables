@@ -20,9 +20,9 @@ archivesBaseName = "wearables"
 sourceCompatibility = targetCompatibility = "1.8"
 
 minecraft {
-    version = "1.11.2-13.20.0.2282"
+    version = "1.10.2-12.18.3.2185"
     runDir = "minecraft"
-    mappings = "snapshot_20170415"
+    mappings = "stable_29"
 }
 
 repositories {
@@ -37,9 +37,9 @@ repositories {
 }
 
 dependencies {
-    compile "net.ilexiconn:llibrary:$llibrary_version-1.11.2:dev"
-    deobfCompile "mezz.jei:jei_1.11.2:4.3.1.260:api"
-    runtime "mezz.jei:jei_1.11.2:4.3.1.260"
+    compile "net.ilexiconn:llibrary:$llibrary_version-1.10.2:dev"
+    deobfCompile "mezz.jei:jei_1.10.2:3.14.7.417:api"
+    runtime "mezz.jei:jei_1.10.2:3.14.7.417"
 }
 
 processResources {

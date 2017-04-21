@@ -50,12 +50,12 @@ public class WearableAssemblerGui extends GuiContainer {
     @Override
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
         String title = I18n.translateToLocal("tile.wearable_assembler.name");
-        this.fontRenderer.drawString(title, this.xSize / 2 - this.fontRenderer.getStringWidth(title) / 2, 6, 0x404040);
-        this.fontRenderer.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 93, 0x404040);
+        this.fontRendererObj.drawString(title, this.xSize / 2 - this.fontRendererObj.getStringWidth(title) / 2, 6, 0x404040);
+        this.fontRendererObj.drawString(this.playerInventory.getDisplayName().getUnformattedText(), 8, this.ySize - 93, 0x404040);
 
         Slot slot = this.container.getSlot(7);
         ItemStack stack = slot.getStack();
-        if (!stack.isEmpty() && stack.getItem() instanceof WearableItem) {
+        if (stack != null && stack.getItem() instanceof WearableItem) {
             Wearable wearable = WearableItem.getWearable(stack);
 
             float ticks = this.mc.player.ticksExisted + LLibrary.PROXY.getPartialTicks();

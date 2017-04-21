@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 public abstract class AutoTransferContainer extends Container {
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
-        ItemStack transferred = ItemStack.EMPTY;
+        ItemStack transferred = null;
         Slot slot = this.inventorySlots.get(slotIndex);
         int otherSlots = this.inventorySlots.size() - 36;
         if (slot != null && slot.getHasStack()) {
@@ -17,16 +17,16 @@ public abstract class AutoTransferContainer extends Container {
             transferred = current.copy();
             if (slotIndex < otherSlots) {
                 if (!this.mergeItemStack(copy, otherSlots, this.inventorySlots.size(), false)) {
-                    return ItemStack.EMPTY;
+                    return null;
                 } else {
                     slot.onSlotChanged();
                 }
             } else if (!this.mergeItemStack(copy, 0, otherSlots, false)) {
-                return ItemStack.EMPTY;
+                return null;
             }
-            if (copy.getCount() == 0) {
-                slot.onTake(player, copy);
-                slot.putStack(ItemStack.EMPTY);
+            if (copy.stackSize == 0) {
+                slot.onPickupFromSlot(player, copy);
+                slot.putStack(null);
             } else {
                 slot.onSlotChanged();
             }

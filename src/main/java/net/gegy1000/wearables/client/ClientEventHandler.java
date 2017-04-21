@@ -48,7 +48,7 @@ public class ClientEventHandler {
                 LocalPlayerState state = LocalPlayerState.getState(player);
                 boolean jumping = MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying;
                 state.setJumping(jumping);
-                this.movementState.setMoveUp(jumping && state.camFly());
+                this.movementState.setMoveUp(jumping && state.canFly());
                 this.movementState.setMoveForward(MC.gameSettings.keyBindForward.isKeyDown());
                 this.movementState.setMoveBackward(MC.gameSettings.keyBindBack.isKeyDown());
             }

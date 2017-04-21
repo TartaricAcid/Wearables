@@ -9,7 +9,6 @@ import net.gegy1000.wearables.server.block.BlockRegistry;
 import net.gegy1000.wearables.server.item.ItemRegistry;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
 import net.gegy1000.wearables.server.wearable.component.ComponentRegistry;
-import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.item.ItemStack;
 
 @JEIPlugin
@@ -26,8 +25,9 @@ public class WearableJEIPlugin extends BlankModPlugin {
 
         registry.addRecipeCategories(new FabricatorRecipeCategory(registry.getJeiHelpers().getGuiHelper()));
         registry.addRecipeCategoryCraftingItem(new ItemStack(BlockRegistry.WEARABLE_FABRICATOR), "wearables.fabricator");
-        registry.handleRecipes(WearableComponentType.class, FabricatorRecipeWrapper::new, "wearables.fabricator");
-        registry.addRecipes(ComponentRegistry.COMPONENTS, "wearables.fabricator");
+        registry.addRecipeHandlers(new FabricatorRecipeHandler());
+        registry.addRecipeHandlers();
+        registry.addRecipes(ComponentRegistry.COMPONENTS);
     }
 
     @Override

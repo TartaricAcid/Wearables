@@ -30,7 +30,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.translation.I18n;
@@ -61,7 +60,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     }
 
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, NonNullList<ItemStack> subItems) {
+    public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> subItems) {
         for (WearableComponentType componentType : ComponentRegistry.COMPONENTS) {
             if (componentType.getCategory().getSlot() == this.armorType) {
                 for (int colourIndex = 0; colourIndex < 16; colourIndex++) {
@@ -91,7 +90,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
         Wearable wearable = WearableItem.getWearable(stack);
-        if (!wearable.getAppliedArmour().isEmpty()) {
+        if (wearable.getAppliedArmour() != null) {
             tooltip.add(TextFormatting.BLUE + "" + TextFormatting.BOLD + "(" + wearable.getAppliedArmour().getDisplayName() + ")");
         }
         if (!wearable.getComponents().isEmpty()) {
@@ -105,11 +104,11 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
         if (!player.isSneaking()) {
-            return super.onItemRightClick(world, player, hand);
+            return super.onItemRightClick(stack, world, player, hand);
         }
-        return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
+        return new ActionResult<>(EnumActionResult.PASS, stack);
     }
 
     @Override
@@ -121,7 +120,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot) {
         if (!source.isUnblockable()) {
             ItemStack stack = WearableItem.getAppliedArmour(armor);
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemArmor) {
+            if (stack != null && stack.getItem() instanceof ItemArmor) {
                 ItemArmor item = (ItemArmor) stack.getItem();
                 return new ArmorProperties(0, item.damageReduceAmount / 25.0, armor.getMaxDamage() + 1 - armor.getItemDamage());
             }
@@ -131,9 +130,12 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
 
     @Override
     public int getArmorDisplay(EntityPlayer player, ItemStack armor, int slot) {
-        Item item = WearableItem.getAppliedArmour(armor).getItem();
-        if (item instanceof ItemArmor) {
-            return ((ItemArmor) item).damageReduceAmount;
+        ItemStack appliedArmour = WearableItem.getAppliedArmour(armor);
+        if (appliedArmour != null) {
+            Item item = appliedArmour.getItem();
+            if (item instanceof ItemArmor) {
+                return ((ItemArmor) item).damageReduceAmount;
+            }
         }
         return 0;
     }
@@ -141,10 +143,10 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public void damageArmor(EntityLivingBase entity, ItemStack stack, DamageSource source, int damage, int slot) {
         Wearable wearable = WearableItem.getWearable(stack);
-        if (!wearable.getAppliedArmour().isEmpty()) {
+        if (wearable.getAppliedArmour() != null) {
             wearable.getAppliedArmour().damageItem(damage, entity);
             if (wearable.getAppliedArmour().getItemDamage() > wearable.getAppliedArmour().getMaxDamage()) {
-                wearable.setAppliedArmour(ItemStack.EMPTY);
+                wearable.setAppliedArmour(null);
             }
             stack.setTagCompound(wearable.serializeNBT());
         }
@@ -153,7 +155,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public int getMaxDamage(ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (appliedArmour != null) {
             return appliedArmour.getItem().getMaxDamage(appliedArmour);
         }
         return super.getMaxDamage(stack);
@@ -162,7 +164,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public int getDamage(ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (appliedArmour != null) {
             return appliedArmour.getItem().getDamage(appliedArmour);
         }
         return super.getDamage(stack);
@@ -171,7 +173,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public boolean showDurabilityBar(ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (appliedArmour != null) {
             return appliedArmour.getItem().showDurabilityBar(appliedArmour);
         }
         return super.showDurabilityBar(stack);
@@ -180,14 +182,14 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
         ItemStack appliedArmour = WearableItem.getAppliedArmour(stack);
-        if (!appliedArmour.isEmpty()) {
+        if (appliedArmour != null) {
             return appliedArmour.getItem().getAttributeModifiers(slot, appliedArmour);
         }
         return HashMultimap.create();
     }
 
     public static Wearable getWearable(ItemStack stack) {
-        NBTTagCompound compound = stack.getTagCompound();
+        NBTTagCompound compound = stack != null ? stack.getTagCompound() : null;
         if (compound == null) {
             compound = new NBTTagCompound();
         }
@@ -199,7 +201,7 @@ public class WearableItem extends ItemArmor implements RegisterItemModel, Regist
         if (wearable != null) {
             return wearable.getAppliedArmour();
         }
-        return ItemStack.EMPTY;
+        return null;
     }
 
     public static WearableItem getItem(EntityEquipmentSlot slot) {

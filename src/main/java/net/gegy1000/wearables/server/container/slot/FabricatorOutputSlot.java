@@ -25,8 +25,8 @@ public class FabricatorOutputSlot extends SlotItemHandler {
     }
 
     @Override
-    public ItemStack onTake(EntityPlayer player, ItemStack stack) {
+    public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
         this.entity.consumeIngredients();
-        return super.onTake(player, stack);
+        super.onPickupFromSlot(player, stack);
     }
 }
