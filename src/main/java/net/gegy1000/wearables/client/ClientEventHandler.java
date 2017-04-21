@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.client;
 
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.movement.LocalPlayerState;
 import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.movement.MovementState;
 import net.gegy1000.wearables.server.network.UpdateMovementMessage;
@@ -44,7 +45,10 @@ public class ClientEventHandler {
                 this.movementState.setMoveForward(false);
                 this.movementState.setMoveBackward(false);
             } else {
-                this.movementState.setMoveUp(MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying);
+                LocalPlayerState state = LocalPlayerState.getState(player);
+                boolean jumping = MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying;
+                state.setJumping(jumping);
+                this.movementState.setMoveUp(jumping && state.camFly());
                 this.movementState.setMoveForward(MC.gameSettings.keyBindForward.isKeyDown());
                 this.movementState.setMoveBackward(MC.gameSettings.keyBindBack.isKeyDown());
             }

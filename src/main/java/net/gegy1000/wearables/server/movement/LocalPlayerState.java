@@ -21,6 +21,9 @@ public class LocalPlayerState {
     private int flyAnimation;
     private boolean flying;
 
+    private int jumpDelay;
+    private boolean jumping;
+
     public LocalPlayerState(EntityPlayer player) {
         this.player = player;
     }
@@ -40,6 +43,7 @@ public class LocalPlayerState {
         if (this.player.world.isRemote) {
             this.swimAnimation = WearableUtils.updateAnimation(this.swimAnimation, this.swimming, 10);
             this.flyAnimation = WearableUtils.updateAnimation(this.flyAnimation, this.flying, 5);
+            this.jumpDelay = WearableUtils.updateAnimation(this.jumpDelay, this.jumping, 3);
         }
     }
 
@@ -49,6 +53,14 @@ public class LocalPlayerState {
 
     public void setFlying(boolean flying) {
         this.flying = flying;
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
+    public boolean camFly() {
+        return this.jumpDelay >= 3;
     }
 
     public float getRenderSwimTimer(float partialTicks) {
