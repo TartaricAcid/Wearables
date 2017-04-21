@@ -43,14 +43,16 @@ public class SetSelectedComponentMessage implements IMessage {
             if (ctx.side.isServer()) {
                 Wearables.PROXY.schedule(() -> {
                     EntityPlayer player = ctx.getServerHandler().player;
-                    WearableComponentType type = ComponentRegistry.get(message.identifier);
-                    if (type != null) {
-                        TileEntity tile = player.world.getTileEntity(message.pos);
-                        if (tile instanceof WearableFabricatorEntity) {
-                            WearableFabricatorEntity entity = (WearableFabricatorEntity) tile;
-                            if (entity.canInteractWith(player)) {
-                                entity.setSelectedComponent(type);
-                                entity.markDirty();
+                    if (player.world.isBlockLoaded(message.pos)) {
+                        WearableComponentType type = ComponentRegistry.get(message.identifier);
+                        if (type != null) {
+                            TileEntity tile = player.world.getTileEntity(message.pos);
+                            if (tile instanceof WearableFabricatorEntity) {
+                                WearableFabricatorEntity entity = (WearableFabricatorEntity) tile;
+                                if (entity.canInteractWith(player)) {
+                                    entity.setSelectedComponent(type);
+                                    entity.markDirty();
+                                }
                             }
                         }
                     }

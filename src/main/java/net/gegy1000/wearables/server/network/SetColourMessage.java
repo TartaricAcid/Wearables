@@ -52,12 +52,14 @@ public class SetColourMessage implements IMessage {
             if (ctx.side.isServer()) {
                 Wearables.PROXY.schedule(() -> {
                     EntityPlayer player = ctx.getServerHandler().player;
-                    TileEntity tile = player.world.getTileEntity(message.pos);
-                    if (tile instanceof WearableColouriserEntity) {
-                        WearableColouriserEntity entity = (WearableColouriserEntity) tile;
-                        if (entity.canInteractWith(player)) {
-                            entity.setColour(message.layer, message.red, message.green, message.blue);
-                            entity.markDirty();
+                    if (player.world.isBlockLoaded(message.pos)) {
+                        TileEntity tile = player.world.getTileEntity(message.pos);
+                        if (tile instanceof WearableColouriserEntity) {
+                            WearableColouriserEntity entity = (WearableColouriserEntity) tile;
+                            if (entity.canInteractWith(player)) {
+                                entity.setColour(message.layer, message.red, message.green, message.blue);
+                                entity.markDirty();
+                            }
                         }
                     }
                 }, ctx);

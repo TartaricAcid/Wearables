@@ -55,20 +55,22 @@ public class SetPropertyMessage implements IMessage {
             if (ctx.side.isServer()) {
                 Wearables.PROXY.schedule(() -> {
                     EntityPlayer player = ctx.getServerHandler().player;
-                    TileEntity tile = player.world.getTileEntity(message.pos);
-                    if (tile instanceof WearableAssemblerEntity) {
-                        WearableAssemblerEntity entity = (WearableAssemblerEntity) tile;
-                        if (entity.canInteractWith(player)) {
-                            Container container = player.openContainer;
-                            if (container instanceof WearableAssemblerContainer) {
-                                Slot slot = container.getSlot(message.slot);
-                                if (slot != null && slot.getStack().getItem() instanceof WearableComponentItem) {
-                                    WearableComponent component = WearableComponentItem.getComponent(slot.getStack());
-                                    WearableComponentType type = component.getType();
-                                    if ((type.getSupportedProperties() & message.property) != 0) {
-                                        component.setProperty(message.property, MathHelper.clamp(message.value, type.getMinimum(message.property), type.getMaximum(message.property)));
-                                        slot.getStack().setTagCompound(component.serializeNBT());
-                                        ((WearableAssemblerContainer) container).onContentsChanged();
+                    if (player.world.isBlockLoaded(message.pos)) {
+                        TileEntity tile = player.world.getTileEntity(message.pos);
+                        if (tile instanceof WearableAssemblerEntity) {
+                            WearableAssemblerEntity entity = (WearableAssemblerEntity) tile;
+                            if (entity.canInteractWith(player)) {
+                                Container container = player.openContainer;
+                                if (container instanceof WearableAssemblerContainer) {
+                                    Slot slot = container.getSlot(message.slot);
+                                    if (slot != null && slot.getStack().getItem() instanceof WearableComponentItem) {
+                                        WearableComponent component = WearableComponentItem.getComponent(slot.getStack());
+                                        WearableComponentType type = component.getType();
+                                        if ((type.getSupportedProperties() & message.property) != 0) {
+                                            component.setProperty(message.property, MathHelper.clamp(message.value, type.getMinimum(message.property), type.getMaximum(message.property)));
+                                            slot.getStack().setTagCompound(component.serializeNBT());
+                                            ((WearableAssemblerContainer) container).onContentsChanged();
+                                        }
                                     }
                                 }
                             }
