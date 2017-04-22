@@ -25,7 +25,9 @@ public class WearableAssemblerRenderer extends TileEntitySpecialRenderer<Wearabl
         if (entity != null) {
             BlockPos pos = entity.getPos();
             IBlockState state = entity.getWorld().getBlockState(pos);
-            facing = state.getValue(WearableAssemblerBlock.FACING);
+            if (state.getBlock() instanceof WearableAssemblerBlock) {
+                facing = state.getValue(WearableAssemblerBlock.FACING);
+            }
         }
 
         GlStateManager.pushMatrix();

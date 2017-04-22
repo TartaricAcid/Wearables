@@ -5,7 +5,7 @@ import net.gegy1000.wearables.client.model.block.HeadDisplayStandModel;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
-import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
+import net.gegy1000.wearables.server.block.MannequinHeadStandBlock;
 import net.gegy1000.wearables.server.block.entity.MannequinHeadStandEntity;
 import net.gegy1000.wearables.server.item.WearableItem;
 import net.gegy1000.wearables.server.util.WearableColourUtils;
@@ -32,7 +32,10 @@ public class MannequinHeadStandRenderer extends TileEntitySpecialRenderer<Manneq
         if (entity != null) {
             BlockPos pos = entity.getPos();
             IBlockState state = entity.getWorld().getBlockState(pos);
-            EnumFacing facing = state.getValue(DisplayMannequinBlock.FACING);
+            EnumFacing facing = EnumFacing.SOUTH;
+            if (state.getBlock() instanceof MannequinHeadStandBlock) {
+                facing = state.getValue(MannequinHeadStandBlock.FACING);
+            }
             GlStateManager.pushMatrix();
             GlStateManager.translate(x + 0.5, y + 1.5F, z + 0.5);
             GlStateManager.scale(-1.0F, -1.0F, 1.0F);

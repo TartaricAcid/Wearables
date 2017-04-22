@@ -8,7 +8,7 @@ import java.util.Map;
 @IFMLLoadingPlugin.Name("wearables")
 @IFMLLoadingPlugin.MCVersion("1.10.2")
 @IFMLLoadingPlugin.SortingIndex(1002)
-@IFMLLoadingPlugin.TransformerExclusions({"net.ilexiconn.llibrary.server.asm"})
+@IFMLLoadingPlugin.TransformerExclusions({ "net.ilexiconn.llibrary.server.asm" })
 public class WearablesPlugin implements IFMLLoadingPlugin {
     public static boolean loaded;
     public static boolean development;
