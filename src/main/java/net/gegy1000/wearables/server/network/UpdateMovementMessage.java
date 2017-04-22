@@ -51,6 +51,8 @@ public class UpdateMovementMessage implements IMessage {
                 if (ctx.side.isServer()) {
                     MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(player.getUniqueID(), uuid -> new MovementState(player));
                     state.setFlags(message.flags);
+                    LocalPlayerState localState = LocalPlayerState.getState(player);
+                    state.apply(localState);
                 } else {
                     Entity senderEntity = player.world.getEntityByID(message.playerId);
                     if (senderEntity instanceof EntityPlayer) {
