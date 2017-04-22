@@ -49,6 +49,7 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
 
         GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         this.renderPiece(EntityEquipmentSlot.HEAD, entity, partialTicks, 0.0625F);
         this.renderPiece(EntityEquipmentSlot.CHEST, entity, partialTicks, 0.0625F);
         this.renderPiece(EntityEquipmentSlot.LEGS, entity, partialTicks, 0.0625F);
@@ -86,6 +87,7 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, lastBrightnessX, lastBrightnessY);
 
             GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             this.renderPiece(EntityEquipmentSlot.HEAD, entity, partialTicks, 0.0625F);
             this.renderPiece(EntityEquipmentSlot.CHEST, entity, partialTicks, 0.0625F);
             this.renderPiece(EntityEquipmentSlot.LEGS, entity, partialTicks, 0.0625F);
