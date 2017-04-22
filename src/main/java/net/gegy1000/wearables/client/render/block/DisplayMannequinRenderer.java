@@ -1,7 +1,6 @@
 package net.gegy1000.wearables.client.render.block;
 
 import net.gegy1000.wearables.Wearables;
-import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.client.model.block.DisplayMannequinModel;
 import net.gegy1000.wearables.client.model.component.WearableComponentModel;
 import net.gegy1000.wearables.client.render.RenderRegistry;
@@ -9,6 +8,7 @@ import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.server.block.DisplayMannequinBlock;
 import net.gegy1000.wearables.server.block.entity.DisplayMannequinEntity;
 import net.gegy1000.wearables.server.item.WearableItem;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.Wearable;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
@@ -63,7 +63,10 @@ public class DisplayMannequinRenderer extends TileEntitySpecialRenderer<DisplayM
         if (entity != null) {
             BlockPos pos = entity.getPos();
             IBlockState state = entity.getWorld().getBlockState(pos);
-            EnumFacing facing = state.getValue(DisplayMannequinBlock.FACING);
+            EnumFacing facing = EnumFacing.SOUTH;
+            if (state.getBlock() instanceof DisplayMannequinBlock) {
+                facing = state.getValue(DisplayMannequinBlock.FACING);
+            }
             GlStateManager.pushMatrix();
             GlStateManager.translate(x + 0.5, y + 1.5F, z + 0.5);
             GlStateManager.scale(-1.0F, -1.0F, 1.0F);

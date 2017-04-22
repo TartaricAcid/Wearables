@@ -40,7 +40,7 @@ public class WearablesHooks {
     public static PotionEffect getActivePotionEffect(EntityLivingBase entity, Potion potion, Map<Potion, PotionEffect> active) {
         if (entity instanceof EntityPlayer && potion == MobEffects.NIGHT_VISION) {
             if (WearableUtils.hasComponent((EntityPlayer) entity, ComponentRegistry.NIGHT_VISION_GOGGLES)) {
-                return new PotionEffect(MobEffects.NIGHT_VISION,  1000);
+                return new PotionEffect(MobEffects.NIGHT_VISION, 1000);
             }
         }
         return active.get(potion);

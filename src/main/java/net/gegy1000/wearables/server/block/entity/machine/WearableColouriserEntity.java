@@ -1,7 +1,7 @@
 package net.gegy1000.wearables.server.block.entity.machine;
 
-import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
+import net.gegy1000.wearables.server.util.WearableColourUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponent;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.ITextComponent;

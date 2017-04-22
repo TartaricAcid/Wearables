@@ -2,10 +2,10 @@ package net.gegy1000.wearables.client.render;
 
 import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.render.block.DisplayMannequinRenderer;
+import net.gegy1000.wearables.client.render.block.MannequinHeadStandRenderer;
 import net.gegy1000.wearables.client.render.block.WearableAssemblerRenderer;
 import net.gegy1000.wearables.client.render.block.WearableColouriserRenderer;
 import net.gegy1000.wearables.client.render.block.WearableFabricatorRenderer;
-import net.gegy1000.wearables.client.render.block.MannequinHeadStandRenderer;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
 import net.gegy1000.wearables.client.render.component.chest.BowTieRenderer;
 import net.gegy1000.wearables.client.render.component.chest.JetpackRenderer;

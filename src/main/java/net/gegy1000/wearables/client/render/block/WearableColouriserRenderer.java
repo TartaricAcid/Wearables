@@ -4,7 +4,7 @@ import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.client.model.block.ColouriserModel;
 import net.gegy1000.wearables.client.render.ComponentRenderHandler;
 import net.gegy1000.wearables.client.render.component.ComponentRenderer;
-import net.gegy1000.wearables.server.block.WearableFabricatorBlock;
+import net.gegy1000.wearables.server.block.WearableColouriserBlock;
 import net.gegy1000.wearables.server.block.entity.machine.WearableColouriserEntity;
 import net.gegy1000.wearables.server.item.WearableComponentItem;
 import net.gegy1000.wearables.server.util.WearableUtils;
@@ -33,7 +33,9 @@ public class WearableColouriserRenderer extends TileEntitySpecialRenderer<Wearab
         if (entity != null) {
             BlockPos pos = entity.getPos();
             IBlockState state = entity.getWorld().getBlockState(pos);
-            facing = state.getValue(WearableFabricatorBlock.FACING);
+            if (state.getBlock() instanceof WearableColouriserBlock) {
+                facing = state.getValue(WearableColouriserBlock.FACING);
+            }
         }
 
         GlStateManager.pushMatrix();
