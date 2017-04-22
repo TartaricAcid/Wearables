@@ -46,9 +46,9 @@ public class LocalPlayerState {
         if (this.player.world.isRemote) {
             this.swimAnimation = WearableUtils.updateAnimation(this.swimAnimation, this.swimming, 10);
             this.airborneAnimation = WearableUtils.updateAnimation(this.airborneAnimation, this.airborne, 5);
-            this.jumpDelay = WearableUtils.updateAnimation(this.jumpDelay, this.jumping, 3);
-            this.flyToggleAnimation = WearableUtils.updateAnimation(this.flyToggleAnimation, this.flyToggle, 5);
         }
+        this.jumpDelay = WearableUtils.updateAnimation(this.jumpDelay, this.jumping, 3);
+        this.flyToggleAnimation = WearableUtils.updateAnimation(this.flyToggleAnimation, this.flyToggle, 5);
     }
 
     public void setSwimming(boolean swimming) {
