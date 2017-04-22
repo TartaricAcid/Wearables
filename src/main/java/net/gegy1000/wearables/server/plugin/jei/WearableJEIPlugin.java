@@ -18,7 +18,6 @@ public class WearableJEIPlugin extends BlankModPlugin {
     public void register(IModRegistry registry) {
         IIngredientBlacklist ingredientBlacklist = registry.getJeiHelpers().getIngredientBlacklist();
         ingredientBlacklist.addIngredientToBlacklist(new ItemStack(BlockRegistry.DISPLAY_MANNEQUIN));
-        ingredientBlacklist.addIngredientToBlacklist(new ItemStack(BlockRegistry.WEARABLE_ASSEMBLER));
         ingredientBlacklist.addIngredientToBlacklist(new ItemStack(ItemRegistry.WEARABLE_HEAD));
         ingredientBlacklist.addIngredientToBlacklist(new ItemStack(ItemRegistry.WEARABLE_CHEST));
         ingredientBlacklist.addIngredientToBlacklist(new ItemStack(ItemRegistry.WEARABLE_LEGS));

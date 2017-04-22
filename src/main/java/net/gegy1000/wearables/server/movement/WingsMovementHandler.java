@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.movement;
 
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.ilexiconn.llibrary.client.util.ClientUtils;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,12 +12,15 @@ public class WingsMovementHandler extends MovementHandler {
     public void updateMovement(EntityPlayer player, MovementState movementState) {
         LocalPlayerState state = LocalPlayerState.getState(player);
         boolean onGround = WearableUtils.onGround(player);
-        if (state.canFly()) {
-            state.setFlyToggle(true);
-        } else if (onGround || player.isSneaking()) {
-            state.setFlyToggle(false);
+        boolean flying = player.capabilities.isFlying;
+        if (Wearables.PROXY.isClientPlayer(player)) {
+            if (state.canFly() && !flying) {
+                state.setFlyToggle(true);
+            } else if (onGround || player.isSneaking() || flying) {
+                state.setFlyToggle(false);
+            }
         }
-        state.setAirborne(!onGround && !player.capabilities.isFlying && !player.isInWater());
+        state.setAirborne(!onGround && !flying && !player.isInWater());
         if (state.isAirborne() && state.isFlyToggle()) {
             player.eyeHeight = 0.25F;
         } else {

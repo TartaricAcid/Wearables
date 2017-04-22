@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.movement;
 
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,7 +69,7 @@ public class LocalPlayerState {
     }
 
     public boolean canFly() {
-        return this.jumpDelay >= 3;
+        return this.jumpDelay >= 3 || (this.player.world.isRemote && !Wearables.PROXY.isClientPlayer(this.player));
     }
 
     public boolean isAirborne() {

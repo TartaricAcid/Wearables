@@ -29,8 +29,8 @@ public class MovementState {
         this.setFlag(3, hasFuel);
     }
 
-    public void setJumping(boolean jumping) {
-        this.setFlag(4, jumping);
+    public void setFlyToggle(boolean toggle) {
+        this.setFlag(4, toggle);
     }
 
     public boolean shouldMoveUp() {
@@ -49,7 +49,7 @@ public class MovementState {
         return this.getFlag(3);
     }
 
-    public boolean isJumping() {
+    public boolean isFlyToggle() {
         return this.getFlag(4);
     }
 
@@ -92,6 +92,6 @@ public class MovementState {
     }
 
     public void apply(LocalPlayerState localState) {
-        localState.setJumping(this.isJumping());
+        localState.setFlyToggle(this.isFlyToggle());
     }
 }
