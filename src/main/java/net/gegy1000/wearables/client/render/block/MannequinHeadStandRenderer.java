@@ -47,6 +47,7 @@ public class MannequinHeadStandRenderer extends TileEntitySpecialRenderer<Manneq
             MODEL.render(null, 0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0625F);
 
             GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 
             GlStateManager.pushMatrix();
             ItemStack stack = entity.getStack();
