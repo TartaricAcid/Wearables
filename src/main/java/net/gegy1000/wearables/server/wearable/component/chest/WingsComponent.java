@@ -1,6 +1,7 @@
 package net.gegy1000.wearables.server.wearable.component.chest;
 
 import net.gegy1000.wearables.client.render.ComponentProperty;
+import net.gegy1000.wearables.server.movement.LocalPlayerState;
 import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.movement.WingsMovementHandler;
 import net.gegy1000.wearables.server.wearable.WearableCategory;
@@ -69,5 +70,12 @@ public class WingsComponent extends WearableComponentType {
     @Override
     public MovementHandler getMovementHandler() {
         return MOVEMENT_HANDLER;
+    }
+
+    @Override
+    public void onRemoved(EntityPlayer player) {
+        LocalPlayerState state = LocalPlayerState.getState(player);
+        player.eyeHeight = player.getDefaultEyeHeight();
+        state.setFlyToggle(false);
     }
 }

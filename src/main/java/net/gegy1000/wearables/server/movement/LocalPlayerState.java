@@ -18,11 +18,14 @@ public class LocalPlayerState {
     private int swimAnimation;
     private boolean swimming;
 
-    private int flyAnimation;
-    private boolean flying;
+    private int airborneAnimation;
+    private boolean airborne;
 
     private int jumpDelay;
     private boolean jumping;
+
+    private int flyToggleAnimation;
+    private boolean flyToggle;
 
     public LocalPlayerState(EntityPlayer player) {
         this.player = player;
@@ -42,8 +45,9 @@ public class LocalPlayerState {
     public void update() {
         if (this.player.world.isRemote) {
             this.swimAnimation = WearableUtils.updateAnimation(this.swimAnimation, this.swimming, 10);
-            this.flyAnimation = WearableUtils.updateAnimation(this.flyAnimation, this.flying, 5);
+            this.airborneAnimation = WearableUtils.updateAnimation(this.airborneAnimation, this.airborne, 5);
             this.jumpDelay = WearableUtils.updateAnimation(this.jumpDelay, this.jumping, 3);
+            this.flyToggleAnimation = WearableUtils.updateAnimation(this.flyToggleAnimation, this.flyToggle, 5);
         }
     }
 
@@ -51,16 +55,32 @@ public class LocalPlayerState {
         this.swimming = swimming;
     }
 
-    public void setFlying(boolean flying) {
-        this.flying = flying;
+    public void setAirborne(boolean airborne) {
+        this.airborne = airborne;
+    }
+
+    public void setFlyToggle(boolean flyToggle) {
+        this.flyToggle = flyToggle;
     }
 
     public void setJumping(boolean jumping) {
         this.jumping = jumping;
     }
 
-    public boolean camFly() {
+    public boolean canFly() {
         return this.jumpDelay >= 3;
+    }
+
+    public boolean isAirborne() {
+        return this.airborne;
+    }
+
+    public boolean isSwimming() {
+        return this.swimming;
+    }
+
+    public boolean isFlyToggle() {
+        return this.flyToggle;
     }
 
     public float getRenderSwimTimer(float partialTicks) {
@@ -68,7 +88,11 @@ public class LocalPlayerState {
     }
 
     public float getRenderFlyTimer(float partialTicks) {
-        return WearableUtils.scaleTimer(this.flyAnimation, this.flying, partialTicks, 5.0F);
+        return WearableUtils.scaleTimer(this.airborneAnimation, this.airborne, partialTicks, 5.0F);
+    }
+
+    public float getRenderFlyToggleTimer(float partialTicks) {
+        return WearableUtils.scaleTimer(this.flyToggleAnimation, this.flyToggle, partialTicks, 5.0F);
     }
 
     public static LocalPlayerState getState(EntityPlayer player) {

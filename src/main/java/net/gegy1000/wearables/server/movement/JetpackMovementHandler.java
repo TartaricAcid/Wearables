@@ -57,7 +57,7 @@ public class JetpackMovementHandler extends MovementHandler {
                 }
             }
         }
-        state.setFlying(!WearableUtils.onGround(player));
+        state.setAirborne(!WearableUtils.onGround(player));
     }
 
     @Override

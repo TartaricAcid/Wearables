@@ -27,7 +27,7 @@ public class Wearables {
     @Mod.EventHandler
     public void onPreInit(FMLPreInitializationEvent event) {
         if (!WearablesPlugin.loaded) {
-            System.err.println("Failed to load Wearables plugin! Missing coremod parameters! (-Dfml.coreMods.load=net.gegy1000.wearables.server.core.WearablesPlugin)");
+            System.err.println("Failed to load Wearables plugin! Missing coremod parameters! (-Dfml.coreMods.load=" + WearablesPlugin.class.getName() + ")");
             FMLCommonHandler.instance().exitJava(1, false);
         }
 

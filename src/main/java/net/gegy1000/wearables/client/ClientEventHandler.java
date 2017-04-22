@@ -48,7 +48,7 @@ public class ClientEventHandler {
                 LocalPlayerState state = LocalPlayerState.getState(player);
                 boolean jumping = MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying;
                 state.setJumping(jumping);
-                this.movementState.setMoveUp(jumping && state.camFly());
+                this.movementState.setMoveUp(jumping && state.canFly());
                 this.movementState.setMoveForward(MC.gameSettings.keyBindForward.isKeyDown());
                 this.movementState.setMoveBackward(MC.gameSettings.keyBindBack.isKeyDown());
             }
@@ -82,6 +82,7 @@ public class ClientEventHandler {
     public void setRotationAngles(PlayerModelEvent.SetRotationAngles event) {
         EntityPlayer player = event.getEntityPlayer();
         if (!WearableUtils.onGround(player)) {
+            LocalPlayerState state = LocalPlayerState.getState(player);
             ModelPlayer model = event.getModel();
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             if (components.contains(ComponentRegistry.JETPACK) || components.contains(ComponentRegistry.WINGS)) {
@@ -94,9 +95,13 @@ public class ClientEventHandler {
                     model.bipedLeftArmwear.rotateAngleX = 0.0F;
                     model.bipedRightLegwear.rotateAngleX = 0.0F;
                     model.bipedLeftLegwear.rotateAngleX = 0.0F;
+                    if (state.isFlyToggle() && components.contains(ComponentRegistry.WINGS)) {
+                        model.bipedHead.rotateAngleX = -1.55F;
+                        model.bipedHeadwear.rotateAngleX = -1.55F;
+                    }
                 }
             } else if (components.contains(ComponentRegistry.FLIPPERS)) {
-                if (player.isInWater() && !player.capabilities.isFlying && !player.world.getBlockState(player.getPosition().down()).isFullBlock()) {
+                if (state.isSwimming()) {
                     model.bipedHead.rotateAngleX = -1.55F;
                     model.bipedHeadwear.rotateAngleX = -1.55F;
                 }
