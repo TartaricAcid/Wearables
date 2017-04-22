@@ -36,6 +36,7 @@ public class WearableRenderLayer implements LayerRenderer<EntityLivingBase> {
         GlStateManager.enableRescaleNormal();
         GlStateManager.enableBlend();
         GlStateManager.enableCull();
+        GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         this.renderPiece(EntityEquipmentSlot.HEAD, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
         this.renderPiece(EntityEquipmentSlot.CHEST, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
         this.renderPiece(EntityEquipmentSlot.LEGS, entity, limbSwing, limbSwingAmount, partialTicks, age, yaw, pitch, scale);
