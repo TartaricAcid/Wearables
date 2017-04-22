@@ -48,6 +48,7 @@ public class ClientEventHandler {
                 LocalPlayerState state = LocalPlayerState.getState(player);
                 boolean jumping = MC.gameSettings.keyBindJump.isKeyDown() && !MC.player.capabilities.isFlying;
                 state.setJumping(jumping);
+                this.movementState.setFlyToggle(state.isFlyToggle());
                 this.movementState.setMoveUp(jumping && state.canFly());
                 this.movementState.setMoveForward(MC.gameSettings.keyBindForward.isKeyDown());
                 this.movementState.setMoveBackward(MC.gameSettings.keyBindBack.isKeyDown());
@@ -86,7 +87,7 @@ public class ClientEventHandler {
             ModelPlayer model = event.getModel();
             List<WearableComponentType> components = WearableUtils.getActiveComponents(player);
             if (components.contains(ComponentRegistry.JETPACK) || components.contains(ComponentRegistry.WINGS)) {
-                if (!player.isInWater()) {
+                if (!player.isInWater() && state.isAirborne()) {
                     model.bipedRightArm.rotateAngleX = 0.0F;
                     model.bipedLeftArm.rotateAngleX = 0.0F;
                     model.bipedRightLeg.rotateAngleX = 0.0F;

@@ -2,6 +2,7 @@ package net.gegy1000.wearables.server.network;
 
 import io.netty.buffer.ByteBuf;
 import net.gegy1000.wearables.Wearables;
+import net.gegy1000.wearables.server.movement.LocalPlayerState;
 import net.gegy1000.wearables.server.movement.MovementHandler;
 import net.gegy1000.wearables.server.movement.MovementState;
 import net.minecraft.entity.Entity;
@@ -50,12 +51,16 @@ public class UpdateMovementMessage implements IMessage {
                 if (ctx.side.isServer()) {
                     MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(player.getUniqueID(), uuid -> new MovementState(player));
                     state.setFlags(message.flags);
+                    LocalPlayerState localState = LocalPlayerState.getState(player);
+                    state.apply(localState);
                 } else {
                     Entity senderEntity = player.world.getEntityByID(message.playerId);
                     if (senderEntity instanceof EntityPlayer) {
                         EntityPlayer sender = (EntityPlayer) senderEntity;
                         MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(sender.getUniqueID(), uuid -> new MovementState(player));
                         state.setFlags(message.flags);
+                        LocalPlayerState localState = LocalPlayerState.getState(sender);
+                        state.apply(localState);
                     }
                 }
             }, ctx);

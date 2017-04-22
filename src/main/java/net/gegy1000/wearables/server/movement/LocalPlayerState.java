@@ -1,5 +1,6 @@
 package net.gegy1000.wearables.server.movement;
 
+import net.gegy1000.wearables.Wearables;
 import net.gegy1000.wearables.server.util.WearableUtils;
 import net.gegy1000.wearables.server.wearable.component.WearableComponentType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,9 +47,9 @@ public class LocalPlayerState {
         if (this.player.world.isRemote) {
             this.swimAnimation = WearableUtils.updateAnimation(this.swimAnimation, this.swimming, 10);
             this.airborneAnimation = WearableUtils.updateAnimation(this.airborneAnimation, this.airborne, 5);
-            this.jumpDelay = WearableUtils.updateAnimation(this.jumpDelay, this.jumping, 3);
-            this.flyToggleAnimation = WearableUtils.updateAnimation(this.flyToggleAnimation, this.flyToggle, 5);
         }
+        this.jumpDelay = WearableUtils.updateAnimation(this.jumpDelay, this.jumping, 3);
+        this.flyToggleAnimation = WearableUtils.updateAnimation(this.flyToggleAnimation, this.flyToggle, 5);
     }
 
     public void setSwimming(boolean swimming) {
@@ -68,7 +69,7 @@ public class LocalPlayerState {
     }
 
     public boolean canFly() {
-        return this.jumpDelay >= 3;
+        return this.jumpDelay >= 3 || (this.player.world.isRemote && !Wearables.PROXY.isClientPlayer(this.player));
     }
 
     public boolean isAirborne() {
