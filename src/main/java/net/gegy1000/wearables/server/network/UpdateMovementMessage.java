@@ -46,8 +46,8 @@ public class UpdateMovementMessage implements IMessage {
     public static class Handler implements IMessageHandler<UpdateMovementMessage, IMessage> {
         @Override
         public IMessage onMessage(UpdateMovementMessage message, MessageContext ctx) {
+            EntityPlayer player = Wearables.PROXY.getPlayer(ctx);
             Wearables.PROXY.schedule(() -> {
-                EntityPlayer player = Wearables.PROXY.getPlayer(ctx);
                 if (ctx.side.isServer()) {
                     MovementState state = MovementHandler.MOVEMENT_STATES.computeIfAbsent(player.getUniqueID(), uuid -> new MovementState(player));
                     state.setFlags(message.flags);

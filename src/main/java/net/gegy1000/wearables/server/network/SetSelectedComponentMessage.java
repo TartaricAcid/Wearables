@@ -41,8 +41,8 @@ public class SetSelectedComponentMessage implements IMessage {
         @Override
         public IMessage onMessage(SetSelectedComponentMessage message, MessageContext ctx) {
             if (ctx.side.isServer()) {
+                EntityPlayer player = ctx.getServerHandler().playerEntity;
                 Wearables.PROXY.schedule(() -> {
-                    EntityPlayer player = ctx.getServerHandler().playerEntity;
                     if (player.world.isBlockLoaded(message.pos)) {
                         WearableComponentType type = ComponentRegistry.get(message.identifier);
                         if (type != null) {
