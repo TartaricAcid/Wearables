@@ -53,8 +53,8 @@ public class SetPropertyMessage implements IMessage {
         @Override
         public IMessage onMessage(SetPropertyMessage message, MessageContext ctx) {
             if (ctx.side.isServer()) {
+                EntityPlayer player = ctx.getServerHandler().player;
                 Wearables.PROXY.schedule(() -> {
-                    EntityPlayer player = ctx.getServerHandler().player;
                     if (player.world.isBlockLoaded(message.pos)) {
                         TileEntity tile = player.world.getTileEntity(message.pos);
                         if (tile instanceof WearableAssemblerEntity) {
